@@ -1,0 +1,814 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#102a28">
+  <meta name="description" content="Cyber Security App helps people check suspicious messages with a private on-device assistant.">
+  <title>Cyber Security App · User</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=DM+Mono:wght@400;500&family=DM+Sans:wght@400;500;600;700&family=Manrope:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      color-scheme: light;
+      --paper: #f4f5ef;
+      --white: #fffefa;
+      --ink: #172a29;
+      --muted: #71807b;
+      --line: #dfe4dc;
+      --green: #195a4a;
+      --green-dark: #123e35;
+      --mint: #dcebe1;
+      --orange: #ed704d;
+      --orange-pale: #fff0e8;
+      --yellow: #e8be51;
+      --shadow: 0 14px 38px rgba(29, 57, 47, .07);
+    }
+    * { box-sizing: border-box; }
+    html { scroll-behavior: smooth; }
+    body { margin: 0; background: var(--paper); color: var(--ink); font-family: 'DM Sans', sans-serif; font-size: 14px; }
+    button, textarea { font: inherit; }
+    button, a { -webkit-tap-highlight-color: transparent; }
+    a { color: inherit; }
+    .app { display: grid; grid-template-columns: 230px minmax(0, 1fr); min-height: 100vh; }
+    .sidebar { position: sticky; top: 0; display: flex; flex-direction: column; height: 100vh; padding: 25px 16px 17px; background: var(--green-dark); color: #f4f4e9; }
+    .brand { display: flex; align-items: center; gap: 11px; padding: 0 11px 34px; text-decoration: none; }
+    .brand-mark { display: grid; width: 32px; height: 32px; place-items: center; border-radius: 10px; background: var(--yellow); color: var(--green-dark); font-size: 17px; font-weight: 800; }
+    .brand-name { font-family: Manrope, sans-serif; font-size: 17px; font-weight: 800; letter-spacing: 0; }
+    .brand-name span { color: #c6d8bd; }
+    .side-label { padding: 0 12px 9px; color: #a3b7a7; font: 10px 'DM Mono', monospace; letter-spacing: 1px; text-transform: uppercase; }
+    .nav { display: grid; gap: 4px; }
+    .nav a { display: flex; align-items: center; gap: 12px; min-height: 42px; padding: 0 12px; border-radius: 7px; color: #c8d6cc; text-decoration: none; transition: background .18s, color .18s; }
+    .nav a:hover, .nav a.active { background: #285b4e; color: white; }
+    .nav-icon { width: 19px; text-align: center; font-size: 16px; }
+    .side-spacer { flex: 1; }
+    .sidebar-note { padding: 15px; border: 1px solid #41675b; border-radius: 8px; background: #214a40; }
+    .sidebar-note strong { display: block; margin-bottom: 6px; font: 600 12px Manrope, sans-serif; }
+    .sidebar-note p { margin: 0; color: #c4d4c6; font-size: 11px; line-height: 1.6; }
+    .side-foot { padding: 17px 10px 0; color: #a3b7a7; font-size: 10px; }
+    main { min-width: 0; }
+    .topbar { display: flex; align-items: center; justify-content: space-between; height: 65px; padding: 0 4.2%; border-bottom: 1px solid var(--line); }
+    .crumb { color: var(--muted); font-size: 12px; }
+    .crumb strong { color: var(--ink); font-weight: 600; }
+    .top-right { display: flex; align-items: center; gap: 15px; color: var(--muted); font-size: 12px; }
+    .today { display: flex; align-items: center; gap: 7px; }
+    .live-dot { width: 7px; height: 7px; border-radius: 50%; background: #46a47b; box-shadow: 0 0 0 3px #dcebe1; }
+    .avatar { display: grid; width: 30px; height: 30px; place-items: center; border: 1px solid var(--line); border-radius: 50%; background: var(--white); color: var(--green); font-weight: 700; }
+    .content { width: min(1140px, 100%); margin: 0 auto; padding: 34px 4.2% 50px; }
+    .welcome { display: flex; align-items: end; justify-content: space-between; gap: 20px; margin-bottom: 25px; animation: enter .45s both; }
+    .eyebrow { margin: 0 0 8px; color: var(--green); font: 10px 'DM Mono', monospace; letter-spacing: 1px; text-transform: uppercase; }
+    h1, h2, h3, p { margin-top: 0; }
+    h1 { margin-bottom: 7px; font: 700 clamp(25px, 3vw, 34px)/1.16 Manrope, sans-serif; letter-spacing: 0; }
+    .welcome-copy { max-width: 510px; margin: 0; color: var(--muted); line-height: 1.6; }
+    .date-chip { flex: none; padding: 9px 12px; border: 1px solid var(--line); border-radius: 5px; color: #4f625a; background: #f8f9f4; font: 10px 'DM Mono', monospace; }
+    .signal { display: grid; grid-template-columns: minmax(0, 1.55fr) minmax(220px, .8fr); min-height: 225px; overflow: hidden; margin-bottom: 23px; border-radius: 8px; background: var(--green); color: white; box-shadow: var(--shadow); animation: enter .5s .06s both; }
+    .signal-main { position: relative; display: flex; flex-direction: column; justify-content: center; padding: 27px 32px; overflow: hidden; }
+    .signal-main::after { position: absolute; top: -93px; right: -34px; width: 245px; height: 245px; border: 1px solid rgba(239, 218, 137, .25); border-radius: 50%; box-shadow: 0 0 0 27px rgba(239,218,137,.06), 0 0 0 55px rgba(239,218,137,.04); content: ''; pointer-events: none; }
+    .signal-tag { display: flex; align-items: center; gap: 8px; margin-bottom: 15px; color: #d7e4d7; font: 10px 'DM Mono', monospace; letter-spacing: .8px; text-transform: uppercase; }
+    .signal-tag i { width: 7px; height: 7px; border-radius: 50%; background: var(--yellow); }
+    .signal h2 { max-width: 510px; margin: 0 0 9px; font: 700 23px/1.3 Manrope, sans-serif; }
+    .signal p { max-width: 520px; margin: 0 0 17px; color: #d3e0d5; font-size: 12px; line-height: 1.65; }
+    .text-link { display: inline-flex; align-items: center; gap: 8px; width: fit-content; color: #f4d779; font-weight: 600; text-decoration: none; }
+    .text-link:hover { color: white; }
+    .signal-art { min-height: 225px; background: linear-gradient(90deg, rgba(25,90,74,.12), rgba(25,90,74,.02)), url('https://images.unsplash.com/photo-1550751827-4bd374c3f58b?auto=format&fit=crop&w=1000&q=80') center 48% / cover; }
+    .section-head { display: flex; align-items: end; justify-content: space-between; gap: 15px; margin: 29px 0 13px; }
+    .section-head h2 { margin: 0; font: 700 17px Manrope, sans-serif; letter-spacing: 0; }
+    .section-head p { margin: 5px 0 0; color: var(--muted); font-size: 12px; }
+    .mono-label { color: var(--muted); font: 10px 'DM Mono', monospace; }
+    .checker { display: grid; grid-template-columns: minmax(0, 1.5fr) minmax(225px, .75fr); gap: 18px; padding: 21px; border: 1px solid var(--line); border-radius: 8px; background: var(--white); box-shadow: 0 5px 18px rgba(29,57,47,.035); }
+    .check-left h3 { margin: 0 0 5px; font: 700 14px Manrope, sans-serif; }
+    .check-left > p { margin: 0 0 13px; color: var(--muted); font-size: 11px; line-height: 1.55; }
+    textarea { display: block; width: 100%; min-height: 93px; resize: vertical; padding: 12px; border: 1px solid #dce3da; border-radius: 5px; outline: none; background: #fbfcf8; color: var(--ink); font-size: 12px; line-height: 1.55; transition: border .18s, box-shadow .18s; }
+    textarea:focus { border-color: #68a187; box-shadow: 0 0 0 3px #dcebe1; }
+    textarea::placeholder { color: #99a49c; }
+    .check-actions { display: flex; align-items: center; justify-content: space-between; gap: 10px; margin-top: 11px; }
+    .privacy { color: var(--muted); font-size: 10px; }
+    .button { display: inline-flex; align-items: center; justify-content: center; gap: 8px; min-height: 37px; padding: 0 14px; border: 0; border-radius: 5px; background: var(--green); color: white; font-size: 11px; font-weight: 700; cursor: pointer; transition: background .18s, transform .18s; }
+    .button:hover { transform: translateY(-1px); background: var(--green-dark); }
+    .button:focus-visible, a:focus-visible, summary:focus-visible { outline: 3px solid #a3ceac; outline-offset: 2px; }
+    .check-right { padding: 14px; border-radius: 5px; background: #f0f4ed; }
+    .check-right .mono-label { display: block; margin-bottom: 9px; color: #60726a; }
+    .example { display: block; width: 100%; padding: 10px 0; border: 0; border-top: 1px solid #dce4da; background: none; color: #435650; text-align: left; font-size: 11px; line-height: 1.5; cursor: pointer; }
+    .example:hover { color: var(--green); }
+    .result { display: none; margin-top: 13px; padding: 13px; border-left: 3px solid var(--orange); border-radius: 3px; background: var(--orange-pale); }
+    .result.visible { display: block; animation: enter .24s both; }
+    .result.safe { border-left-color: #479573; background: #eaf4eb; }
+    .result h4 { margin: 0 0 5px; font: 700 12px Manrope, sans-serif; }
+    .result p { margin: 0; color: #52625b; font-size: 11px; line-height: 1.55; }
+    .result ul { display: grid; gap: 4px; margin: 8px 0 0; padding-left: 17px; color: #52625b; font-size: 11px; }
+    .guides { display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; }
+    .guide { display: flex; min-height: 129px; flex-direction: column; padding: 15px; border: 1px solid var(--line); border-radius: 7px; background: var(--white); text-decoration: none; transition: border .18s, transform .18s, box-shadow .18s; }
+    .guide:hover { transform: translateY(-2px); border-color: #a2bcaa; box-shadow: var(--shadow); }
+    .guide-top { display: flex; align-items: center; justify-content: space-between; margin-bottom: 12px; }
+    .guide-icon { display: grid; width: 29px; height: 29px; place-items: center; border-radius: 6px; background: var(--mint); color: var(--green); font-size: 15px; }
+    .guide-arrow { color: #89978f; }
+    .guide h3 { margin: 0 0 4px; font: 700 12px Manrope, sans-serif; }
+    .guide p { margin: 0; color: var(--muted); font-size: 10px; line-height: 1.5; }
+    .action-row { display: grid; grid-template-columns: minmax(0, 1.1fr) minmax(260px, .9fr); gap: 18px; margin-top: 23px; }
+    .steps-panel, .resources-panel { padding: 19px; border-top: 2px solid var(--green); background: #e9eee6; }
+    .steps-panel h2, .resources-panel h2 { margin: 0 0 12px; font: 700 14px Manrope, sans-serif; }
+    .steps { display: grid; grid-template-columns: repeat(3, 1fr); gap: 13px; }
+    .step { display: flex; gap: 9px; }
+    .step-num { flex: none; display: grid; width: 21px; height: 21px; place-items: center; border-radius: 50%; background: var(--green); color: white; font: 10px 'DM Mono', monospace; }
+    .step strong { display: block; margin: 1px 0 4px; font-size: 11px; }
+    .step p { margin: 0; color: #63726a; font-size: 10px; line-height: 1.5; }
+    .resources-panel { border-top-color: var(--orange); background: #f7eee5; }
+    .resource-list { display: grid; gap: 8px; }
+    .resource-list a { display: flex; align-items: center; justify-content: space-between; gap: 10px; color: #435650; font-size: 11px; text-decoration: none; }
+    .resource-list a:hover { color: var(--green); text-decoration: underline; }
+    .resource-list span { color: var(--muted); font-size: 10px; }
+    .disclaimer { margin: 17px 0 0; color: var(--muted); font-size: 10px; line-height: 1.6; }
+    .footer { display: flex; justify-content: space-between; gap: 15px; margin-top: 27px; padding-top: 15px; border-top: 1px solid var(--line); color: var(--muted); font-size: 10px; }
+    @keyframes enter { from { opacity: 0; transform: translateY(7px); } to { opacity: 1; transform: translateY(0); } }
+    @media (max-width: 900px) {
+      .app { grid-template-columns: 70px minmax(0, 1fr); }
+      .sidebar { align-items: center; padding: 19px 9px; }
+      .brand { padding: 0 0 30px; }
+      .brand-name, .side-label, .nav-label, .sidebar-note, .side-foot { display: none; }
+      .nav { width: 100%; }
+      .nav a { justify-content: center; padding: 0; }
+      .nav-icon { font-size: 17px; }
+    }
+    @media (max-width: 650px) {
+      .app { display: block; padding-bottom: 58px; }
+      .sidebar { position: fixed; z-index: 5; inset: auto 0 0; width: 100%; height: 58px; flex-direction: row; justify-content: center; padding: 5px 12px; box-shadow: 0 -4px 18px rgba(29,57,47,.1); }
+      .brand, .side-label, .side-spacer, .sidebar-note, .side-foot { display: none; }
+      .nav { display: flex; justify-content: space-around; max-width: 390px; }
+      .nav a { width: 54px; height: 46px; }
+      .topbar { height: 56px; padding: 0 19px; }
+      .today span:last-child { display: none; }
+      .content { padding: 26px 18px 35px; }
+      .welcome { align-items: start; flex-direction: column; gap: 12px; }
+      .welcome-copy { max-width: 100%; }
+      .signal { grid-template-columns: 1fr; }
+      .signal-main { padding: 23px 22px; }
+      .signal-art { min-height: 135px; }
+      .checker { grid-template-columns: 1fr; padding: 15px; }
+      .check-right { display: grid; grid-template-columns: 1fr 1fr; column-gap: 13px; }
+      .check-right .mono-label { grid-column: 1 / -1; }
+      .example:nth-of-type(2) { border-top: 0; }
+      .guides { grid-template-columns: repeat(2, 1fr); }
+      .action-row { grid-template-columns: 1fr; }
+      .steps { grid-template-columns: 1fr; gap: 12px; }
+      .steps-panel, .resources-panel { padding: 16px; }
+      .footer { flex-direction: column; }
+    }
+    @media (prefers-reduced-motion: reduce) { *, *::before, *::after { scroll-behavior: auto !important; animation-duration: .01ms !important; transition-duration: .01ms !important; } }
+    body { min-height: 100vh; background: linear-gradient(145deg, #dce8e2, #eef0e7 52%, #d5e2df); background-attachment: fixed; }
+    .app { display: block; width: min(100%, 480px); min-height: 100vh; margin: 0 auto; background: linear-gradient(155deg, rgba(250,252,247,.92), rgba(234,241,233,.87)); box-shadow: 0 0 60px rgba(18, 62, 53, .13); }
+    .sidebar { display: none; }
+    main { min-height: 100vh; padding-bottom: 68px; }
+    .topbar { position: sticky; z-index: 4; top: 0; height: 62px; padding: 0 20px; border-color: rgba(255,255,255,.7); background: rgba(244, 247, 241, .68); backdrop-filter: blur(18px); -webkit-backdrop-filter: blur(18px); }
+    .crumb { font: 800 14px Manrope, sans-serif; color: var(--ink); }
+    .crumb strong { color: var(--green); }
+    .top-right { gap: 9px; }
+    .today { display: none; }
+    .content { padding: 23px 18px 28px; }
+    .welcome { align-items: flex-start; flex-direction: column; gap: 9px; margin-bottom: 19px; }
+    h1 { font-size: 28px; }
+    .date-chip { padding: 7px 10px; }
+    .signal { grid-template-columns: 1fr; min-height: 0; border: 1px solid rgba(255,255,255,.28); background: linear-gradient(135deg, rgba(25,90,74,.94), rgba(18,62,53,.82)); backdrop-filter: blur(16px); -webkit-backdrop-filter: blur(16px); }
+    .signal-main { padding: 20px; }
+    .signal h2 { font-size: 19px; }
+    .signal-art { display: none; }
+    .checker { grid-template-columns: 1fr; gap: 12px; padding: 15px; }
+    .check-right { display: grid; grid-template-columns: 1fr 1fr; column-gap: 12px; }
+    .check-right .mono-label { grid-column: 1 / -1; }
+    .example:nth-of-type(2) { border-top: 0; }
+    .check-actions { align-items: flex-start; flex-direction: column; }
+    .button { min-height: 43px; }
+    .guides { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+    .action-row { grid-template-columns: 1fr; }
+    .steps { grid-template-columns: 1fr; }
+    .topbar .top-right { display: none; }
+    .mobile-nav { position: fixed; z-index: 8; inset: auto 0 0; display: flex; justify-content: center; width: min(100%, 480px); height: 66px; margin: 0 auto; padding: 6px 10px max(6px, env(safe-area-inset-bottom)); border-top: 1px solid rgba(255,255,255,.75); background: rgba(249, 251, 246, .68); backdrop-filter: blur(20px); -webkit-backdrop-filter: blur(20px); box-shadow: 0 -8px 28px rgba(29,57,47,.08); }
+    .mobile-nav button { display: grid; flex: 1; place-content: center; gap: 2px; min-width: 0; border: 0; border-radius: 7px; background: transparent; color: var(--muted); font: 10px 'DM Mono', monospace; cursor: pointer; transition: background .18s ease, color .18s ease, transform .18s ease; }
+    .mobile-nav button span:first-child { font-size: 18px; }
+    .mobile-nav button.active { background: var(--mint); color: var(--green-dark); }
+    .mobile-nav button:active { transform: scale(.94); }
+    .console-head { display: flex; align-items: flex-start; justify-content: space-between; gap: 10px; }
+    .console-head h1 { margin-bottom: 5px; }
+    .console-actions { display: flex; gap: 7px; }
+    .console-actions .button { min-height: 35px; padding: 0 10px; font-size: 10px; }
+    .button.secondary { border: 1px solid var(--line); background: var(--white); color: var(--ink); }
+    .console-notice { margin: 15px 0; padding: 11px 12px; border-left: 3px solid var(--yellow); background: #fbf4df; color: #5c543c; font-size: 11px; line-height: 1.55; }
+    .log-list { display: grid; gap: 10px; }
+    .log-entry { padding: 13px; border: 1px solid var(--line); border-radius: 7px; background: var(--white); }
+    .log-meta { display: flex; justify-content: space-between; gap: 8px; margin-bottom: 9px; color: var(--muted); font: 10px 'DM Mono', monospace; }
+    .log-entry h3 { margin: 0 0 5px; font: 700 11px Manrope, sans-serif; }
+    .log-entry p { margin: 0 0 9px; color: #52625b; font-size: 11px; line-height: 1.5; overflow-wrap: anywhere; white-space: pre-wrap; }
+    .log-entry p:last-child { margin-bottom: 0; }
+    .empty-log { padding: 24px 16px; border: 1px dashed #c9d4ca; border-radius: 7px; color: var(--muted); text-align: center; font-size: 12px; line-height: 1.6; }
+    .creator-list { display: grid; gap: 8px; margin: 13px 0 0; padding: 0; list-style: none; }
+    .creator-list li { display: flex; justify-content: space-between; gap: 10px; color: #52625b; font-size: 11px; }
+    .creator-list span:last-child { font: 10px 'DM Mono', monospace; }
+    [hidden] { display: none !important; }
+    @media (min-width: 700px) { .app { margin-top: 24px; min-height: calc(100vh - 48px); border-radius: 12px; overflow: hidden; } }
+    @media (max-width: 480px) { .app { box-shadow: none; } }
+    .developer-app-link { padding: 8px 10px; border: 1px solid var(--line); border-radius: 6px; background: var(--white); color: var(--green); font-size: 10px; font-weight: 700; text-decoration: none; }
+    .app-screen.is-entering { animation: screen-enter .3s cubic-bezier(.2,.75,.25,1) both; }
+    @keyframes screen-enter { from { opacity: 0; transform: translateY(9px) scale(.995); } to { opacity: 1; transform: translateY(0) scale(1); } }
+    .guide { border-color: rgba(255,255,255,.78); background: rgba(255,254,250,.62); backdrop-filter: blur(14px); -webkit-backdrop-filter: blur(14px); }
+    .steps-panel, .resources-panel { border: 1px solid rgba(255,255,255,.7); border-top-width: 2px; background: rgba(233,238,230,.62); backdrop-filter: blur(14px); -webkit-backdrop-filter: blur(14px); }
+    .resources-panel { background: rgba(247,238,229,.68); }
+    .assistant-compose { background: rgba(251,252,248,.68); backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px); }
+    .developer-app-link { border-color: rgba(255,255,255,.8); background: rgba(255,254,250,.62); backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px); }
+    .assistant-shell { overflow: hidden; border: 1px solid rgba(255,255,255,.8); border-radius: 9px; background: rgba(255,254,250,.74); box-shadow: 0 10px 28px rgba(29,57,47,.08); backdrop-filter: blur(16px); -webkit-backdrop-filter: blur(16px); }
+    .assistant-status { display: flex; align-items: center; gap: 8px; padding: 12px 14px; border-bottom: 1px solid var(--line); color: #52625b; font-size: 11px; }
+    .assistant-status .live-dot { flex: none; }
+    .assistant-status.is-speaking .live-dot { animation: voice-pulse 1.2s ease-out infinite; }
+    #voice-input-button[aria-pressed="true"] { position: relative; background: var(--green); color: white; }
+    #voice-input-button[aria-pressed="true"]::after { position: absolute; inset: -4px; border: 2px solid rgba(25,90,74,.38); border-radius: 11px; content: ''; animation: voice-pulse 1.2s ease-out infinite; pointer-events: none; }
+    @keyframes voice-pulse { 0% { box-shadow: 0 0 0 0 rgba(55,139,104,.34); } 75%, 100% { box-shadow: 0 0 0 10px rgba(55,139,104,0); } }
+    .assistant-thread { display: grid; align-content: start; gap: 12px; min-height: 210px; max-height: 42vh; overflow-y: auto; padding: 14px; }
+    .chat-row { display: flex; }
+    .chat-row.user { justify-content: flex-end; }
+    .chat-bubble { max-width: 88%; padding: 11px 12px; border-radius: 12px 12px 12px 3px; background: #edf2eb; color: #334740; font-size: 12px; line-height: 1.55; white-space: pre-wrap; overflow-wrap: anywhere; }
+    .chat-row.user .chat-bubble { border-radius: 12px 12px 3px 12px; background: var(--green); color: white; }
+    .chat-bubble strong { display: block; margin-bottom: 3px; font-family: Manrope, sans-serif; }
+    .chat-bubble.warning { border: 1px solid #edc0ae; background: #fff0e8; color: #693b2d; }
+    .assistant-warning { display: flex; gap: 9px; padding: 11px 13px; border-bottom: 1px solid rgba(226,170,139,.34); background: rgba(255,239,224,.72); color: #684332; font-size: 10px; line-height: 1.5; }
+    .assistant-warning strong { flex: none; color: #9b4e31; font: 700 9px 'DM Mono', monospace; text-transform: uppercase; }
+    .assistant-tools { padding: 11px 13px; border-bottom: 1px solid var(--line); }
+    .assistant-tools > .mono-label { display: block; margin-bottom: 8px; }
+    .assistant-actions, .assistant-suggestions { display: flex; flex-wrap: wrap; gap: 7px; }
+    .assistant-actions button, .assistant-suggestions button { display: inline-flex; align-items: center; gap: 6px; min-height: 32px; padding: 0 9px; border: 1px solid rgba(109,143,125,.28); border-radius: 6px; background: rgba(255,255,255,.62); color: #3b5b4c; font-size: 10px; cursor: pointer; transition: background .18s, transform .18s; }
+    .assistant-actions button:hover, .assistant-suggestions button:hover { transform: translateY(-1px); background: white; }
+    .assistant-actions button span { font-size: 13px; }
+    .assistant-suggestions { padding: 0 14px 12px; }
+    .assistant-suggestions button { min-height: 29px; border-radius: 999px; color: #536961; font-size: 9px; }
+    .assistant-compose { padding: 12px; border-top: 1px solid var(--line); background: #fbfcf8; }
+    .assistant-compose textarea { min-height: 74px; max-height: 180px; resize: vertical; }
+    .compose-bottom { display: flex; align-items: center; justify-content: space-between; gap: 8px; margin-top: 9px; }
+    .compose-bottom .privacy { max-width: 210px; line-height: 1.4; }
+    .assistant-examples { display: flex; flex-wrap: wrap; gap: 7px; margin-top: 10px; }
+    .assistant-examples button { padding: 7px 9px; border: 1px solid var(--line); border-radius: 999px; background: var(--white); color: #52625b; font-size: 10px; cursor: pointer; }
+    .assistant-examples button:hover { border-color: #9db8a5; color: var(--green); }
+    .team-section { margin-top: 25px; }
+    .team-section .section-head { margin-top: 0; }
+    .team-glass { padding: 14px; border: 1px solid rgba(255,255,255,.78); border-radius: 10px; background: linear-gradient(140deg, rgba(255,255,255,.82), rgba(225,239,230,.56)); box-shadow: 0 12px 30px rgba(29,57,47,.08); backdrop-filter: blur(18px); -webkit-backdrop-filter: blur(18px); }
+    .team-list { display: grid; margin: 0; padding: 0; list-style: none; }
+    .team-list-head { grid-template-columns: minmax(0, 1fr) auto; align-items: center; min-height: 28px; padding-bottom: 7px; border-bottom: 1px solid rgba(120,145,130,.28); color: #66796f; font: 9px 'DM Mono', monospace; }
+    .team-list-head span:last-child { text-align: right; }
+    .team-list li { display: flex; align-items: center; justify-content: space-between; gap: 12px; min-height: 43px; border-bottom: 1px solid rgba(120,145,130,.2); color: #344b43; font-size: 11px; }
+    .team-list li:last-child { border-bottom: 0; }
+    .team-list code { color: #526c60; font: 10px 'DM Mono', monospace; white-space: nowrap; }
+    .accessibility-controls { display: flex; align-items: center; gap: 3px; }
+    .accessibility-controls button { width: 40px; height: 42px; border: 1px solid rgba(255,255,255,.8); border-radius: 7px; background: rgba(255,255,255,.65); color: var(--green-dark); font: 700 14px Manrope, sans-serif; cursor: pointer; }
+    .accessibility-controls button:disabled { opacity: .45; cursor: default; }
+    .sr-only { position: absolute; width: 1px; height: 1px; padding: 0; margin: -1px; overflow: hidden; clip: rect(0,0,0,0); white-space: nowrap; border: 0; }
+    .assistant-settings { display: grid; grid-template-columns: 1fr 1fr; gap: 9px; padding: 12px 13px; border-bottom: 1px solid var(--line); background: rgba(255,255,255,.35); }
+    .assistant-settings label { display: grid; gap: 5px; color: #52625b; font-size: 10px; font-weight: 700; }
+    .assistant-settings select { width: 100%; min-height: 42px; padding: 0 9px; border: 1px solid rgba(109,143,125,.35); border-radius: 6px; background: rgba(255,255,255,.8); color: var(--ink); font: 11px 'DM Sans', sans-serif; }
+    .assistant-settings .speak-toggle { display: flex; grid-column: 1 / -1; align-items: center; gap: 9px; min-height: 40px; }
+    .speak-toggle input { width: 20px; height: 20px; accent-color: var(--green); }
+    .assistant-device-actions { display: flex; flex-wrap: wrap; gap: 8px; padding: 11px 13px; border-bottom: 1px solid var(--line); }
+    .assistant-device-actions button { display: inline-flex; align-items: center; justify-content: center; gap: 7px; min-height: 44px; padding: 0 12px; border: 1px solid rgba(109,143,125,.34); border-radius: 8px; background: rgba(255,255,255,.76); color: #315447; font-size: 12px; font-weight: 700; cursor: pointer; }
+    .assistant-device-actions button[aria-pressed="true"] { background: var(--green); color: #fff; }
+    .device-status { flex: 1 0 100%; min-height: 18px; margin: 0; color: #53645d; font-size: 11px; line-height: 1.45; }
+    .image-preview { display: flex; align-items: center; gap: 10px; width: 100%; padding: 7px; border: 1px solid var(--line); border-radius: 7px; background: rgba(255,255,255,.7); }
+    .image-preview img { width: 50px; height: 50px; border-radius: 4px; object-fit: cover; }
+    .image-preview p { margin: 0; color: #52625b; font-size: 10px; overflow-wrap: anywhere; }
+    .feedback-controls { display: flex; align-items: center; gap: 7px; margin-top: 8px; color: #66776f; font-size: 10px; }
+    .feedback-controls button { min-width: 40px; min-height: 40px; border: 1px solid rgba(109,143,125,.3); border-radius: 8px; background: rgba(255,255,255,.76); color: #3b5b4c; font-size: 16px; cursor: pointer; }
+    .feedback-controls button[aria-pressed="true"] { border-color: var(--green); background: var(--mint); }
+    .large-text .app { zoom: var(--app-zoom, 1); }
+    @media (max-width: 370px) { .accessibility-controls button { width: 36px; height: 40px; } .developer-app-link { padding: 7px 6px; font-size: 9px; } }
+  </style>
+</head>
+<body>
+  <div class="app">
+    <aside class="sidebar" aria-label="Main navigation">
+      <a class="brand" href="#home" aria-label="Good Signal home"><span class="brand-mark">g.</span><span class="brand-name">good<span>signal</span></span></a>
+      <div class="side-label">Your safety desk</div>
+      <nav class="nav">
+        <a class="active" href="#home"><span class="nav-icon" aria-hidden="true">⌂</span><span class="nav-label">Overview</span></a>
+        <a href="#check"><span class="nav-icon" aria-hidden="true">⌕</span><span class="nav-label">Check a message</span></a>
+        <a href="#learn"><span class="nav-icon" aria-hidden="true">▤</span><span class="nav-label">Learn &amp; protect</span></a>
+        <a href="#next-steps"><span class="nav-icon" aria-hidden="true">↗</span><span class="nav-label">Get help</span></a>
+      </nav>
+      <div class="side-spacer"></div>
+      <div class="sidebar-note"><strong>A good rule to remember</strong><p>Pause before you tap. A real organization won't mind you checking through its official app or number.</p></div>
+      <div class="side-foot">Small steps. Safer clicks.</div>
+    </aside>
+
+    <main id="home">
+      <header class="topbar">
+        <div class="crumb">Cyber Security <strong>App</strong></div>
+        <div class="topbar-actions">
+          <div class="accessibility-controls" role="group" aria-label="Text magnification">
+            <button id="decrease-text" type="button" aria-label="Decrease app magnification" title="Decrease text size">A−</button>
+            <button id="increase-text" type="button" aria-label="Increase app magnification" title="Increase text size">A+</button>
+          </div>
+          <a class="developer-app-link" href="developer.html">Developer app ↗</a>
+        </div>
+      </header>
+
+      <nav class="mobile-nav" role="tablist" aria-label="User app screens">
+        <button class="active" id="tab-home" type="button" role="tab" aria-selected="true" aria-controls="screen-home" data-screen="home"><span aria-hidden="true">⌂</span><span>Home</span></button>
+        <button id="tab-assistant" type="button" role="tab" aria-selected="false" aria-controls="screen-assistant" data-screen="assistant"><span aria-hidden="true">✳</span><span>Assistant</span></button>
+        <button id="tab-learn" type="button" role="tab" aria-selected="false" aria-controls="screen-learn" data-screen="learn"><span aria-hidden="true">▤</span><span>Learn</span></button>
+        <button id="tab-help" type="button" role="tab" aria-selected="false" aria-controls="screen-help" data-screen="help"><span aria-hidden="true">↗</span><span>Help</span></button>
+        <button id="tab-team" type="button" role="tab" aria-selected="false" aria-controls="screen-team" data-screen="team"><span aria-hidden="true">◎</span><span>Team</span></button>
+      </nav>
+
+      <div id="user-app" class="content">
+        <section id="screen-home" class="app-screen" data-screen-view="home" role="tabpanel" aria-labelledby="tab-home">
+        <section class="welcome" aria-labelledby="welcome-title">
+          <div><p class="eyebrow">CYBER SECURITY APP</p><h1 id="welcome-title">Check before<br>you trust.</h1><p class="welcome-copy">Scams get convincing. Take a breath, check the details, and make your next move with confidence.</p></div>
+          <div class="date-chip" id="today-date">YOUR SAFETY CHECK-IN</div>
+        </section>
+
+        <section class="signal" aria-labelledby="signal-title">
+          <div class="signal-main">
+            <div class="signal-tag"><i></i> THIS WEEK’S WATCH-OUT</div>
+            <h2 id="signal-title">That delivery text may be a detour.</h2>
+            <p>Unexpected messages about a missed parcel can lead to lookalike sites asking for a small “redelivery fee” and your card details. Don’t use the link in the text.</p>
+            <a class="text-link" href="#learn">See how to check a delivery notice <span aria-hidden="true">→</span></a>
+          </div>
+          <div class="signal-art" role="img" aria-label="Abstract green digital network illustration"></div>
+        </section>
+        </section>
+
+        <section id="screen-assistant" class="app-screen" data-screen-view="assistant" role="tabpanel" aria-labelledby="tab-assistant" hidden>
+          <section aria-labelledby="check-title">
+          <div class="section-head"><div><h2 id="check-title">Ask the security assistant</h2><p>Share a suspicious message or ask what to do next.</p></div><span class="mono-label">ON-DEVICE ASSISTANT</span></div>
+          <div class="assistant-shell">
+            <div id="assistant-status" class="assistant-status"><i class="live-dot"></i><span>Cyber Security Assistant · Private pattern check</span></div>
+            <div class="assistant-settings">
+              <label for="assistant-language">Assistant language
+                <select id="assistant-language">
+                  <option value="en-US">English</option>
+                  <option value="hi-IN">हिन्दी</option>
+                  <option value="kn-IN">ಕನ್ನಡ</option>
+                </select>
+              </label>
+              <label for="assistant-voice">Speaking voice
+                <select id="assistant-voice"><option value="">System default</option></select>
+              </label>
+              <label class="speak-toggle" for="speak-replies"><input id="speak-replies" type="checkbox" checked><span>Speak assistant replies aloud</span></label>
+            </div>
+            <div class="assistant-device-actions">
+              <button id="voice-input-button" type="button" aria-pressed="false"><span aria-hidden="true">🎙</span><span>Speak to assistant</span></button>
+              <button id="image-reader-button" type="button"><span aria-hidden="true">▧</span><span>Read an image</span></button>
+              <input id="image-input" type="file" accept="image/*" capture="environment" hidden>
+              <p id="device-status" class="device-status" role="status" aria-live="polite">Voice features need browser permission. Image reading runs on this device.</p>
+              <div id="image-preview" class="image-preview" hidden><img id="image-preview-img" alt="Selected image for text reading"><p id="image-status">Preparing image…</p></div>
+            </div>
+            <div class="assistant-warning" role="note"><strong>Safety warning</strong><span>Never share passwords, sign-in codes, or full card details. This on-device assistant can miss scams and cannot prove a message is safe.</span></div>
+            <div class="assistant-tools">
+              <span class="mono-label">QUICK ACTIONS</span>
+              <div class="assistant-actions">
+                <button type="button" data-action="focus"><span aria-hidden="true">⌕</span> Check a message</button>
+                <button type="button" data-assistant-prompt="I clicked a suspicious link. What should I do?"><span aria-hidden="true">↗</span> I clicked a link</button>
+                <button type="button" data-assistant-prompt="How can I secure my account?"><span aria-hidden="true">▣</span> Secure my account</button>
+              </div>
+            </div>
+            <div id="assistant-thread" class="assistant-thread" role="log" aria-live="polite">
+              <div class="chat-row assistant"><div class="chat-bubble"><strong>Assistant</strong><span>Hi, I can help you look for warning signs in a text, email, or direct message. Paste it below, with personal details removed.</span></div></div>
+            </div>
+            <div class="assistant-suggestions" aria-label="Suggested questions">
+              <button type="button" data-assistant-prompt="What is phishing?">What is phishing?</button>
+              <button type="button" data-assistant-prompt="How do I avoid gift card scams?">Avoid gift card scams</button>
+              <button type="button" data-assistant-prompt="What should I do if I think this is a scam?">What should I do?</button>
+            </div>
+            <form id="assistant-form" class="assistant-compose">
+              <label for="message-input" class="mono-label" style="display:block;margin-bottom:6px">YOUR MESSAGE</label>
+              <textarea id="message-input" maxlength="3000" placeholder="Paste a message or ask what to do next…" aria-describedby="privacy-note" required></textarea>
+              <div class="compose-bottom"><span id="privacy-note" class="privacy">Checks stay on this device. Don’t include passwords or codes.</span><button class="button" type="submit"><span aria-hidden="true">➤</span> Send</button></div>
+              <div class="assistant-examples" aria-label="Sample messages"><button type="button" data-example="Urgent: your bank account is locked. Verify your password now at secure-bank-help.example">Bank alert sample</button><button type="button" data-example="Hi, this is your manager. I need you to buy gift cards right away. Send me the codes when you're done.">Gift card request sample</button></div>
+            </form>
+          </div>
+        </section>
+        </section>
+
+        <section id="screen-learn" class="app-screen" data-screen-view="learn" role="tabpanel" aria-labelledby="tab-learn" hidden>
+          <section aria-labelledby="learn-title">
+          <div class="section-head"><div><h2 id="learn-title">Build your everyday defenses</h2><p>Quick reads for the moments that matter.</p></div><span class="mono-label">4 QUICK GUIDES</span></div>
+          <div class="guides">
+            <a class="guide" href="https://www.cisa.gov/secure-our-world/use-strong-passwords" target="_blank" rel="noreferrer"><div class="guide-top"><span class="guide-icon" aria-hidden="true">▣</span><span class="guide-arrow" aria-hidden="true">↗</span></div><h3>Lock down your accounts</h3><p>Passphrases, password managers, and multi-factor authentication.</p></a>
+            <a class="guide" href="https://consumer.ftc.gov/articles/how-recognize-and-avoid-phishing-scams" target="_blank" rel="noreferrer"><div class="guide-top"><span class="guide-icon" aria-hidden="true">⌁</span><span class="guide-arrow" aria-hidden="true">↗</span></div><h3>Spot a phishing message</h3><p>Check the sender, the ask, and where a link really goes.</p></a>
+            <a class="guide" href="https://consumer.ftc.gov/articles/what-know-about-romance-scams" target="_blank" rel="noreferrer"><div class="guide-top"><span class="guide-icon" aria-hidden="true">♡</span><span class="guide-arrow" aria-hidden="true">↗</span></div><h3>Recognize relationship scams</h3><p>Know the patterns before money or trust is on the line.</p></a>
+            <a class="guide" href="https://consumer.ftc.gov/articles/how-avoid-scam" target="_blank" rel="noreferrer"><div class="guide-top"><span class="guide-icon" aria-hidden="true">◉</span><span class="guide-arrow" aria-hidden="true">↗</span></div><h3>Pause a payment request</h3><p>Why gift cards, crypto, and wire transfers deserve extra care.</p></a>
+          </div>
+        </section>
+        </section>
+
+        <section id="screen-help" class="app-screen" data-screen-view="help" role="tabpanel" aria-labelledby="tab-help" hidden>
+        <section class="action-row" aria-label="What to do and where to get help">
+          <div class="steps-panel"><h2>If you think you’ve been scammed</h2><div class="steps">
+            <div class="step"><span class="step-num">01</span><div><strong>Stop contact</strong><p>Don’t reply, click, or send more money.</p></div></div>
+            <div class="step"><span class="step-num">02</span><div><strong>Secure accounts</strong><p>Change affected passwords; call your bank using its official number.</p></div></div>
+            <div class="step"><span class="step-num">03</span><div><strong>Report it</strong><p>Save messages and receipts, then report to the right agency.</p></div></div>
+          </div></div>
+          <div class="resources-panel"><h2>Official U.S. resources</h2><div class="resource-list">
+            <a href="https://reportfraud.ftc.gov/" target="_blank" rel="noreferrer">Report fraud to the FTC <span>↗</span></a>
+            <a href="https://www.identitytheft.gov/" target="_blank" rel="noreferrer">Identity theft recovery plan <span>↗</span></a>
+            <a href="https://www.ic3.gov/" target="_blank" rel="noreferrer">Report internet crime to the FBI <span>↗</span></a>
+          </div><p class="disclaimer">The message checker is an educational tool, not a security scanner. It can miss scams or flag legitimate messages. Verify requests directly with the organization using contact details you find independently.</p></div>
+        </section>
+        </section>
+        <section id="screen-team" class="app-screen team-section" data-screen-view="team" role="tabpanel" aria-labelledby="tab-team" hidden>
+          <div class="section-head"><div><h2 id="team-title">Creators</h2><p>Project team</p></div></div>
+          <div class="team-glass">
+            <div class="team-list team-list-head" aria-hidden="true"><span>NAME</span><span>USN</span></div>
+            <ul class="team-list">
+              <li><span>Raju Muchandi</span><code>2BU25CS107</code></li>
+              <li><span>Pooja Wali</span><code>2BU25CS086</code></li>
+              <li><span>Prajwal Sirasalmath</span><code>2BU25CS090</code></li>
+              <li><span>Poornima Marennavar</span><code>2BU25CS087</code></li>
+            </ul>
+          </div>
+        </section>
+        <footer class="footer"><span>Cyber Security App · Practical cyber safety</span><span>U.S. resources shown · In an emergency, contact local authorities.</span></footer>
+      </div>
+
+    </main>
+  </div>
+  <script>
+    const messageInput = document.querySelector('#message-input');
+    const thread = document.querySelector('#assistant-thread');
+    const assistantForm = document.querySelector('#assistant-form');
+    const languageSelect = document.querySelector('#assistant-language');
+    const voiceSelect = document.querySelector('#assistant-voice');
+    const speakReplies = document.querySelector('#speak-replies');
+    const voiceInputButton = document.querySelector('#voice-input-button');
+    const deviceStatus = document.querySelector('#device-status');
+    const imageInput = document.querySelector('#image-input');
+    const imagePreview = document.querySelector('#image-preview');
+    const imagePreviewImage = document.querySelector('#image-preview-img');
+    const imageStatus = document.querySelector('#image-status');
+    const activityKey = 'cyber-security-app-activity';
+    const zoomKey = 'cyber-security-app-text-zoom';
+    const readActivity = () => JSON.parse(localStorage.getItem(activityKey) || '[]');
+    const zoomLevels = [1, 1.12, 1.25];
+    let zoomIndex = Math.max(0, Math.min(zoomLevels.length - 1, Number(localStorage.getItem(zoomKey) || 0)));
+    let pendingCommand = 'analyze_message';
+    let recognition = null;
+    let imageObjectUrl = '';
+    const warningPatterns = [
+      { pattern: /\b(urgent|immediately|act now|expires today|within 24 hours|final notice|suspended|locked)\b|तुरंत|अभी|तत्काल|ತುರ್ತು|ತಕ್ಷಣ/iu, label: 'Pressure or urgency' },
+      { pattern: /\b(password|passcode|verification code|one[- ]time code|social security|ssn|bank details|credit card)\b|पासवर्ड|ओटीपी|खाता विवरण|ಗುಪ್ತಪದ|ಪಾಸ್ವರ್ಡ್|ಒಟಿಪಿ/iu, label: 'Request for sensitive information' },
+      { pattern: /\b(gift cards?|bitcoin|crypto(?:currency)?|wire transfer|cash app|zelle|venmo)\b|गिफ्ट कार्ड|पैसे भेजो|उपहार कार्ड|ಉಡುಗೊರೆ ಕಾರ್ಡ್|ಹಣ ಕಳುಹಿಸಿ/iu, label: 'Unusual or hard-to-reverse payment' },
+      { pattern: /https?:\/\/|\b\w[\w-]*\.(?:com|net|org|info|site|click|top|xyz)\b|लिंक|ಕೊಂಡಿ|ಲಿಂಕ್/iu, label: 'Link to inspect carefully' },
+      { pattern: /\b(don't tell|do not tell|keep this secret|secretly)\b|किसी को मत बताओ|गुप्त रखो|ಯಾರಿಗೂ ಹೇಳಬೇಡಿ|ರಹಸ್ಯವಾಗಿಡಿ/iu, label: 'Request to keep it secret' },
+      { pattern: /\b(prize|won|claim your|refund|customs fee|delivery fee|redelivery|package)\b|इनाम|जीत|डिलीवरी शुल्क|ಪಾರಿತೋಷಕ|ಗೆದ್ದಿದ್ದೀರಿ|ಡೆಲಿವರಿ ಶುಲ್ಕ/iu, label: 'Unexpected prize, refund, or delivery claim' }
+    ];
+
+    function applyMagnification() {
+      const scale = zoomLevels[zoomIndex];
+      const width = Math.min(480, document.documentElement.clientWidth) / scale;
+      const app = document.querySelector('.app');
+      app.style.width = `${width}px`;
+      app.style.setProperty('--app-zoom', String(scale));
+      document.documentElement.classList.toggle('large-text', scale > 1);
+      document.querySelector('#decrease-text').disabled = zoomIndex === 0;
+      document.querySelector('#increase-text').disabled = zoomIndex === zoomLevels.length - 1;
+      localStorage.setItem(zoomKey, String(zoomIndex));
+    }
+
+    document.querySelector('#decrease-text').addEventListener('click', () => {
+      zoomIndex = Math.max(0, zoomIndex - 1);
+      applyMagnification();
+    });
+    document.querySelector('#increase-text').addEventListener('click', () => {
+      zoomIndex = Math.min(zoomLevels.length - 1, zoomIndex + 1);
+      applyMagnification();
+    });
+    window.addEventListener('resize', applyMagnification);
+    applyMagnification();
+
+    function addMessageControls(row, activityId, text, feedback = '') {
+      row.dataset.activityId = activityId;
+      const controls = document.createElement('div');
+      controls.className = 'feedback-controls';
+      const prompt = document.createElement('span');
+      prompt.textContent = 'Was this helpful?';
+      const useful = document.createElement('button');
+      useful.type = 'button';
+      useful.dataset.feedback = 'helpful';
+      useful.setAttribute('aria-label', 'This answer was helpful');
+      useful.setAttribute('aria-pressed', String(feedback === 'helpful'));
+      useful.textContent = '👍';
+      const notUseful = document.createElement('button');
+      notUseful.type = 'button';
+      notUseful.dataset.feedback = 'not-helpful';
+      notUseful.setAttribute('aria-label', 'This answer was not helpful');
+      notUseful.setAttribute('aria-pressed', String(feedback === 'not-helpful'));
+      notUseful.textContent = '👎';
+      const speak = document.createElement('button');
+      speak.type = 'button';
+      speak.dataset.speak = text;
+      speak.setAttribute('aria-label', 'Read this answer aloud');
+      speak.textContent = '🔊';
+      const status = document.createElement('span');
+      status.className = 'sr-only';
+      status.dataset.feedbackStatus = '';
+      status.setAttribute('aria-live', 'polite');
+      controls.append(prompt, useful, notUseful, speak, status);
+      row.append(controls);
+    }
+
+    function appendMessage(kind, heading, text, options = {}) {
+      const row = document.createElement('div');
+      row.className = `chat-row ${kind}`;
+      const bubble = document.createElement('div');
+      bubble.className = 'chat-bubble';
+      bubble.classList.toggle('warning', Boolean(options.warning));
+      const label = document.createElement('strong');
+      label.textContent = heading;
+      const body = document.createElement('span');
+      body.textContent = text;
+      bubble.append(label, body);
+      row.append(bubble);
+      if (kind === 'assistant' && options.activityId) addMessageControls(row, options.activityId, text, options.feedback);
+      thread.append(row);
+      thread.scrollTop = thread.scrollHeight;
+      return row;
+    }
+
+    function buildResponse(message) {
+      const flags = warningPatterns.filter(({ pattern }) => pattern.test(message));
+      const language = /[\u0900-\u097f]/u.test(message) ? 'hi-IN' : /[\u0c80-\u0cff]/u.test(message) ? 'kn-IN' : languageSelect.value;
+      const hindi = language === 'hi-IN';
+      const kannada = language === 'kn-IN';
+      const incident = /\b(already clicked|clicked.{0,18}link|sent money|paid|shared my password|shared a code)\b/i.test(message) || /लिंक.{0,16}(क्लिक|खोल)|पैसे भेज दिए|कोड साझा किया/u.test(message) || /ಲಿಂಕ್.{0,16}(ಕ್ಲಿಕ್|ತೆರೆದ)|ಹಣ ಕಳುಹಿಸಿದೆ|ಕೋಡ್ ಹಂಚಿಕೊಂಡೆ/u.test(message);
+      const phishing = /\b(what is|explain|define)\b.{0,25}\b(phishing|scam)\b/i.test(message) || /फिशिंग|फ़िशिंग|धोखाधड़ी क्या है|ಫಿಶಿಂಗ್|ಮೋಸ ಎಂದರೇನು/u.test(message);
+      const secure = (/\b(how (?:can|do) i|how to|help me)\b/i.test(message) && /\b(protect|secure|password|account|email|phone|device)\b/i.test(message)) || /खाता.{0,16}(सुरक्षित|सुरक्षा)|पासवर्ड.{0,16}(बदल|सुरक्षित)|ಖಾತೆ.{0,16}(ಸುರಕ್ಷಿತ|ರಕ್ಷಣೆ)|ಪಾಸ್.?ವರ್ಡ್.{0,16}(ಬದಲ|ರಕ್ಷಣೆ)/u.test(message);
+      const nextSteps = /\b(what should i do|what do i do|next steps|help me)\b/i.test(message) || /क्या करूं|अब क्या|क्या करना चाहिए|ಏನು ಮಾಡಲಿ|ಮುಂದೇನು/u.test(message);
+      const avoidScams = /\b(avoid|protect myself from|prevent)\b.{0,35}\b(scam|fraud|gift card)\b/i.test(message) || /घोटालों से बच|गिफ्ट कार्ड से बच|ಮೋಸದಿಂದ ತಪ್ಪಿಸಿಕೊ|ಗಿಫ್ಟ್ ಕಾರ್ಡ್.*ತಪ್ಪಿಸ/u.test(message);
+      const responses = {
+        'en-US': {
+          incident: 'If you already clicked, paid, or shared information, act quickly: stop replying, contact your bank using its official number, change affected passwords, and report the incident. If you shared a sign-in code, secure that account immediately.',
+          phishing: 'Phishing is a message designed to trick you into clicking a link, opening an attachment, sending money, or sharing private information. Check the sender carefully, avoid unexpected links, and verify requests through a separate official channel.',
+          secure: 'Start with a unique password or passphrase and turn on multi-factor authentication. Update your device and apps, review account recovery details and signed-in devices, and never share one-time sign-in codes.',
+          next: 'Pause and don’t click links, call numbers, or send money from an unexpected message. Verify it through an official app or contact number you find independently. If you shared information or money, contact your bank and secure the affected account.',
+          avoid: 'Pause when a request creates urgency, asks for secrecy, or demands gift cards, crypto, or a wire transfer. Verify the person through a known number or a separate conversation, and never share gift card codes or sign-in codes.',
+          flagged: `I found ${flags.length} warning ${flags.length === 1 ? 'sign' : 'signs'}: ${flags.map(({ label }) => label.toLowerCase()).join(', ')}. Don’t use links or phone numbers in the message. Verify the request through an official channel.`,
+          safe: 'I don’t see common scam patterns in that text, but that does not prove it is safe. Verify unexpected requests through an official channel before sharing information or money.',
+          warning: 'Safety warning'
+        },
+        'hi-IN': {
+          incident: 'अगर आपने लिंक खोला, पैसे भेजे या जानकारी साझा की है, तो तुरंत जवाब देना बंद करें। बैंक को उसके आधिकारिक नंबर पर कॉल करें, प्रभावित पासवर्ड बदलें और घटना की रिपोर्ट करें। साझा किए गए साइन-इन कोड वाले खाते को तुरंत सुरक्षित करें।',
+          phishing: 'फ़िशिंग ऐसा संदेश है जो आपको लिंक खोलने, फ़ाइल खोलने, पैसे भेजने या निजी जानकारी साझा करने के लिए धोखा देता है। भेजने वाले की जाँच करें और अनुरोध की पुष्टि किसी आधिकारिक माध्यम से करें।',
+          secure: 'हर खाते के लिए अलग और मज़बूत पासवर्ड रखें और बहु-कारक प्रमाणीकरण चालू करें। डिवाइस और ऐप अपडेट करें, रिकवरी जानकारी जाँचें और साइन-इन कोड किसी से साझा न करें।',
+          next: 'रुकें और अनजान संदेश के लिंक, नंबर या भुगतान अनुरोध का उपयोग न करें। आधिकारिक ऐप या स्वतंत्र रूप से मिले नंबर से पुष्टि करें। जानकारी या पैसे साझा किए हैं तो बैंक से संपर्क करें और खाता सुरक्षित करें।',
+          avoid: 'जल्दी करने, बात गुप्त रखने या गिफ्ट कार्ड और क्रिप्टो से भुगतान करने के अनुरोध पर सावधान रहें। व्यक्ति की अलग माध्यम से पुष्टि करें और गिफ्ट कार्ड कोड या साइन-इन कोड साझा न करें।',
+          flagged: `इस संदेश में ${flags.length} चेतावनी संकेत मिले। इसके लिंक या नंबर का उपयोग न करें; अनुरोध की पुष्टि आधिकारिक माध्यम से करें।`,
+          safe: 'इस संदेश में आम चेतावनी संकेत नहीं मिले, लेकिन इससे यह सुरक्षित साबित नहीं होता। जानकारी या पैसे देने से पहले आधिकारिक माध्यम से पुष्टि करें।',
+          warning: 'सुरक्षा चेतावनी'
+        },
+        'kn-IN': {
+          incident: 'ನೀವು ಲಿಂಕ್ ತೆರೆದಿದ್ದರೆ, ಹಣ ಕಳುಹಿಸಿದ್ದರೆ ಅಥವಾ ಮಾಹಿತಿಯನ್ನು ಹಂಚಿಕೊಂಡಿದ್ದರೆ, ತಕ್ಷಣ ಉತ್ತರಿಸುವುದನ್ನು ನಿಲ್ಲಿಸಿ. ಬ್ಯಾಂಕ್‌ನ ಅಧಿಕೃತ ಸಂಖ್ಯೆಗೆ ಕರೆ ಮಾಡಿ, ಪಾಸ್‌ವರ್ಡ್ ಬದಲಿಸಿ ಮತ್ತು ಘಟನೆಯನ್ನು ವರದಿ ಮಾಡಿ. ಹಂಚಿಕೊಂಡ ಸೈನ್-ಇನ್ ಕೋಡ್‌ಗೆ ಸಂಬಂಧಿಸಿದ ಖಾತೆಯನ್ನು ಕೂಡಲೇ ಸುರಕ್ಷಿತಗೊಳಿಸಿ.',
+          phishing: 'ಫಿಶಿಂಗ್ ಎಂದರೆ ಲಿಂಕ್ ತೆರೆಯಲು, ಹಣ ಕಳುಹಿಸಲು ಅಥವಾ ಖಾಸಗಿ ಮಾಹಿತಿಯನ್ನು ಹಂಚಿಕೊಳ್ಳಲು ಮೋಸಗೊಳಿಸುವ ಸಂದೇಶ. ಕಳುಹಿಸಿದವರನ್ನು ಪರಿಶೀಲಿಸಿ ಮತ್ತು ಅಧಿಕೃತ ಮಾರ್ಗದ ಮೂಲಕ ವಿನಂತಿಯನ್ನು ದೃಢೀಕರಿಸಿ.',
+          secure: 'ಪ್ರತಿ ಖಾತೆಗೆ ವಿಭಿನ್ನ ಬಲವಾದ ಪಾಸ್‌ವರ್ಡ್ ಬಳಸಿ ಮತ್ತು ಬಹು-ಹಂತದ ದೃಢೀಕರಣವನ್ನು ಸಕ್ರಿಯಗೊಳಿಸಿ. ಸಾಧನ ಮತ್ತು ಆ್ಯಪ್‌ಗಳನ್ನು ನವೀಕರಿಸಿ; ಸೈನ್-ಇನ್ ಕೋಡ್‌ಗಳನ್ನು ಯಾರೊಂದಿಗೂ ಹಂಚಿಕೊಳ್ಳಬೇಡಿ.',
+          next: 'ನಿಲ್ಲಿಸಿ; ಅನಿರೀಕ್ಷಿತ ಸಂದೇಶದ ಲಿಂಕ್, ಫೋನ್ ಸಂಖ್ಯೆ ಅಥವಾ ಪಾವತಿ ವಿನಂತಿಯನ್ನು ಬಳಸಬೇಡಿ. ಅಧಿಕೃತ ಆ್ಯಪ್ ಅಥವಾ ಸ್ವತಂತ್ರವಾಗಿ ಕಂಡುಕೊಂಡ ಸಂಖ್ಯೆಯ ಮೂಲಕ ಪರಿಶೀಲಿಸಿ. ಮಾಹಿತಿ ಅಥವಾ ಹಣ ಹಂಚಿಕೊಂಡಿದ್ದರೆ ಬ್ಯಾಂಕ್ ಅನ್ನು ಸಂಪರ್ಕಿಸಿ.',
+          avoid: 'ತುರ್ತು, ರಹಸ್ಯವಾಗಿಡುವ ಅಥವಾ ಗಿಫ್ಟ್ ಕಾರ್ಡ್ ಮತ್ತು ಕ್ರಿಪ್ಟೋ ಮೂಲಕ ಪಾವತಿಸುವ ವಿನಂತಿಗಳ ಬಗ್ಗೆ ಎಚ್ಚರಿಕೆಯಿಂದಿರಿ. ಬೇರೆ ಅಧಿಕೃತ ಮಾರ್ಗದಲ್ಲಿ ವ್ಯಕ್ತಿಯನ್ನು ಪರಿಶೀಲಿಸಿ; ಕೋಡ್‌ಗಳನ್ನು ಹಂಚಿಕೊಳ್ಳಬೇಡಿ.',
+          flagged: `ಈ ಸಂದೇಶದಲ್ಲಿ ${flags.length} ಎಚ್ಚರಿಕೆಯ ಸೂಚನೆಗಳು ಕಂಡುಬಂದಿವೆ. ಇದರ ಲಿಂಕ್ ಅಥವಾ ಸಂಖ್ಯೆಯನ್ನು ಬಳಸಬೇಡಿ; ಅಧಿಕೃತ ಮಾರ್ಗದಲ್ಲಿ ಪರಿಶೀಲಿಸಿ.`,
+          safe: 'ಈ ಸಂದೇಶದಲ್ಲಿ ಸಾಮಾನ್ಯ ಮೋಸದ ಸೂಚನೆಗಳು ಕಂಡುಬಂದಿಲ್ಲ, ಆದರೆ ಅದರಿಂದ ಇದು ಸುರಕ್ಷಿತವೆಂದು ಸಾಬೀತಾಗುವುದಿಲ್ಲ. ಮಾಹಿತಿ ಅಥವಾ ಹಣ ನೀಡುವ ಮೊದಲು ಅಧಿಕೃತವಾಗಿ ಪರಿಶೀಲಿಸಿ.',
+          warning: 'ಸುರಕ್ಷತಾ ಎಚ್ಚರಿಕೆ'
+        }
+      }[language];
+      if (incident) return responses.incident;
+      if (phishing) return responses.phishing;
+      if (secure) return responses.secure;
+      if (nextSteps) return responses.next;
+      if (avoidScams) return responses.avoid;
+      return flags.length ? responses.flagged : responses.safe;
+    }
+
+    let availableVoices = [];
+
+    function refreshVoices() {
+      if (!window.speechSynthesis) return;
+      const previous = voiceSelect.value;
+      availableVoices = window.speechSynthesis.getVoices();
+      voiceSelect.replaceChildren(new Option('System default', ''));
+      availableVoices.forEach((voice, index) => {
+        voiceSelect.append(new Option(`${voice.name} (${voice.lang})`, String(index)));
+      });
+      if (availableVoices.some((voice, index) => String(index) === previous)) voiceSelect.value = previous;
+    }
+
+    function speakText(text) {
+      if (!window.speechSynthesis || !window.SpeechSynthesisUtterance) {
+        deviceStatus.textContent = 'Spoken replies are not supported by this browser.';
+        return;
+      }
+      window.speechSynthesis.cancel();
+      const status = document.querySelector('#assistant-status');
+      status.classList.add('is-speaking');
+      const utterance = new SpeechSynthesisUtterance(text);
+      utterance.lang = languageSelect.value;
+      const voiceIndex = Number(voiceSelect.value);
+      if (voiceSelect.value !== '' && availableVoices[voiceIndex]) utterance.voice = availableVoices[voiceIndex];
+      utterance.onend = () => status.classList.remove('is-speaking');
+      utterance.onerror = () => status.classList.remove('is-speaking');
+      window.speechSynthesis.speak(utterance);
+    }
+
+    function saveFeedback(row, rating) {
+      const activity = readActivity();
+      const activityId = row.dataset.activityId;
+      let record = activity.find((entry) => entry.id === activityId);
+      if (!record) {
+        record = {
+          id: activityId,
+          time: new Date().toISOString(),
+          command: 'message_feedback',
+          message: 'Assistant welcome message',
+          response: row.querySelector('.chat-bubble span')?.textContent || '',
+          language: languageSelect.value
+        };
+        activity.unshift(record);
+      }
+      record.feedback = rating;
+      record.feedbackAt = new Date().toISOString();
+      localStorage.setItem(activityKey, JSON.stringify(activity));
+      row.querySelectorAll('[data-feedback]').forEach((button) => {
+        button.setAttribute('aria-pressed', String(button.dataset.feedback === rating));
+      });
+      row.querySelector('[data-feedback-status]').textContent = 'Thank you. Your feedback was saved.';
+    }
+
+    thread.addEventListener('click', (event) => {
+      const button = event.target.closest('button');
+      if (!button) return;
+      const row = button.closest('.chat-row');
+      if (button.matches('[data-feedback]') && row) saveFeedback(row, button.dataset.feedback);
+      if (button.matches('[data-speak]')) speakText(button.dataset.speak);
+    });
+
+    function speakPrompt(text, command) {
+      messageInput.value = text;
+      pendingCommand = command;
+      assistantForm.requestSubmit();
+    }
+
+    document.querySelectorAll('[data-assistant-prompt]').forEach((button) => {
+      button.addEventListener('click', () => speakPrompt(button.dataset.assistantPrompt, 'quick_action'));
+    });
+
+    document.querySelector('[data-action="focus"]').addEventListener('click', () => messageInput.focus());
+    document.querySelector('#image-reader-button').addEventListener('click', () => imageInput.click());
+
+    let ocrLibraryPromise;
+    function loadOcrLibrary() {
+      if (window.Tesseract) return Promise.resolve(window.Tesseract);
+      if (!ocrLibraryPromise) {
+        ocrLibraryPromise = new Promise((resolve, reject) => {
+          const script = document.createElement('script');
+          script.src = 'https://cdn.jsdelivr.net/npm/tesseract.js@5/dist/tesseract.min.js';
+          script.async = true;
+          script.onload = () => window.Tesseract ? resolve(window.Tesseract) : reject(new Error('OCR library did not initialize.'));
+          script.onerror = () => reject(new Error('Could not load the on-device image reader. Check your internet connection.'));
+          document.head.append(script);
+        });
+      }
+      return ocrLibraryPromise;
+    }
+
+    imageInput.addEventListener('change', async () => {
+      const file = imageInput.files?.[0];
+      if (!file) return;
+      if (!file.type.startsWith('image/')) {
+        deviceStatus.textContent = 'Choose an image file to read.';
+        return;
+      }
+      if (file.size > 12 * 1024 * 1024) {
+        deviceStatus.textContent = 'Choose an image smaller than 12 MB.';
+        imageInput.value = '';
+        return;
+      }
+      if (imageObjectUrl) URL.revokeObjectURL(imageObjectUrl);
+      imageObjectUrl = URL.createObjectURL(file);
+      imagePreviewImage.src = imageObjectUrl;
+      imagePreview.hidden = false;
+      imageStatus.textContent = 'Loading image reader…';
+      try {
+        const tesseract = await loadOcrLibrary();
+        const ocrLanguage = { 'en-US': 'eng', 'hi-IN': 'hin', 'kn-IN': 'kan' }[languageSelect.value];
+        const result = await tesseract.recognize(file, ocrLanguage, {
+          logger: (status) => {
+            if (status.status === 'recognizing text') imageStatus.textContent = `Reading image… ${Math.round((status.progress || 0) * 100)}%`;
+          }
+        });
+        const extractedText = result.data.text.trim();
+        if (!extractedText) {
+          imageStatus.textContent = 'No readable text found. Try a sharper, brighter image.';
+          return;
+        }
+        messageInput.value = `${messageInput.value.trim()}\n${extractedText}`.trim();
+        pendingCommand = 'image_ocr';
+        imageStatus.textContent = 'Text extracted. Review it above before sending.';
+        messageInput.focus();
+      } catch (error) {
+        imageStatus.textContent = error.message || 'Image reading failed. Try another image.';
+      }
+    });
+
+    const SpeechRecognitionApi = window.SpeechRecognition || window.webkitSpeechRecognition;
+    if (!SpeechRecognitionApi) {
+      voiceInputButton.disabled = true;
+      deviceStatus.textContent = 'Voice input is unavailable in this browser. You can still type or use image reading.';
+    } else {
+      voiceInputButton.addEventListener('click', () => {
+        if (recognition) {
+          recognition.stop();
+          return;
+        }
+        recognition = new SpeechRecognitionApi();
+        recognition.lang = languageSelect.value;
+        recognition.continuous = false;
+        recognition.interimResults = false;
+        recognition.onstart = () => {
+          voiceInputButton.setAttribute('aria-pressed', 'true');
+          voiceInputButton.querySelector('span:last-child').textContent = 'Stop listening';
+          deviceStatus.textContent = `Listening in ${languageSelect.selectedOptions[0].textContent}. Speak now.`;
+        };
+        recognition.onresult = (event) => {
+          const transcript = Array.from(event.results).map((item) => item[0].transcript).join(' ').trim();
+          if (transcript) speakPrompt(transcript, 'voice_input');
+        };
+        recognition.onerror = (event) => {
+          deviceStatus.textContent = event.error === 'not-allowed' ? 'Microphone permission was denied. Allow microphone access in browser settings.' : `Voice input stopped: ${event.error}. You can type your message instead.`;
+        };
+        recognition.onend = () => {
+          recognition = null;
+          voiceInputButton.setAttribute('aria-pressed', 'false');
+          voiceInputButton.querySelector('span:last-child').textContent = 'Speak to assistant';
+        };
+        try {
+          recognition.start();
+        } catch {
+          recognition = null;
+          deviceStatus.textContent = 'Voice input could not start. Check microphone permission and try again.';
+        }
+      });
+    }
+
+    languageSelect.addEventListener('change', () => {
+      document.documentElement.lang = languageSelect.value;
+      refreshVoices();
+      deviceStatus.textContent = `Assistant language set to ${languageSelect.selectedOptions[0].textContent}.`;
+    });
+    if (window.speechSynthesis) {
+      refreshVoices();
+      window.speechSynthesis.addEventListener('voiceschanged', refreshVoices);
+    }
+
+    function analyzeMessage(message, command = 'analyze_message') {
+      const response = buildResponse(message);
+      const reportedIncident = /\b(already clicked|clicked.{0,18}link|sent money|paid|shared my password|shared a code)\b/i.test(message);
+      const warning = reportedIncident || warningPatterns.some(({ pattern }) => pattern.test(message));
+      const id = crypto.randomUUID ? crypto.randomUUID() : `${Date.now()}-${Math.random()}`;
+      appendMessage('user', 'You', message);
+      appendMessage('assistant', warning ? (languageSelect.value === 'hi-IN' ? 'सुरक्षा चेतावनी' : languageSelect.value === 'kn-IN' ? 'ಸುರಕ್ಷತಾ ಎಚ್ಚರಿಕೆ' : 'Safety warning') : 'Assistant', response, { warning, activityId: id });
+      const activity = readActivity();
+      activity.unshift({ id, time: new Date().toISOString(), command, message, response, warning, language: languageSelect.value, feedback: null });
+      localStorage.setItem(activityKey, JSON.stringify(activity));
+      if (speakReplies.checked) speakText(response);
+    }
+
+    assistantForm.addEventListener('submit', (event) => {
+      event.preventDefault();
+      const message = messageInput.value.trim();
+      if (!message) return;
+      const command = pendingCommand;
+      pendingCommand = 'analyze_message';
+      analyzeMessage(message, command);
+      messageInput.value = '';
+      messageInput.focus();
+    });
+
+    document.querySelectorAll('[data-example]').forEach((button) => {
+      button.addEventListener('click', () => {
+        speakPrompt(button.dataset.example, 'sample_check');
+        messageInput.focus();
+      });
+    });
+    const welcomeRow = thread.querySelector('.chat-row.assistant');
+    if (welcomeRow) addMessageControls(welcomeRow, 'assistant-welcome', welcomeRow.querySelector('.chat-bubble span').textContent);
+    document.querySelectorAll('.mobile-nav [role="tab"]').forEach((tab) => {
+      tab.addEventListener('click', () => {
+        document.querySelectorAll('.mobile-nav [role="tab"]').forEach((item) => {
+          const selected = item === tab;
+          item.classList.toggle('active', selected);
+          item.setAttribute('aria-selected', String(selected));
+        });
+        document.querySelectorAll('[data-screen-view]').forEach((screen) => {
+          screen.hidden = screen.dataset.screenView !== tab.dataset.screen;
+        });
+        const activeScreen = document.querySelector(`[data-screen-view="${tab.dataset.screen}"]`);
+        activeScreen.classList.remove('is-entering');
+        void activeScreen.offsetWidth;
+        activeScreen.classList.add('is-entering');
+        activeScreen.addEventListener('animationend', () => activeScreen.classList.remove('is-entering'), { once: true });
+        window.scrollTo({ top: 0, behavior: 'instant' });
+      });
+    });
+    document.querySelector('#today-date').textContent = new Intl.DateTimeFormat(undefined, { weekday: 'short', month: 'short', day: 'numeric' }).format(new Date()).toUpperCase();
+  </script>
+</body>
+</html>

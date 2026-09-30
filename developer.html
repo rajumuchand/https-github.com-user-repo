@@ -1,0 +1,163 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#182f3b">
+  <meta name="description" content="Developer activity console for the Cyber Security App.">
+  <title>Cyber Security App · Developer</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=DM+Mono:wght@400;500&family=DM+Sans:wght@400;500;600;700&family=Manrope:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <style>
+    :root { color-scheme: light; --paper: #f1f3ef; --white: #fffefa; --ink: #1b2e35; --muted: #718078; --line: #dce3de; --forest: #1d5449; --blue: #315b70; --pale: #e2ece9; --yellow: #e9bf57; }
+    * { box-sizing: border-box; }
+    body { min-height: 100vh; margin: 0; background: #dce5df; color: var(--ink); font: 14px 'DM Sans', sans-serif; }
+    button, input { font: inherit; }
+    a { color: inherit; }
+    .app { width: min(100%, 480px); min-height: 100vh; margin: 0 auto; background: var(--paper); box-shadow: 0 0 60px rgba(26, 52, 54, .13); }
+    .topbar { position: sticky; z-index: 2; top: 0; display: flex; align-items: center; justify-content: space-between; height: 62px; padding: 0 18px; border-bottom: 1px solid var(--line); background: rgba(241, 243, 239, .96); backdrop-filter: blur(12px); }
+    .brand { font: 800 14px Manrope, sans-serif; }
+    .brand strong { color: var(--blue); }
+    .switch-link { padding: 8px 10px; border: 1px solid var(--line); border-radius: 6px; background: var(--white); color: var(--forest); font-size: 10px; font-weight: 700; text-decoration: none; }
+    main { padding: 23px 18px 35px; }
+    .eyebrow { margin: 0 0 8px; color: var(--blue); font: 10px 'DM Mono', monospace; letter-spacing: 1px; }
+    h1, h2, h3, p { margin-top: 0; }
+    h1 { margin-bottom: 7px; font: 800 27px/1.16 Manrope, sans-serif; }
+    .intro { margin: 0; color: var(--muted); font-size: 12px; line-height: 1.55; }
+    .notice { margin: 17px 0; padding: 11px 12px; border-left: 3px solid var(--yellow); background: #fbf4df; color: #5c543c; font-size: 11px; line-height: 1.55; }
+    .metrics { display: grid; grid-template-columns: 1fr 1fr; gap: 9px; margin: 17px 0; }
+    .metric { padding: 12px; border: 1px solid var(--line); border-radius: 7px; background: var(--white); }
+    .metric span { display: block; color: var(--muted); font: 9px 'DM Mono', monospace; text-transform: uppercase; }
+    .metric strong { display: block; margin-top: 5px; color: var(--forest); font: 700 20px Manrope, sans-serif; }
+    .toolbar { display: grid; grid-template-columns: minmax(0, 1fr) auto auto auto; gap: 7px; }
+    .toolbar input { min-width: 0; height: 39px; padding: 0 11px; border: 1px solid var(--line); border-radius: 6px; outline: none; background: var(--white); color: var(--ink); font-size: 11px; }
+    .toolbar input:focus { border-color: #7da99a; box-shadow: 0 0 0 3px var(--pale); }
+    .button { min-height: 39px; padding: 0 11px; border: 1px solid var(--line); border-radius: 6px; background: var(--white); color: var(--ink); font-size: 10px; font-weight: 700; cursor: pointer; }
+    .button.primary { border-color: var(--forest); background: var(--forest); color: white; }
+    .button:hover { filter: brightness(.97); }
+    .section-head { display: flex; align-items: end; justify-content: space-between; gap: 12px; margin: 22px 0 11px; }
+    .section-head h2 { margin: 0; font: 700 16px Manrope, sans-serif; }
+    .section-head p { margin: 4px 0 0; color: var(--muted); font-size: 11px; }
+    .mono { color: var(--muted); font: 9px 'DM Mono', monospace; }
+    .entries { display: grid; gap: 9px; }
+    .entry { overflow: hidden; border: 1px solid var(--line); border-radius: 7px; background: var(--white); }
+    .entry-meta { display: flex; justify-content: space-between; gap: 9px; padding: 10px 12px; border-bottom: 1px solid var(--line); background: #f7f8f4; color: var(--muted); font: 9px 'DM Mono', monospace; }
+    .entry-body { padding: 11px 12px; }
+    .entry-body h3 { margin: 0 0 4px; color: var(--blue); font: 700 9px 'DM Mono', monospace; letter-spacing: .4px; }
+    .entry-body p { margin: 0 0 10px; color: #475a56; font-size: 11px; line-height: 1.55; white-space: pre-wrap; overflow-wrap: anywhere; }
+    .entry-body p:last-child { margin-bottom: 0; }
+    .empty { padding: 24px 15px; border: 1px dashed #c7d4cd; border-radius: 7px; color: var(--muted); font-size: 11px; line-height: 1.6; text-align: center; }
+    .creators { display: grid; gap: 8px; margin: 12px 0 0; padding: 0; list-style: none; }
+    .creators li { display: flex; justify-content: space-between; gap: 10px; color: #52625b; font-size: 11px; }
+    .creators code { color: var(--blue); font: 10px 'DM Mono', monospace; }
+    footer { margin-top: 24px; padding-top: 13px; border-top: 1px solid var(--line); color: var(--muted); font-size: 10px; line-height: 1.5; }
+    @media (min-width: 700px) { .app { min-height: calc(100vh - 48px); margin-top: 24px; overflow: hidden; border-radius: 12px; } }
+    @media (max-width: 390px) { .toolbar { grid-template-columns: repeat(3, minmax(0, 1fr)); } .toolbar input { grid-column: 1 / -1; } }
+    @media (max-width: 480px) { .app { box-shadow: none; } }
+  </style>
+</head>
+<body>
+  <div class="app">
+    <header class="topbar"><div class="brand">Cyber Security <strong>· Developer</strong></div><a class="switch-link" href="index.html">User app ↗</a></header>
+    <main>
+      <p class="eyebrow">DEVELOPER WORKSPACE</p>
+      <h1>Activity console</h1>
+      <p class="intro">Inspect user submissions, assistant responses, timestamps, and executed commands.</p>
+      <div class="notice">Activity is stored in this browser only. Open both apps from the same local server to share the activity feed. This console has no sign-in or server-side access control.</div>
+      <div class="metrics" aria-label="Activity totals"><div class="metric"><span>Total records</span><strong id="total-count">0</strong></div><div class="metric"><span>Latest activity</span><strong id="latest-time">—</strong></div></div>
+      <div class="toolbar"><input id="search-input" type="search" placeholder="Search messages, replies, commands" aria-label="Search activity"><button class="button" id="refresh-button" type="button">Refresh</button><button class="button primary" id="export-button" type="button">Export JSON</button><button class="button" id="clear-button" type="button">Clear</button></div>
+      <div class="section-head"><div><h2>Message activity</h2><p id="visible-count">0 records</p></div><span class="mono">LOCAL ACTIVITY</span></div>
+      <div id="entries" class="entries" aria-live="polite"></div>
+      <div class="section-head"><div><h2>Creators</h2><p>Project team</p></div></div>
+      <ul class="creators">
+        <li><span>Raju Muchandi</span><code>2BU25CS107</code></li>
+        <li><span>Pooja Wali</span><code>2BU25CS086</code></li>
+        <li><span>Prajwal Sirasalmath</span><code>2BU25CS090</code></li>
+        <li><span>Poornima Marennavar</span><code>2BU25CS087</code></li>
+      </ul>
+      <footer>Prototype console. Records are not uploaded. Clearing browser storage deletes this activity history.</footer>
+    </main>
+  </div>
+  <script>
+    const activityKey = 'cyber-security-app-activity';
+    const entries = document.querySelector('#entries');
+    const searchInput = document.querySelector('#search-input');
+    let activity = [];
+
+    function loadActivity() {
+      try {
+        activity = JSON.parse(localStorage.getItem(activityKey) || '[]');
+      } catch {
+        activity = [];
+      }
+      renderActivity();
+    }
+
+    function renderActivity() {
+      const query = searchInput.value.trim().toLowerCase();
+      const filtered = activity.filter((entry) => `${entry.message} ${entry.response} ${entry.command}`.toLowerCase().includes(query));
+      document.querySelector('#total-count').textContent = activity.length;
+      document.querySelector('#visible-count').textContent = `${filtered.length} of ${activity.length} ${activity.length === 1 ? 'record' : 'records'}`;
+      document.querySelector('#latest-time').textContent = activity.length ? new Date(activity[0].time).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }) : '—';
+      entries.replaceChildren();
+      if (!filtered.length) {
+        const empty = document.createElement('div');
+        empty.className = 'empty';
+        empty.textContent = activity.length ? 'No records match this search.' : 'No checks have been recorded yet. Use the User app assistant to create activity.';
+        entries.append(empty);
+        return;
+      }
+      filtered.forEach((record) => {
+        const article = document.createElement('article');
+        article.className = 'entry';
+        const meta = document.createElement('div');
+        meta.className = 'entry-meta';
+        const time = document.createElement('span');
+        time.textContent = new Date(record.time).toLocaleString();
+        const command = document.createElement('span');
+        const language = document.createElement('span');
+        language.textContent = record.language || 'en-US';
+        command.textContent = `${record.command || 'unknown_command'}${record.warning ? ' · WARNING' : ''}`;
+        meta.append(time, command, language);
+        const body = document.createElement('div');
+        body.className = 'entry-body';
+        const messageTitle = document.createElement('h3');
+        messageTitle.textContent = 'USER MESSAGE';
+        const message = document.createElement('p');
+        message.textContent = record.message || '(empty)';
+        const responseTitle = document.createElement('h3');
+        responseTitle.textContent = 'ASSISTANT RESPONSE';
+        const response = document.createElement('p');
+        response.textContent = record.response || '(no response recorded)';
+        const feedbackTitle = document.createElement('h3');
+        feedbackTitle.textContent = 'USER FEEDBACK';
+        const feedback = document.createElement('p');
+        feedback.textContent = record.feedback === 'helpful' ? 'Helpful' : record.feedback === 'not-helpful' ? 'Not helpful' : 'No feedback yet';
+        body.append(messageTitle, message, responseTitle, response, feedbackTitle, feedback);
+        article.append(meta, body);
+        entries.append(article);
+      });
+    }
+
+    document.querySelector('#refresh-button').addEventListener('click', loadActivity);
+    searchInput.addEventListener('input', renderActivity);
+    document.querySelector('#clear-button').addEventListener('click', () => {
+      localStorage.removeItem(activityKey);
+      loadActivity();
+    });
+    document.querySelector('#export-button').addEventListener('click', () => {
+      const file = new Blob([JSON.stringify(activity, null, 2)], { type: 'application/json' });
+      const link = document.createElement('a');
+      link.href = URL.createObjectURL(file);
+      link.download = 'cyber-security-app-activity.json';
+      link.click();
+      URL.revokeObjectURL(link.href);
+    });
+    window.addEventListener('storage', (event) => {
+      if (event.key === activityKey || event.key === null) loadActivity();
+    });
+    loadActivity();
+  </script>
+</body>
+</html>
