@@ -6,6 +6,11 @@
   <meta name="theme-color" content="#102a28">
   <meta name="description" content="Cyber Security is a private-first console for checking suspicious messages and getting practical next steps.">
   <title>Cyber Security · Security Console</title>
+  <script>
+    if (window.location.protocol === 'file:') {
+      window.location.replace('http://127.0.0.1:3000/');
+    }
+  </script>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=DM+Mono:wght@400;500&family=DM+Sans:wght@400;500;600;700&family=Manrope:wght@400;500;600;700;800&display=swap" rel="stylesheet">
@@ -574,7 +579,7 @@
     .helpline-call { display: inline-flex; flex: none; align-items: center; justify-content: center; min-width: 58px; min-height: 40px; padding: 0 10px; border-radius: 5px; background: var(--green); color: white; font-size: 10px; font-weight: 700; text-decoration: none; }
     .helpline-call:hover { background: var(--green-dark); }
     .reporting-panel { margin-top: 14px; }
-    .steps-panel, .resources-panel { border-color: var(--line); background: #f0f3ed; }
+    .steps-panel, .resources-panel { border-color: var(--line); background: #f0f3ed; color: var(--ink); }
     .steps-panel h2, .resources-panel h2, .guide h3 { color: var(--ink); }
     .step p, .guide p, .resource-list a { color: var(--muted); }
     .guide-icon { background: var(--mint); color: var(--green-dark); }
@@ -660,6 +665,7 @@
             <button id="increase-text" type="button" aria-label="Increase app magnification" title="Increase magnification">A+</button>
           </div>
           <a class="developer-app-link" href="developer.html">Developer app ↗</a>
+          <a class="developer-app-link atlas-link" href="atlas.html">ARGOS ATLAS ↗</a>
         </div>
       </header>
 
@@ -728,7 +734,7 @@
               <button id="voice-input-button" type="button" aria-pressed="false"><span aria-hidden="true">🎙</span><span>Speak to assistant</span></button>
               <button id="image-reader-button" type="button"><span aria-hidden="true">▧</span><span>Read an image</span></button>
               <input id="image-input" type="file" accept="image/*" capture="environment" hidden>
-              <p id="device-status" class="device-status" role="status" aria-live="polite">Microphone input uses your browser’s speech service. Image reading runs on this device.</p>
+              <p id="device-status" class="device-status" role="status" aria-live="polite">Voice audio is transcribed on this device. First use downloads a speech model; image reading also downloads its OCR engine.</p>
               <div id="image-preview" class="image-preview" hidden><img id="image-preview-img" alt="Selected image for text reading"><p id="image-status">Preparing image…</p></div>
             </div>
             <div class="assistant-warning" role="note"><strong>Privacy</strong><span>Offline replies stay on this device. Hosted AI sends this message and recent chat context to OpenAI. Never share passwords, sign-in codes, or full card details; AI replies can be wrong.</span></div>
@@ -912,7 +918,11 @@
     loadHostedAiStatus();
     let zoomIndex = Math.max(0, Math.min(zoomLevels.length - 1, Number(localStorage.getItem(zoomKey) || 0)));
     let pendingCommand = 'analyze_message';
-    let recognition = null;
+    let voiceRecorder = null;
+    let voiceStream = null;
+    let voiceRecorderTimer = null;
+    let voiceStartPending = false;
+    let speechTranscriberPromise = null;
     let imageObjectUrl = '';
     const warningPatterns = [
       { pattern: /\b(urgent|immediately|act now|expires today|within 24 hours|final notice|suspended|locked)\b|तुरंत|अभी|तत्काल|ತುರ್ತು|ತಕ್ಷಣ/iu, label: 'Pressure or urgency' },
@@ -1009,7 +1019,10 @@
       const greeting = /^\s*(?:hi|hello|hey|good morning|good afternoon|good evening)\s*[!.?]*\s*$/i.test(message)
         || /^\s*(?:ನಮಸ್ಕಾರ|ನಮಸ್ತೆ|ಹಲೋ|ಹಾಯ್)\s*[!.?]*\s*$/u.test(message)
         || /^\s*(?:नमस्ते|नमस्कार|हैलो|हाय)\s*[!.?]*\s*$/u.test(message);
-      const incident = /\b(already clicked|clicked.{0,18}link|sent money|paid|shared my password|shared a code)\b/i.test(message) || /लिंक.{0,16}(क्लिक|खोल)|पैसे भेज दिए|कोड साझा किया/u.test(message) || /ಲಿಂಕ್.{0,16}(ಕ್ಲಿಕ್|ತೆರೆದ)|ಹಣ ಕಳುಹಿಸಿದೆ|ಕೋಡ್ ಹಂಚಿಕೊಂಡೆ/u.test(message);
+      const casual = /\b(?:what are you doing|what are you up to|what do you do|who are you|how are you|how's it going|what can you do)\b/i.test(message)
+        || /(?:तुम क्या कर रहे हो|आप क्या कर रहे हैं|आप कौन हैं|आप कैसे हैं|तुम कौन हो|तुम क्या कर सकते हो|आप क्या कर सकते हैं)/u.test(message)
+        || /(?:ನೀನು ಏನು ಮಾಡ್ತಿದ್ದೀ|ನೀನು ಏನು ಮಾಡ್ತಿರುವೆ|ನೀವು ಯಾರು|ನೀವು ಹೇಗಿದ್ದೀರಿ|ನೀವು ಏನು ಮಾಡಬಹುದು|ನೀವು ಏನು ಮಾಡುತ್ತೀರಿ|ನಿಮ್ಮ ಕೆಲಸವೇನು)/u.test(message);
+      const incident = /\b(already clicked|clicked.{0,18}link|sent money|paid|shared my password|shared a code)\b/i.test(message) || /लिंक.{0,16}(क्लिक|खोल)|पैसे भेज दिए|कोड साझा किया/u.test(message) || /ಲಿಂಕ್.{0,16}(ಕ्ल릭|ತೆರೆದ)|ಹಣ ಕಳುಹಿಸಿದೆ|ಕೋಡ್ ಹಂಚಿಕೊಂಡೆ/u.test(message);
       const phishing = /\b(what is|explain|define)\b.{0,25}\b(phishing|scam)\b/i.test(message) || /फिशिंग|फ़िशिंग|धोखाधड़ी क्या है|ಫಿಶಿಂಗ್|ಮೋಸ ಎಂದರೇನು/u.test(message);
       const secure = (/\b(how (?:can|do) i|how to|help me)\b/i.test(message) && /\b(protect|secure|password|account|email|phone|device)\b/i.test(message)) || /खाता.{0,16}(सुरक्षित|सुरक्षा)|पासवर्ड.{0,16}(बदल|सुरक्षित)|ಖಾತೆ.{0,16}(ಸುರಕ್ಷಿತ|ರಕ್ಷಣೆ)|ಪಾಸ್.?ವರ್ಡ್.{0,16}(ಬದಲ|ರಕ್ಷಣೆ)/u.test(message);
       const nextSteps = /\b(what should i do|what do i do|next steps|help me)\b/i.test(message) || /क्या करूं|अब क्या|क्या करना चाहिए|ಏನು ಮಾಡಲಿ|ಮುಂದೇನು/u.test(message);
@@ -1017,6 +1030,7 @@
       const responses = {
         'en-US': {
           greeting: 'Hi! What can I help you with today?',
+          casual: 'I’m your on-device security assistant. I can help check suspicious messages, explain scam patterns, and suggest what to do next.',
           incident: 'If you already clicked, paid, or shared information, act quickly: stop replying, contact your bank using its official number, change affected passwords, and report the incident. If you shared a sign-in code, secure that account immediately.',
           phishing: 'Phishing is a message designed to trick you into clicking a link, opening an attachment, sending money, or sharing private information. Check the sender carefully, avoid unexpected links, and verify requests through a separate official channel.',
           secure: 'Start with a unique password or passphrase and turn on multi-factor authentication. Update your device and apps, review account recovery details and signed-in devices, and never share one-time sign-in codes.',
@@ -1028,6 +1042,7 @@
         },
         'hi-IN': {
           greeting: 'नमस्ते! आपको किस चीज़ में मदद चाहिए?',
+          casual: 'मैं आपकी डिवाइस-स्थानीय सुरक्षा सहायक हूँ। मैं संदिग्ध संदेशों की जाँच, फ़िशिंग समझाने और अगली कार्रवाई बताने में मदद कर सकता हूँ।',
           incident: 'अगर आपने लिंक खोला, पैसे भेजे या जानकारी साझा की है, तो तुरंत जवाब देना बंद करें। बैंक को उसके आधिकारिक नंबर पर कॉल करें, प्रभावित पासवर्ड बदलें और घटना की रिपोर्ट करें। साझा किए गए साइन-इन कोड वाले खाते को तुरंत सुरक्षित करें।',
           phishing: 'फ़िशिंग ऐसा संदेश है जो आपको लिंक खोलने, फ़ाइल खोलने, पैसे भेजने या निजी जानकारी साझा करने के लिए धोखा देता है। भेजने वाले की जाँच करें और अनुरोध की पुष्टि किसी आधिकारिक माध्यम से करें।',
           secure: 'हर खाते के लिए अलग और मज़बूत पासवर्ड रखें और बहु-कारक प्रमाणीकरण चालू करें। डिवाइस और ऐप अपडेट करें, रिकवरी जानकारी जाँचें और साइन-इन कोड किसी से साझा न करें।',
@@ -1039,6 +1054,7 @@
         },
         'kn-IN': {
           greeting: 'ನಮಸ್ಕಾರ! ನಿಮಗೆ ಏನು ಸಹಾಯ ಬೇಕು?',
+          casual: 'ನಾನು ನಿಮ್ಮ ಸಾಧನದಲ್ಲಿರುವ ಸುರಕ್ಷತಾ ಸಹಾಯಕ. संदिग್ಧ ಸಂದೇಶಗಳನ್ನು ಪರಿಶೀಲಿಸಲು, ಫಿಶಿಂಗ್ ಅನ್ನು ವಿವರಿಸಲು ಮತ್ತು ಮುಂದಿನ ಕ್ರಮವನ್ನು ಸೂಚಿಸಲು ನಾನು ಸಹಾಯ ಮಾಡಬಹುದು.',
           incident: 'ನೀವು ಲಿಂಕ್ ತೆರೆದಿದ್ದರೆ, ಹಣ ಕಳುಹಿಸಿದ್ದರೆ ಅಥವಾ ಮಾಹಿತಿಯನ್ನು ಹಂಚಿಕೊಂಡಿದ್ದರೆ, ತಕ್ಷಣ ಉತ್ತರಿಸುವುದನ್ನು ನಿಲ್ಲಿಸಿ. ಬ್ಯಾಂಕ್‌ನ ಅಧಿಕೃತ ಸಂಖ್ಯೆಗೆ ಕರೆ ಮಾಡಿ, ಪಾಸ್‌ವರ್ಡ್ ಬದಲಿಸಿ ಮತ್ತು ಘಟನೆಯನ್ನು ವರದಿ ಮಾಡಿ. ಹಂಚಿಕೊಂಡ ಸೈನ್-ಇನ್ ಕೋಡ್‌ಗೆ ಸಂಬಂಧಿಸಿದ ಖಾತೆಯನ್ನು ಕೂಡಲೇ ಸುರಕ್ಷಿತಗೊಳಿಸಿ.',
           phishing: 'ಫಿಶಿಂಗ್ ಎಂದರೆ ಲಿಂಕ್ ತೆರೆಯಲು, ಹಣ ಕಳುಹಿಸಲು ಅಥವಾ ಖಾಸಗಿ ಮಾಹಿತಿಯನ್ನು ಹಂಚಿಕೊಳ್ಳಲು ಮೋಸಗೊಳಿಸುವ ಸಂದೇಶ. ಕಳುಹಿಸಿದವರನ್ನು ಪರಿಶೀಲಿಸಿ ಮತ್ತು ಅಧಿಕೃತ ಮಾರ್ಗದ ಮೂಲಕ ವಿನಂತಿಯನ್ನು ದೃಢೀಕರಿಸಿ.',
           secure: 'ಪ್ರತಿ ಖಾತೆಗೆ ವಿಭಿನ್ನ ಬಲವಾದ ಪಾಸ್‌ವರ್ಡ್ ಬಳಸಿ ಮತ್ತು ಬಹು-ಹಂತದ ದೃಢೀಕರಣವನ್ನು ಸಕ್ರಿಯಗೊಳಿಸಿ. ಸಾಧನ ಮತ್ತು ಆ್ಯಪ್‌ಗಳನ್ನು ನವೀಕರಿಸಿ; ಸೈನ್-ಇನ್ ಕೋಡ್‌ಗಳನ್ನು ಯಾರೊಂದಿಗೂ ಹಂಚಿಕೊಳ್ಳಬೇಡಿ.',
@@ -1051,6 +1067,7 @@
       }[language];
       if (greeting) return responses.greeting;
       if (incident) return responses.incident;
+      if (casual) return responses.casual;
       if (phishing) return responses.phishing;
       if (secure) return responses.secure;
       if (nextSteps) return responses.next;
@@ -1231,59 +1248,181 @@
       }
     });
 
-    const SpeechRecognitionApi = window.SpeechRecognition || window.webkitSpeechRecognition;
-    const localSpeechLanguages = new Set();
-    if (SpeechRecognitionApi?.available) {
-      ['en-US', 'hi-IN', 'kn-IN'].forEach((language) => {
-        SpeechRecognitionApi.available({ langs: [language], processLocally: true }).then((availability) => {
-          if (availability === 'available') localSpeechLanguages.add(language);
-        }).catch(() => {});
-      });
+    if (navigator.permissions?.query) {
+      navigator.permissions.query({ name: 'microphone' }).then((permission) => {
+        if (permission.state === 'denied') {
+          deviceStatus.textContent = 'Microphone access is blocked for this app. Allow it in your browser permissions, then try again.';
+        }
+        permission.addEventListener('change', () => {
+          if (permission.state === 'granted') {
+            deviceStatus.textContent = 'Microphone access is enabled. Tap Speak to assistant, talk, then tap Stop listening.';
+          } else if (permission.state === 'denied') {
+            deviceStatus.textContent = 'Microphone access is blocked for this app. Allow it in your browser permissions, then try again.';
+          }
+        });
+      }).catch(() => {});
     }
-    if (!SpeechRecognitionApi) {
+
+    const speechLanguageNames = { 'en-US': 'english', 'hi-IN': 'hindi', 'kn-IN': 'kannada' };
+    const speechModelId = 'onnx-community/whisper-tiny';
+
+    function loadSpeechTranscriber() {
+      if (!speechTranscriberPromise) {
+        speechTranscriberPromise = import('https://cdn.jsdelivr.net/npm/@huggingface/transformers@3.7.2')
+          .then(async ({ pipeline }) => {
+            const progressCallback = (progress) => {
+              if (progress.status === 'progress' && Number.isFinite(progress.progress)) {
+                deviceStatus.textContent = `Downloading speech model on this device… ${Math.round(progress.progress)}%`;
+              }
+            };
+            if (navigator.gpu) {
+              try {
+                return await pipeline('automatic-speech-recognition', speechModelId, {
+                  device: 'webgpu', dtype: 'fp16', progress_callback: progressCallback
+                });
+              } catch {
+                deviceStatus.textContent = 'Preparing the on-device speech model for this device…';
+              }
+            }
+            return pipeline('automatic-speech-recognition', speechModelId, {
+              device: 'wasm', dtype: 'q8', progress_callback: progressCallback
+            });
+          })
+          .catch((error) => {
+            speechTranscriberPromise = null;
+            throw error;
+          });
+      }
+      return speechTranscriberPromise;
+    }
+
+    async function decodeSpeechAudio(blob) {
+      const AudioContextApi = window.AudioContext || window.webkitAudioContext;
+      if (!AudioContextApi) throw new Error('Audio decoding is unavailable in this browser.');
+      const audioContext = new AudioContextApi();
+      try {
+        const decoded = await audioContext.decodeAudioData(await blob.arrayBuffer());
+        const source = decoded.getChannelData(0);
+        const ratio = decoded.sampleRate / 16000;
+        const samples = new Float32Array(Math.ceil(source.length / ratio));
+        for (let index = 0; index < samples.length; index += 1) {
+          const position = index * ratio;
+          const before = Math.floor(position);
+          const after = Math.min(before + 1, source.length - 1);
+          const fraction = position - before;
+          samples[index] = source[before] * (1 - fraction) + source[after] * fraction;
+        }
+        return samples;
+      } finally {
+        await audioContext.close();
+      }
+    }
+
+    function releaseVoiceStream() {
+      if (voiceRecorderTimer) window.clearTimeout(voiceRecorderTimer);
+      voiceRecorderTimer = null;
+      voiceStream?.getTracks().forEach((track) => track.stop());
+      voiceStream = null;
+      voiceRecorder = null;
+      voiceInputButton.disabled = false;
+      voiceInputButton.setAttribute('aria-pressed', 'false');
+      voiceInputButton.querySelector('span:last-child').textContent = 'Speak to assistant';
+    }
+
+    async function transcribeVoiceRecording(blob) {
+      deviceStatus.textContent = 'Loading the on-device speech model. First use downloads it once; your audio stays on this device.';
+      const transcriber = await loadSpeechTranscriber();
+      deviceStatus.textContent = 'Transcribing audio on this device…';
+      const samples = await decodeSpeechAudio(blob);
+      const result = await transcriber(samples, {
+        language: speechLanguageNames[languageSelect.value],
+        task: 'transcribe',
+        chunk_length_s: 30,
+        stride_length_s: 5
+      });
+      const transcript = typeof result.text === 'string' ? result.text.trim() : '';
+      if (!transcript) {
+        deviceStatus.textContent = 'No speech was recognized. Try again and speak clearly.';
+        return;
+      }
+      deviceStatus.textContent = `Heard: ${transcript}`;
+      speakPrompt(transcript, 'voice_input');
+    }
+
+    async function startVoiceRecording() {
+      if (voiceStartPending) return;
+      if (!navigator.mediaDevices?.getUserMedia || !window.MediaRecorder) {
+        deviceStatus.textContent = 'Microphone recording is unavailable in this browser. You can type your message instead.';
+        voiceInputButton.disabled = true;
+        return;
+      }
+      voiceStartPending = true;
       voiceInputButton.disabled = true;
-      deviceStatus.textContent = 'Voice input is unavailable in this browser. You can still type or use image reading.';
+      try {
+        voiceStream = await navigator.mediaDevices.getUserMedia({
+          audio: { channelCount: 1, echoCancellation: true, noiseSuppression: true, autoGainControl: true }
+        });
+        const chunks = [];
+        voiceRecorder = new MediaRecorder(voiceStream);
+        const recorder = voiceRecorder;
+        recorder.addEventListener('dataavailable', (event) => {
+          if (event.data.size) chunks.push(event.data);
+        });
+        recorder.addEventListener('error', () => {
+          deviceStatus.textContent = 'Microphone recording failed. Check browser permissions and try again.';
+          releaseVoiceStream();
+        }, { once: true });
+        recorder.addEventListener('stop', async () => {
+          const recording = new Blob(chunks, { type: recorder.mimeType || 'audio/webm' });
+          releaseVoiceStream();
+          if (!recording.size) {
+            deviceStatus.textContent = 'No audio was captured. Allow microphone access and try again.';
+            return;
+          }
+          voiceInputButton.disabled = true;
+          try {
+            await transcribeVoiceRecording(recording);
+          } catch (error) {
+            deviceStatus.textContent = error instanceof Error
+              ? `On-device speech recognition failed: ${error.message}`
+              : 'On-device speech recognition failed. Check your connection and try again.';
+          } finally {
+            voiceInputButton.disabled = false;
+          }
+        }, { once: true });
+        recorder.start();
+        voiceInputButton.disabled = false;
+        voiceInputButton.setAttribute('aria-pressed', 'true');
+        voiceInputButton.querySelector('span:last-child').textContent = 'Stop listening';
+        deviceStatus.textContent = `Listening on this device in ${languageSelect.selectedOptions[0].textContent}. Speak, then tap Stop listening.`;
+        voiceRecorderTimer = window.setTimeout(() => {
+          if (voiceRecorder?.state === 'recording') {
+            deviceStatus.textContent = '30-second recording limit reached. Transcribing on this device…';
+            voiceRecorder.stop();
+          }
+        }, 30000);
+      } catch (error) {
+        releaseVoiceStream();
+        deviceStatus.textContent = error instanceof Error && error.name === 'NotAllowedError'
+          ? 'Microphone access was denied. Allow it in browser permissions, then try again.'
+          : error instanceof Error ? error.message : 'Could not start microphone recording.';
+      } finally {
+        voiceStartPending = false;
+      }
+    }
+
+    if (!navigator.mediaDevices?.getUserMedia || !window.MediaRecorder) {
+      voiceInputButton.disabled = true;
+      deviceStatus.textContent = 'Microphone recording is unavailable in this browser. You can type or read an image instead.';
     } else {
       voiceInputButton.addEventListener('click', () => {
-        if (recognition) {
-          recognition.stop();
+        if (voiceRecorder?.state === 'recording') {
+          deviceStatus.textContent = 'Recording stopped. Transcribing on this device…';
+          voiceInputButton.disabled = true;
+          voiceRecorder.stop();
           return;
         }
-        recognition = new SpeechRecognitionApi();
-        recognition.lang = languageSelect.value;
-        if ('processLocally' in recognition) recognition.processLocally = localSpeechLanguages.has(recognition.lang);
-        recognition.continuous = false;
-        recognition.interimResults = false;
-        recognition.onstart = () => {
-          voiceInputButton.setAttribute('aria-pressed', 'true');
-          voiceInputButton.querySelector('span:last-child').textContent = 'Stop listening';
-          const mode = recognition.processLocally ? 'on this device' : 'with your browser speech service';
-          deviceStatus.textContent = `Listening ${mode} in ${languageSelect.selectedOptions[0].textContent}. Speak now.`;
-        };
-        recognition.onresult = (event) => {
-          const transcript = Array.from(event.results).map((item) => item[0].transcript).join(' ').trim();
-          if (transcript) speakPrompt(transcript, 'voice_input');
-        };
-        recognition.onerror = (event) => {
-          const messages = {
-            'not-allowed': 'Microphone access was denied. Allow it in browser settings, then try again.',
-            network: 'The browser speech service could not connect. Check your internet connection or type your message instead.',
-            'no-speech': 'No speech was detected. Try again and speak clearly.',
-            'language-not-supported': 'Offline speech recognition for this language is not available in this browser. Try again online or type your message.'
-          };
-          deviceStatus.textContent = messages[event.error] || `Voice input stopped: ${event.error}. You can type your message instead.`;
-        };
-        recognition.onend = () => {
-          recognition = null;
-          voiceInputButton.setAttribute('aria-pressed', 'false');
-          voiceInputButton.querySelector('span:last-child').textContent = 'Speak to assistant';
-        };
-        try {
-          recognition.start();
-        } catch {
-          recognition = null;
-          deviceStatus.textContent = 'Voice input could not start. Check microphone permission and try again.';
-        }
+        startVoiceRecording();
       });
     }
 
