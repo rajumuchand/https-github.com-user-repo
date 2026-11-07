@@ -48,9 +48,6 @@
     .entry-body p { margin: 0 0 10px; color: #475a56; font-size: 11px; line-height: 1.55; white-space: pre-wrap; overflow-wrap: anywhere; }
     .entry-body p:last-child { margin-bottom: 0; }
     .empty { padding: 24px 15px; border: 1px dashed #c7d4cd; border-radius: 7px; color: var(--muted); font-size: 11px; line-height: 1.6; text-align: center; }
-    .creators { display: grid; gap: 8px; margin: 12px 0 0; padding: 0; list-style: none; }
-    .creators li { display: flex; justify-content: space-between; gap: 10px; color: #52625b; font-size: 11px; }
-    .creators code { color: var(--blue); font: 10px 'DM Mono', monospace; }
     footer { margin-top: 24px; padding-top: 13px; border-top: 1px solid var(--line); color: var(--muted); font-size: 10px; line-height: 1.5; }
     @media (min-width: 700px) { .app { min-height: calc(100vh - 48px); margin-top: 24px; overflow: hidden; border-radius: 12px; } }
     @media (max-width: 390px) { .toolbar { grid-template-columns: repeat(3, minmax(0, 1fr)); } .toolbar input { grid-column: 1 / -1; } }
@@ -69,13 +66,6 @@
       <div class="toolbar"><input id="search-input" type="search" placeholder="Search messages, replies, commands" aria-label="Search activity"><button class="button" id="refresh-button" type="button">Refresh</button><button class="button primary" id="export-button" type="button">Export JSON</button><button class="button" id="clear-button" type="button">Clear</button></div>
       <div class="section-head"><div><h2>Message activity</h2><p id="visible-count">0 records</p></div><span class="mono">LOCAL ACTIVITY</span></div>
       <div id="entries" class="entries" aria-live="polite"></div>
-      <div class="section-head"><div><h2>Creators</h2><p>Project team</p></div></div>
-      <ul class="creators">
-        <li><span>Raju Muchandi</span><code>2BU25CS107</code></li>
-        <li><span>Pooja Wali</span><code>2BU25CS086</code></li>
-        <li><span>Prajwal Sirasalmath</span><code>2BU25CS090</code></li>
-        <li><span>Poornima Marennavar</span><code>2BU25CS087</code></li>
-      </ul>
       <footer>Prototype console. Records are not uploaded. Clearing browser storage deletes this activity history.</footer>
     </main>
   </div>

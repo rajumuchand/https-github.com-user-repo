@@ -4,26 +4,26 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <meta name="theme-color" content="#102a28">
-  <meta name="description" content="Cyber Security App helps people check suspicious messages with a private on-device assistant.">
-  <title>Cyber Security App · User</title>
+  <meta name="description" content="Cyber Security is a private-first console for checking suspicious messages and getting practical next steps.">
+  <title>Cyber Security · Security Console</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=DM+Mono:wght@400;500&family=DM+Sans:wght@400;500;600;700&family=Manrope:wght@400;500;600;700;800&display=swap" rel="stylesheet">
   <style>
     :root {
       color-scheme: light;
-      --paper: #f4f5ef;
-      --white: #fffefa;
-      --ink: #172a29;
-      --muted: #71807b;
-      --line: #dfe4dc;
-      --green: #195a4a;
-      --green-dark: #123e35;
-      --mint: #dcebe1;
-      --orange: #ed704d;
-      --orange-pale: #fff0e8;
-      --yellow: #e8be51;
-      --shadow: 0 14px 38px rgba(29, 57, 47, .07);
+      --paper: #f3f2e9;
+      --white: #fbfaf5;
+      --ink: #28352d;
+      --muted: #737b70;
+      --line: #dfdfd2;
+      --green: #4d6b50;
+      --green-dark: #354e3b;
+      --mint: #e4eadc;
+      --orange: #bd7355;
+      --orange-pale: #f4e9df;
+      --yellow: #d5b96b;
+      --shadow: 0 8px 22px rgba(47, 58, 43, .06);
     }
     * { box-sizing: border-box; }
     html { scroll-behavior: smooth; }
@@ -155,11 +155,11 @@
       .footer { flex-direction: column; }
     }
     @media (prefers-reduced-motion: reduce) { *, *::before, *::after { scroll-behavior: auto !important; animation-duration: .01ms !important; transition-duration: .01ms !important; } }
-    body { min-height: 100vh; background: linear-gradient(145deg, #dce8e2, #eef0e7 52%, #d5e2df); background-attachment: fixed; }
-    .app { display: block; width: min(100%, 480px); min-height: 100vh; margin: 0 auto; background: linear-gradient(155deg, rgba(250,252,247,.92), rgba(234,241,233,.87)); box-shadow: 0 0 60px rgba(18, 62, 53, .13); }
+    body { min-height: 100vh; background: #e9ebe2; }
+    .app { display: block; width: min(100%, 480px); min-height: 100vh; margin: 0 auto; background: var(--paper); box-shadow: 0 8px 30px rgba(47, 58, 43, .08); transform: scale(var(--app-zoom, 1)); transform-origin: top center; transition: width .22s ease, transform .22s ease; }
     .sidebar { display: none; }
     main { min-height: 100vh; padding-bottom: 68px; }
-    .topbar { position: sticky; z-index: 4; top: 0; height: 62px; padding: 0 20px; border-color: rgba(255,255,255,.7); background: rgba(244, 247, 241, .68); backdrop-filter: blur(18px); -webkit-backdrop-filter: blur(18px); }
+    .topbar { position: sticky; z-index: 4; top: 0; height: 62px; padding: 0 20px; border-color: var(--line); background: var(--paper); }
     .crumb { font: 800 14px Manrope, sans-serif; color: var(--ink); }
     .crumb strong { color: var(--green); }
     .top-right { gap: 9px; }
@@ -168,7 +168,7 @@
     .welcome { align-items: flex-start; flex-direction: column; gap: 9px; margin-bottom: 19px; }
     h1 { font-size: 28px; }
     .date-chip { padding: 7px 10px; }
-    .signal { grid-template-columns: 1fr; min-height: 0; border: 1px solid rgba(255,255,255,.28); background: linear-gradient(135deg, rgba(25,90,74,.94), rgba(18,62,53,.82)); backdrop-filter: blur(16px); -webkit-backdrop-filter: blur(16px); }
+    .signal { grid-template-columns: 1fr; min-height: 0; border: 0; background: #5b7657; }
     .signal-main { padding: 20px; }
     .signal h2 { font-size: 19px; }
     .signal-art { display: none; }
@@ -182,7 +182,7 @@
     .action-row { grid-template-columns: 1fr; }
     .steps { grid-template-columns: 1fr; }
     .topbar .top-right { display: none; }
-    .mobile-nav { position: fixed; z-index: 8; inset: auto 0 0; display: flex; justify-content: center; width: min(100%, 480px); height: 66px; margin: 0 auto; padding: 6px 10px max(6px, env(safe-area-inset-bottom)); border-top: 1px solid rgba(255,255,255,.75); background: rgba(249, 251, 246, .68); backdrop-filter: blur(20px); -webkit-backdrop-filter: blur(20px); box-shadow: 0 -8px 28px rgba(29,57,47,.08); }
+    .mobile-nav { position: fixed; z-index: 8; inset: auto 0 0; display: flex; justify-content: center; width: min(100%, 480px); height: 66px; margin: 0 auto; padding: 6px 10px max(6px, env(safe-area-inset-bottom)); border-top: 1px solid var(--line); background: var(--paper); box-shadow: 0 -4px 14px rgba(47,58,43,.06); }
     .mobile-nav button { display: grid; flex: 1; place-content: center; gap: 2px; min-width: 0; border: 0; border-radius: 7px; background: transparent; color: var(--muted); font: 10px 'DM Mono', monospace; cursor: pointer; transition: background .18s ease, color .18s ease, transform .18s ease; }
     .mobile-nav button span:first-child { font-size: 18px; }
     .mobile-nav button.active { background: var(--mint); color: var(--green-dark); }
@@ -209,12 +209,12 @@
     .developer-app-link { padding: 8px 10px; border: 1px solid var(--line); border-radius: 6px; background: var(--white); color: var(--green); font-size: 10px; font-weight: 700; text-decoration: none; }
     .app-screen.is-entering { animation: screen-enter .3s cubic-bezier(.2,.75,.25,1) both; }
     @keyframes screen-enter { from { opacity: 0; transform: translateY(9px) scale(.995); } to { opacity: 1; transform: translateY(0) scale(1); } }
-    .guide { border-color: rgba(255,255,255,.78); background: rgba(255,254,250,.62); backdrop-filter: blur(14px); -webkit-backdrop-filter: blur(14px); }
-    .steps-panel, .resources-panel { border: 1px solid rgba(255,255,255,.7); border-top-width: 2px; background: rgba(233,238,230,.62); backdrop-filter: blur(14px); -webkit-backdrop-filter: blur(14px); }
-    .resources-panel { background: rgba(247,238,229,.68); }
-    .assistant-compose { background: rgba(251,252,248,.68); backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px); }
-    .developer-app-link { border-color: rgba(255,255,255,.8); background: rgba(255,254,250,.62); backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px); }
-    .assistant-shell { overflow: hidden; border: 1px solid rgba(255,255,255,.8); border-radius: 9px; background: rgba(255,254,250,.74); box-shadow: 0 10px 28px rgba(29,57,47,.08); backdrop-filter: blur(16px); -webkit-backdrop-filter: blur(16px); }
+    .guide { border-color: var(--line); background: var(--white); }
+    .steps-panel, .resources-panel { border: 1px solid var(--line); border-top: 2px solid var(--green); background: #e8ebe1; }
+    .resources-panel { border-top-color: var(--orange); background: #f1e9df; }
+    .assistant-compose { background: #f8f7f0; }
+    .developer-app-link { border-color: var(--line); background: var(--white); }
+    .assistant-shell { overflow: hidden; border: 1px solid var(--line); border-radius: 8px; background: var(--white); box-shadow: 0 5px 16px rgba(47,58,43,.05); }
     .assistant-status { display: flex; align-items: center; gap: 8px; padding: 12px 14px; border-bottom: 1px solid var(--line); color: #52625b; font-size: 11px; }
     .assistant-status .live-dot { flex: none; }
     .assistant-status.is-speaking .live-dot { animation: voice-pulse 1.2s ease-out infinite; }
@@ -247,7 +247,7 @@
     .assistant-examples button:hover { border-color: #9db8a5; color: var(--green); }
     .team-section { margin-top: 25px; }
     .team-section .section-head { margin-top: 0; }
-    .team-glass { padding: 14px; border: 1px solid rgba(255,255,255,.78); border-radius: 10px; background: linear-gradient(140deg, rgba(255,255,255,.82), rgba(225,239,230,.56)); box-shadow: 0 12px 30px rgba(29,57,47,.08); backdrop-filter: blur(18px); -webkit-backdrop-filter: blur(18px); }
+    .team-glass { padding: 14px; border: 1px solid var(--line); border-radius: 8px; background: var(--white); box-shadow: 0 5px 16px rgba(47,58,43,.05); }
     .team-list { display: grid; margin: 0; padding: 0; list-style: none; }
     .team-list-head { grid-template-columns: minmax(0, 1fr) auto; align-items: center; min-height: 28px; padding-bottom: 7px; border-bottom: 1px solid rgba(120,145,130,.28); color: #66796f; font: 9px 'DM Mono', monospace; }
     .team-list-head span:last-child { text-align: right; }
@@ -255,13 +255,14 @@
     .team-list li:last-child { border-bottom: 0; }
     .team-list code { color: #526c60; font: 10px 'DM Mono', monospace; white-space: nowrap; }
     .accessibility-controls { display: flex; align-items: center; gap: 3px; }
-    .accessibility-controls button { width: 40px; height: 42px; border: 1px solid rgba(255,255,255,.8); border-radius: 7px; background: rgba(255,255,255,.65); color: var(--green-dark); font: 700 14px Manrope, sans-serif; cursor: pointer; }
+    .accessibility-controls button { width: 40px; height: 42px; border: 1px solid var(--line); border-radius: 7px; background: var(--white); color: var(--green-dark); font: 700 14px Manrope, sans-serif; cursor: pointer; }
     .accessibility-controls button:disabled { opacity: .45; cursor: default; }
     .sr-only { position: absolute; width: 1px; height: 1px; padding: 0; margin: -1px; overflow: hidden; clip: rect(0,0,0,0); white-space: nowrap; border: 0; }
     .assistant-settings { display: grid; grid-template-columns: 1fr 1fr; gap: 9px; padding: 12px 13px; border-bottom: 1px solid var(--line); background: rgba(255,255,255,.35); }
     .assistant-settings label { display: grid; gap: 5px; color: #52625b; font-size: 10px; font-weight: 700; }
     .assistant-settings select { width: 100%; min-height: 42px; padding: 0 9px; border: 1px solid rgba(109,143,125,.35); border-radius: 6px; background: rgba(255,255,255,.8); color: var(--ink); font: 11px 'DM Sans', sans-serif; }
     .assistant-settings .speak-toggle { display: flex; grid-column: 1 / -1; align-items: center; gap: 9px; min-height: 40px; }
+    .hosted-ai-note { grid-column: 1 / -1; margin: -5px 0 0; color: var(--muted); font-size: 10px; line-height: 1.45; }
     .speak-toggle input { width: 20px; height: 20px; accent-color: var(--green); }
     .assistant-device-actions { display: flex; flex-wrap: wrap; gap: 8px; padding: 11px 13px; border-bottom: 1px solid var(--line); }
     .assistant-device-actions button { display: inline-flex; align-items: center; justify-content: center; gap: 7px; min-height: 44px; padding: 0 12px; border: 1px solid rgba(109,143,125,.34); border-radius: 8px; background: rgba(255,255,255,.76); color: #315447; font-size: 12px; font-weight: 700; cursor: pointer; }
@@ -273,20 +274,377 @@
     .feedback-controls { display: flex; align-items: center; gap: 7px; margin-top: 8px; color: #66776f; font-size: 10px; }
     .feedback-controls button { min-width: 40px; min-height: 40px; border: 1px solid rgba(109,143,125,.3); border-radius: 8px; background: rgba(255,255,255,.76); color: #3b5b4c; font-size: 16px; cursor: pointer; }
     .feedback-controls button[aria-pressed="true"] { border-color: var(--green); background: var(--mint); }
-    .large-text .app { zoom: var(--app-zoom, 1); }
     @media (max-width: 370px) { .accessibility-controls button { width: 36px; height: 40px; } .developer-app-link { padding: 7px 6px; font-size: 9px; } }
+    :root {
+      color-scheme: dark;
+      --paper: #0a1213; --white: #111d1e; --ink: #e5efed; --muted: #91a5a3;
+      --line: #263839; --green: #62e2c0; --green-dark: #142526; --mint: #183431;
+      --orange: #ffad73; --orange-pale: #34251e; --yellow: #f0c477;
+      --shadow: 0 18px 48px rgba(0,0,0,.2);
+    }
+    body { min-height: 100vh; background: #060b0d; color: var(--ink); font-family: 'Space Grotesk', sans-serif; }
+    .app { display: grid; grid-template-columns: 236px minmax(0, 1fr); width: 100%; min-height: 100vh; margin: 0; overflow: visible; border-radius: 0; background: #0a1213; box-shadow: none; transform: scale(var(--app-zoom, 1)); }
+    .sidebar { position: sticky; top: 0; display: flex; align-items: stretch; height: 100vh; padding: 28px 15px 18px; border-right: 1px solid #203132; background: #080e10; color: #d9e7e4; }
+    .brand { gap: 12px; padding: 0 10px 37px; color: #edf5f2; }
+    .brand-mark { width: 37px; height: 37px; border: 1px solid #4eb89f; border-radius: 11px; background: #102421; color: #70e5c5; font: 700 18px 'DM Mono', monospace; }
+    .brand-name { font: 700 14px 'DM Mono', monospace; letter-spacing: 0; }
+    .brand-name span { color: #79d7bf; }
+    .side-label { padding: 0 10px 11px; color: #617877; font: 9px 'DM Mono', monospace; letter-spacing: 1.1px; }
+    .nav { gap: 6px; }
+    .nav [role="tab"] { display: flex; align-items: center; gap: 12px; width: 100%; min-height: 45px; padding: 0 11px; border: 1px solid transparent; border-radius: 6px; background: transparent; color: #91a5a3; text-align: left; font: 500 12px 'Space Grotesk', sans-serif; cursor: pointer; transition: .18s ease; }
+    .nav [role="tab"]:hover, .nav [role="tab"].active { border-color: #24483f; background: #10231f; color: #78e8c7; }
+    .nav-icon { display: grid; width: 20px; place-items: center; color: #6e8a87; font: 15px 'DM Mono', monospace; }
+    .nav [role="tab"].active .nav-icon { color: #78e8c7; }
+    .sidebar-note { padding: 14px; border: 1px solid #263c3b; border-radius: 6px; background: #0e191a; }
+    .sidebar-note strong { color: #d7e9e3; font: 600 11px 'Space Grotesk', sans-serif; }
+    .sidebar-note p { color: #819795; font-size: 10px; }
+    .side-foot { color: #5f7774; font: 9px 'DM Mono', monospace; letter-spacing: .3px; }
+    main { min-width: 0; min-height: 100vh; padding-bottom: 0; }
+    .topbar { position: sticky; z-index: 4; top: 0; height: 66px; padding: 0 34px; border-color: #203132; background: rgba(10,18,19,.92); backdrop-filter: blur(18px); }
+    .crumb { color: #a8bab6; font: 11px 'DM Mono', monospace; letter-spacing: .5px; }
+    .crumb strong { margin-left: 7px; color: #61d9b9; font-weight: 500; }
+    .topbar-actions { display: flex; flex: none; flex-wrap: nowrap; align-items: center; gap: 12px; white-space: nowrap; }
+    .accessibility-controls button { border-color: #263839; border-radius: 5px; background: #101a1b; color: #c4d6d1; }
+    .accessibility-controls button:disabled { opacity: .4; }
+    .developer-app-link { border-color: #2a4341; border-radius: 5px; background: #101a1b; color: #78d9bf; }
+    .content { width: min(1580px, 100%); margin: 0 auto; padding: 30px clamp(20px, 3.4vw, 54px) 54px; }
+    .section-head { align-items: center; margin: 0 0 22px; }
+    .section-head h2 { color: #eaf3f0; font: 600 22px 'Space Grotesk', sans-serif; }
+    .section-head p { color: #8da29f; font-size: 12px; }
+    .section-head .eyebrow { margin-bottom: 8px; color: #61d9b9; font: 10px 'DM Mono', monospace; letter-spacing: .6px; }
+    .mono-label { color: #72908c; font: 9px 'DM Mono', monospace; letter-spacing: .5px; }
+    .assistant-shell { display: grid; grid-template-columns: minmax(0, 1fr) 304px; grid-template-areas: "status settings" "thread settings" "suggestions device" "compose device" "compose privacy" "compose tools"; grid-template-rows: 52px minmax(390px, auto) auto auto auto auto; gap: 10px 14px; overflow: visible; border: 0; border-radius: 0; background: transparent; box-shadow: none; }
+    .assistant-status { grid-area: status; min-width: 0; padding: 0 15px; border: 1px solid #263839; border-radius: 6px; background: #101a1b; color: #b3c5c0; font: 10px 'DM Mono', monospace; }
+    .assistant-status .live-dot { background: #62e2c0; box-shadow: 0 0 0 3px #18352e; }
+    .assistant-status.is-speaking { border-color: #367667; }
+    .assistant-settings { grid-area: settings; align-content: start; gap: 13px; padding: 15px; border: 1px solid #263839; border-radius: 6px; background: #101a1b; }
+    .assistant-settings label { color: #9fb3af; font: 10px 'DM Mono', monospace; }
+    .assistant-settings select { border-color: #304544; border-radius: 4px; background: #0a1213; color: #dce9e5; font: 11px 'Space Grotesk', sans-serif; }
+    .assistant-settings .speak-toggle { font: 11px 'Space Grotesk', sans-serif; }
+    .speak-toggle input { accent-color: #62e2c0; }
+    .hosted-ai-note { color: #718783; font-size: 10px; }
+    .assistant-device-actions { grid-area: device; align-content: start; min-width: 0; padding: 14px; border: 1px solid #263839; border-radius: 6px; background: #101a1b; }
+    .assistant-device-actions button { min-height: 40px; border-color: #304544; border-radius: 4px; background: #0c1516; color: #b9d1ca; font-size: 11px; }
+    .assistant-device-actions button[aria-pressed="true"] { border-color: #428d78; background: #183b32; color: #8ef0d1; }
+    .device-status { color: #809794; font-size: 10px; }
+    .assistant-warning { grid-area: privacy; align-self: start; border: 1px solid #59432f; border-radius: 5px; background: #211b16; color: #d0aa80; font-size: 10px; }
+    .assistant-warning strong { color: #ffb979; font: 9px 'DM Mono', monospace; }
+    .assistant-tools { grid-area: tools; align-self: start; border: 1px solid #263839; border-radius: 6px; background: #101a1b; }
+    .assistant-tools > .mono-label { color: #6c8985; }
+    .assistant-actions button, .assistant-suggestions button { border-color: #2b4643; border-radius: 4px; background: #0d1718; color: #a8c6bd; font: 10px 'Space Grotesk', sans-serif; }
+    .assistant-actions button:hover, .assistant-suggestions button:hover { border-color: #4da88e; background: #122522; color: #87e4c5; }
+    .assistant-thread { grid-area: thread; align-content: start; min-height: 390px; max-height: min(58vh, 650px); padding: 18px; border: 1px solid #263839; border-radius: 6px; background: #0e1718; }
+    .chat-bubble { max-width: 88%; padding: 12px 14px; border: 1px solid #263d3a; border-radius: 5px 10px 10px 10px; background: #142321; color: #d2e1dc; font: 12px/1.65 'Space Grotesk', sans-serif; }
+    .chat-bubble strong { color: #71dcbc; font: 10px 'DM Mono', monospace; }
+    .chat-row.assistant { flex-direction: column; align-items: flex-start; }
+    .chat-row.user .chat-bubble { border-color: #286955; border-radius: 10px 5px 10px 10px; background: #14352c; color: #e2f4ee; }
+    .chat-row.user .chat-bubble strong { color: #9be9cc; }
+    .chat-bubble.warning { border-color: #76503d; background: #2b201a; color: #f0c8a9; }
+    .feedback-controls { color: #829895; }
+    .feedback-controls button { border-color: #2b4643; background: #111d1e; color: #bad4cc; }
+    .feedback-controls button[aria-pressed="true"] { border-color: #438c75; background: #193b32; }
+    .assistant-suggestions { grid-area: suggestions; padding: 0 2px; }
+    .assistant-suggestions button { min-height: 34px; padding: 0 10px; }
+    .assistant-compose { grid-area: compose; padding: 15px; border: 1px solid #2c4141; border-radius: 6px; background: #111c1d; }
+    .assistant-compose textarea { min-height: 92px; border-color: #304544; border-radius: 4px; background: #091112; color: #e5efed; font: 12px/1.6 'Space Grotesk', sans-serif; }
+    .assistant-compose textarea:focus { border-color: #55c6a5; box-shadow: 0 0 0 3px rgba(85,198,165,.12); }
+    .assistant-compose textarea::placeholder { color: #637975; }
+    .assistant-compose > label { color: #78a198; font: 9px 'DM Mono', monospace; letter-spacing: .4px; }
+    .privacy { color: #839995; }
+    .button { min-height: 40px; border-radius: 4px; background: #55c4a2; color: #081512; font: 600 11px 'DM Mono', monospace; }
+    .button:hover { background: #7de5c3; color: #071210; }
+    .assistant-examples button { border-color: #2c4141; border-radius: 4px; background: #0c1516; color: #91aaa4; font-size: 9px; }
+    .assistant-examples button:hover { border-color: #4b9e85; color: #81e0c0; }
+    .welcome { margin-bottom: 24px; }
+    .welcome .eyebrow { color: #62e2c0; }
+    h1 { color: #eaf3f0; font: 600 32px/1.16 'Space Grotesk', sans-serif; }
+    .welcome-copy { color: #91a5a3; }
+    .date-chip { border-color: #2b4140; border-radius: 4px; background: #101a1b; color: #8bcbb5; }
+    .signal { border: 1px solid #365147; border-radius: 6px; background: #142a25; }
+    .signal h2 { color: #e6f4ee; font: 600 22px/1.3 'Space Grotesk', sans-serif; }
+    .signal p { color: #a9c2b8; }
+    .guides .guide, .steps-panel, .resources-panel { border-color: #263839; border-radius: 5px; background: #101a1b; color: #e0ece8; }
+    .guide h3, .steps-panel h2, .resources-panel h2 { color: #dceae5; }
+    .guide p, .step p, .resource-list a { color: #91a5a3; }
+    .guide-icon { border-radius: 4px; background: #18352e; color: #71dcbc; }
+    .steps-panel, .resources-panel { border-top: 2px solid #4cb997; }
+    .resources-panel { border-top-color: #d89161; }
+    .footer { border-color: #263839; color: #708581; }
+    .mobile-nav { display: none; }
+    .screen-nav [role="tab"]:focus-visible, .assistant-shell button:focus-visible, .topbar a:focus-visible, .topbar button:focus-visible { outline: 2px solid #71dcbc; outline-offset: 3px; }
+    @media (max-width: 900px) {
+      .app { grid-template-columns: 68px minmax(0, 1fr); }
+      .sidebar { align-items: center; padding: 19px 8px; }
+      .brand { padding: 0 0 28px; }
+      .brand-name, .side-label, .nav-label, .sidebar-note, .side-foot { display: none; }
+      .nav { width: 100%; }
+      .nav [role="tab"] { justify-content: center; padding: 0; }
+      .assistant-shell { grid-template-columns: minmax(0, 1fr) 260px; }
+      .topbar { padding: 0 22px; }
+    }
+    @media (max-width: 700px) {
+      .app { display: block; padding-bottom: 68px; }
+      .sidebar { display: none; }
+      main { min-height: calc(100vh - 68px); }
+      .topbar { height: 58px; padding: 0 17px; }
+      .topbar-actions { gap: 7px; }
+      .crumb strong { display: none; }
+      .developer-app-link { padding: 7px 8px; font-size: 9px; }
+      .accessibility-controls button { width: 34px; height: 38px; }
+      .content { padding: 24px 15px 31px; }
+      .section-head { align-items: flex-start; flex-direction: column; gap: 5px; }
+      .section-head h2 { font-size: 20px; }
+      .assistant-shell { grid-template-columns: minmax(0, 1fr); grid-template-areas: "status" "thread" "suggestions" "compose" "settings" "device" "privacy" "tools"; grid-template-rows: auto; gap: 9px; }
+      .assistant-status { min-height: 48px; }
+      .assistant-thread { min-height: 300px; max-height: 46vh; padding: 13px; }
+      .assistant-settings { grid-template-columns: 1fr 1fr; }
+      .assistant-device-actions { gap: 7px; }
+      .assistant-device-actions button { flex: 1; }
+      .assistant-suggestions { padding: 0; }
+      .compose-bottom { align-items: flex-start; }
+      .compose-bottom .privacy { max-width: 190px; }
+      .mobile-nav { position: fixed; z-index: 8; inset: auto 0 0; display: flex; width: 100%; height: 68px; margin: 0; padding: 6px 10px max(6px, env(safe-area-inset-bottom)); border-top: 1px solid #263839; background: rgba(8,14,16,.96); box-shadow: 0 -8px 24px rgba(0,0,0,.22); backdrop-filter: blur(16px); }
+      .mobile-nav button { color: #7f9692; font: 9px 'DM Mono', monospace; }
+      .mobile-nav button span:first-child { color: #91aaa4; }
+      .mobile-nav button.active { background: #153029; color: #79e2c1; }
+      .mobile-nav button.active span:first-child { color: #79e2c1; }
+      .welcome { gap: 8px; }
+      h1 { font-size: 28px; }
+      .signal { grid-template-columns: 1fr; }
+      .guides { grid-template-columns: repeat(2, minmax(0,1fr)); }
+      .action-row, .steps { grid-template-columns: 1fr; }
+      .footer { flex-direction: column; }
+    }
+    @media (max-width: 390px) {
+      .topbar { padding: 0 11px; }
+      .crumb { font-size: 9px; }
+      .developer-app-link { padding: 6px; font-size: 8px; }
+      .assistant-settings { grid-template-columns: 1fr; }
+      .assistant-settings .speak-toggle, .hosted-ai-note { grid-column: auto; }
+      .compose-bottom { flex-direction: column; }
+    }
+    @media (prefers-reduced-motion: reduce) { .app, .assistant-shell *, .screen-nav * { scroll-behavior: auto !important; animation-duration: .01ms !important; transition-duration: .01ms !important; } }
+    :root {
+      color-scheme: light;
+      --paper: #f4f5f0; --white: #fffefa; --ink: #26352e; --muted: #6f7b73;
+      --line: #dbe2d9; --green: #4d7057; --green-dark: #334d3b; --mint: #e8f0e7;
+      --orange: #a9583b; --orange-pale: #fff0e7; --yellow: #d6b469;
+      --shadow: 0 8px 22px rgba(39,60,45,.07);
+    }
+    body { min-height: 100vh; background: #e8ece7; color: var(--ink); font-family: 'DM Sans', sans-serif; }
+    .app { display: block; width: 100%; min-height: 100vh; margin: 0; overflow: visible; border-radius: 0; background: var(--paper); box-shadow: none; transform: scale(var(--app-zoom, 1)); }
+    .sidebar { display: none; position: sticky; top: 0; align-items: stretch; height: 100vh; padding: 24px 15px 17px; border-right: 1px solid #d3ddd3; background: #354e3b; color: #f6f7f0; }
+    .brand { gap: 10px; padding: 0 9px 32px; color: #f6f7f0; }
+    .brand-mark { width: 36px; height: 36px; border: 0; border-radius: 8px; background: #e0c577; color: #354e3b; font: 800 12px Manrope, sans-serif; }
+    .brand-name { font: 800 12px Manrope, sans-serif; }
+    .brand-name span { color: #c8d9c9; }
+    .side-label { padding: 0 10px 10px; color: #becdbd; font: 9px 'DM Mono', monospace; letter-spacing: .7px; }
+    .nav { gap: 5px; }
+    .nav [role="tab"] { display: flex; align-items: center; gap: 10px; width: 100%; min-height: 44px; padding: 0 10px; border: 0; border-radius: 5px; background: transparent; color: #d5e0d4; text-align: left; font: 600 12px 'DM Sans', sans-serif; cursor: pointer; }
+    .nav [role="tab"]:hover, .nav [role="tab"].active { background: #496650; color: #fff; }
+    .nav-icon { display: grid; width: 19px; place-items: center; color: #d0ddce; font-size: 15px; }
+    .sidebar-note { padding: 13px; border: 1px solid #627a63; border-radius: 6px; background: #405c46; }
+    .sidebar-note strong { color: white; font: 700 11px Manrope, sans-serif; }
+    .sidebar-note p { color: #e0e8dd; font-size: 10px; }
+    .side-foot { color: #c2d0c0; font: 9px 'DM Mono', monospace; }
+    main { min-width: 0; min-height: 100vh; padding-bottom: 0; }
+    .topbar { position: sticky; z-index: 4; top: 0; height: 62px; padding: 0 clamp(16px, 4vw, 44px); border-color: var(--line); background: rgba(255,254,250,.96); backdrop-filter: blur(10px); }
+    .crumb { color: #526359; font: 700 12px Manrope, sans-serif; }
+    .crumb strong { margin-left: 5px; color: var(--green); font-weight: 700; }
+    .topbar-actions { display: flex; flex: none; flex-wrap: nowrap; align-items: center; gap: 10px; white-space: nowrap; }
+    .accessibility-controls button { border-color: var(--line); border-radius: 5px; background: white; color: var(--green-dark); }
+    .developer-app-link { border-color: var(--line); border-radius: 5px; background: white; color: var(--green-dark); }
+    .content { width: min(1120px, 100%); margin: 0 auto; padding: clamp(20px, 4vw, 40px) clamp(15px, 4vw, 44px) 90px; }
+    .welcome { align-items: flex-end; flex-direction: row; gap: 18px; margin-bottom: 22px; }
+    h1 { color: var(--ink); font: 800 clamp(27px, 4vw, 36px)/1.15 Manrope, sans-serif; }
+    .welcome-copy { color: var(--muted); }
+    .welcome .eyebrow, .eyebrow { color: var(--green); font: 700 10px 'DM Mono', monospace; letter-spacing: .5px; }
+    .date-chip { border-color: var(--line); border-radius: 5px; background: white; color: #526359; }
+    .signal { grid-template-columns: minmax(0, 1.4fr) minmax(180px, .8fr); min-height: 200px; border: 1px solid #c6d3c4; border-radius: 7px; background: #496950; box-shadow: var(--shadow); }
+    .signal-main { padding: 24px 27px; }
+    .signal-main::after { border-color: rgba(238,221,170,.22); }
+    .signal h2 { color: white; font: 700 22px/1.3 Manrope, sans-serif; }
+    .signal p { color: #e0e9df; }
+    .signal-tag { color: #e2e9dc; }
+    .signal-art { min-height: 200px; }
+    .section-head { align-items: flex-end; margin: 28px 0 13px; }
+    .section-head h2 { color: var(--ink); font: 700 18px Manrope, sans-serif; }
+    .section-head p { color: var(--muted); }
+    .mono-label { color: #718078; font: 9px 'DM Mono', monospace; }
+    .statistics { margin: 25px 0 6px; }
+    .statistics .section-head { margin-top: 0; }
+    .statistics-grid { display: grid; grid-template-columns: repeat(3, minmax(0,1fr)); gap: 12px; }
+    .statistic { display: grid; align-content: start; gap: 5px; min-height: 100px; padding: 17px; border: 1px solid var(--line); border-radius: 6px; background: var(--white); box-shadow: 0 3px 12px rgba(39,60,45,.035); }
+    .statistic strong { color: var(--green-dark); font: 800 26px/1 Manrope, sans-serif; }
+    .statistic span { color: var(--muted); font-size: 11px; }
+    .statistics-note { margin: 10px 0 0; color: var(--muted); font-size: 10px; line-height: 1.5; }
+    .statistics-note a { color: var(--green-dark); font-weight: 700; }
+    .team-section { margin-top: 29px; }
+    .team-section .section-head { margin-top: 0; }
+    .team-panel { padding: 15px; border: 1px solid var(--line); border-radius: 6px; background: var(--white); }
+    .team-table { width: 100%; border-collapse: collapse; text-align: left; }
+    .team-table th { padding: 9px 8px; border-bottom: 1px solid var(--line); color: #718078; font: 9px 'DM Mono', monospace; }
+    .team-table td { padding: 11px 8px; border-bottom: 1px solid #edf0eb; color: #344b43; font-size: 11px; overflow-wrap: anywhere; }
+    .team-table tr:last-child td { border-bottom: 0; }
+    .team-table td:last-child { color: #526c60; font: 10px 'DM Mono', monospace; white-space: nowrap; }
+    .assistant-shell { display: flex; flex-direction: column; gap: 9px; overflow: visible; border: 0; border-radius: 0; background: transparent; box-shadow: none; }
+    .assistant-status { min-height: 44px; padding: 10px 13px; border: 1px solid var(--line); border-radius: 5px; background: #f9fbf7; color: #526359; font: 10px 'DM Mono', monospace; }
+    .assistant-status .live-dot { background: #45936d; box-shadow: 0 0 0 3px #dfede1; }
+    .assistant-status.is-speaking { border-color: #9ebaa0; }
+    .assistant-settings, .assistant-device-actions, .assistant-tools { border: 1px solid var(--line); border-radius: 6px; background: var(--white); }
+    .assistant-settings { gap: 10px; padding: 13px; }
+    .assistant-settings label { color: #526359; font: 600 10px 'DM Sans', sans-serif; }
+    .assistant-settings select { border-color: #d6dfd5; border-radius: 4px; background: white; color: var(--ink); font: 12px 'DM Sans', sans-serif; }
+    .assistant-settings .speak-toggle { font: 600 11px 'DM Sans', sans-serif; }
+    .speak-toggle input { accent-color: var(--green); }
+    .hosted-ai-note, .device-status { color: var(--muted); }
+    .assistant-device-actions { padding: 11px 13px; }
+    .assistant-device-actions button { border-color: #d6dfd5; border-radius: 5px; background: #f8faf6; color: var(--green-dark); font: 600 11px 'DM Sans', sans-serif; }
+    .assistant-device-actions button[aria-pressed="true"] { background: var(--green); color: white; }
+    .assistant-warning { border: 1px solid #ecd3bb; border-radius: 5px; background: #fff8ee; color: #73543c; }
+    .assistant-warning strong { color: #a15835; }
+    .assistant-tools { padding: 11px 13px; }
+    .assistant-tools > .mono-label { color: #6c786f; }
+    .assistant-actions button, .assistant-suggestions button { border-color: #d8e1d7; border-radius: 5px; background: #fff; color: #405b48; font: 600 10px 'DM Sans', sans-serif; }
+    .assistant-actions button:hover, .assistant-suggestions button:hover { background: #f1f6f0; }
+    .assistant-thread { min-height: 250px; max-height: 48vh; padding: 14px; border: 1px solid var(--line); border-radius: 6px; background: #f9faf7; }
+    .chat-bubble { border: 1px solid #dfe6dd; border-radius: 8px 8px 8px 3px; background: white; color: #34443b; font: 12px/1.6 'DM Sans', sans-serif; }
+    .chat-bubble strong { color: var(--green-dark); font: 700 11px Manrope, sans-serif; }
+    .chat-row.assistant { flex-direction: column; align-items: flex-start; }
+    .chat-row.user .chat-bubble { border-color: #45684d; border-radius: 8px 8px 3px 8px; background: var(--green); color: white; }
+    .chat-row.user .chat-bubble strong { color: white; }
+    .chat-bubble.warning { border-color: #e6c1aa; background: var(--orange-pale); color: #683a2d; }
+    .feedback-controls { color: #68766d; }
+    .feedback-controls button { border-color: var(--line); border-radius: 5px; background: white; color: var(--green-dark); }
+    .feedback-controls button[aria-pressed="true"] { border-color: #96b59a; background: var(--mint); }
+    .assistant-suggestions { padding: 0 1px; }
+    .assistant-suggestions button { min-height: 34px; padding: 0 10px; }
+    .assistant-compose { padding: 13px; border: 1px solid var(--line); border-radius: 6px; background: var(--white); }
+    .assistant-compose textarea { min-height: 88px; border-color: #d6dfd5; border-radius: 5px; background: #fff; color: var(--ink); font: 12px/1.6 'DM Sans', sans-serif; }
+    .assistant-compose textarea:focus { border-color: #719578; box-shadow: 0 0 0 3px #e2ede1; }
+    .assistant-compose textarea::placeholder { color: #929d94; }
+    .assistant-compose > label { color: #65766b; font: 700 9px 'DM Mono', monospace; }
+    .privacy { color: var(--muted); }
+    .button { min-height: 40px; border-radius: 5px; background: var(--green); color: white; font: 700 11px 'DM Sans', sans-serif; }
+    .button:hover { background: var(--green-dark); color: white; }
+    .assistant-examples button { border-color: var(--line); border-radius: 5px; background: white; color: #526359; }
+    .assistant-examples button:hover { border-color: #9db8a5; color: var(--green-dark); }
+    .tool-grid { display: grid; grid-template-columns: repeat(3, minmax(0,1fr)); align-items: start; gap: 13px; }
+    .tool-card { display: grid; align-content: start; gap: 11px; min-width: 0; padding: 16px; border: 1px solid var(--line); border-radius: 6px; background: var(--white); box-shadow: 0 3px 12px rgba(39,60,45,.035); }
+    .tool-heading { display: flex; align-items: flex-start; gap: 10px; min-height: 48px; }
+    .tool-icon { display: grid; flex: none; width: 31px; height: 31px; place-items: center; border-radius: 5px; background: var(--mint); color: var(--green-dark); font-size: 15px; }
+    .tool-heading h3 { margin: 0 0 3px; color: var(--ink); font: 700 14px Manrope, sans-serif; }
+    .tool-heading p, .tool-hint { margin: 0; color: var(--muted); font-size: 10px; line-height: 1.5; }
+    .field-label { color: #526359; font-size: 10px; font-weight: 700; }
+    .tool-input { width: 100%; min-width: 0; min-height: 41px; padding: 9px 10px; border: 1px solid #d6dfd5; border-radius: 5px; background: #fff; color: var(--ink); font: 12px 'DM Sans', sans-serif; }
+    .tool-input:focus { outline: 2px solid #c5d8c5; outline-offset: 1px; border-color: #78977a; }
+    .password-options { display: grid; grid-template-columns: 1fr 1fr; gap: 9px; margin: 0; padding: 11px; border: 1px solid #e1e6de; border-radius: 5px; }
+    .password-options legend { padding: 0 4px; }
+    .password-options label { display: flex; align-items: center; gap: 6px; color: #506056; font-size: 10px; }
+    .password-options input { width: 16px; height: 16px; accent-color: var(--green); }
+    .tool-primary { width: 100%; }
+    .password-output { display: flex; align-items: center; gap: 6px; }
+    .password-output .tool-input { font-family: 'DM Mono', monospace; }
+    .icon-button { flex: none; width: 41px; height: 41px; border: 1px solid var(--line); border-radius: 5px; background: #f8faf6; color: var(--green-dark); cursor: pointer; }
+    .tool-status, .tool-hint { margin: 0; }
+    .tool-status { min-height: 16px; color: var(--muted); font-size: 10px; }
+    .tool-result { padding: 11px; border: 1px solid #dce4d9; border-radius: 5px; background: #f7f9f4; color: #44554a; font-size: 11px; line-height: 1.55; overflow-wrap: anywhere; white-space: pre-wrap; }
+    .tool-result[data-level="warning"] { border-color: #e8ccb4; background: #fff7ed; color: #704a33; }
+    .tool-result[data-level="safe"] { border-color: #dce4d9; background: #f4f8f2; }
+    .tool-result strong { display: block; margin-bottom: 4px; color: var(--ink); }
+    .guides .guide { display: block; padding: 0; border-color: var(--line); background: var(--white); color: var(--ink); }
+    .guides .guide h3 { color: var(--ink); }
+    .guides .guide p { color: var(--muted); }
+    .guides .guide .guide-details p { color: #52625b; }
+    .guide-summary { display: flex; min-height: 129px; flex-direction: column; padding: 15px; list-style: none; cursor: pointer; }
+    .guide-summary::-webkit-details-marker { display: none; }
+    .guide-summary:focus-visible { outline: 3px solid #a3ceac; outline-offset: 2px; }
+    .guide-summary .guide-arrow { font: 700 18px 'DM Sans', sans-serif; transition: transform .18s ease; }
+    .guide[open] .guide-summary .guide-arrow { transform: rotate(45deg); }
+    .guide-details { display: grid; gap: 9px; padding: 0 15px 15px; color: #52625b; font-size: 11px; line-height: 1.6; }
+    .guide-details p { margin: 0; color: #52625b; font-size: 11px; line-height: 1.6; }
+    .guide-source { display: inline-flex; align-items: center; gap: 6px; width: fit-content; color: var(--green-dark); font-size: 11px; font-weight: 700; }
+    .guide-source:hover { text-decoration-thickness: 2px; }
+    .helpline-list { display: grid; margin: 0; padding: 0; list-style: none; }
+    .helpline-list li { display: flex; align-items: center; justify-content: space-between; gap: 12px; min-height: 52px; padding: 7px 0; border-bottom: 1px solid rgba(120,145,130,.2); }
+    .helpline-list li:last-child { border-bottom: 0; }
+    .helpline-info { display: grid; gap: 2px; min-width: 0; }
+    .helpline-info strong { color: var(--green-dark); font: 700 15px Manrope, sans-serif; }
+    .helpline-info span { color: #63726a; font-size: 10px; line-height: 1.4; }
+    .helpline-call { display: inline-flex; flex: none; align-items: center; justify-content: center; min-width: 58px; min-height: 40px; padding: 0 10px; border-radius: 5px; background: var(--green); color: white; font-size: 10px; font-weight: 700; text-decoration: none; }
+    .helpline-call:hover { background: var(--green-dark); }
+    .reporting-panel { margin-top: 14px; }
+    .steps-panel, .resources-panel { border-color: var(--line); background: #f0f3ed; }
+    .steps-panel h2, .resources-panel h2, .guide h3 { color: var(--ink); }
+    .step p, .guide p, .resource-list a { color: var(--muted); }
+    .guide-icon { background: var(--mint); color: var(--green-dark); }
+    .footer { border-color: var(--line); color: var(--muted); }
+    .mobile-nav { display: flex; position: fixed; z-index: 8; inset: auto 0 0; justify-content: space-around; width: 100%; height: 64px; margin: 0; padding: 5px 6px max(5px, env(safe-area-inset-bottom)); border-top: 1px solid var(--line); background: rgba(255,254,250,.97); box-shadow: 0 -4px 14px rgba(39,60,45,.08); backdrop-filter: blur(12px); }
+    .mobile-nav button { display: grid; flex: 1; place-content: center; gap: 2px; min-width: 0; border: 0; border-radius: 5px; background: transparent; color: #66766c; font: 9px 'DM Sans', sans-serif; cursor: pointer; }
+    .mobile-nav button span:first-child { color: #607965; font-size: 17px; }
+    .mobile-nav button.active { background: var(--mint); color: var(--green-dark); }
+    .mobile-nav button.active span:first-child { color: var(--green-dark); }
+    [hidden] { display: none !important; }
+    @media (min-width: 850px) {
+      .app { display: grid; grid-template-columns: 220px minmax(0,1fr); }
+      .sidebar { display: flex; flex-direction: column; }
+      .brand-name, .side-label, .nav-label, .sidebar-note, .side-foot { display: initial; }
+      .nav { display: grid; }
+      .mobile-nav { display: none; }
+      .content { padding-bottom: 50px; }
+    }
+    @media (max-width: 849px) {
+      .sidebar { display: none; }
+      main { padding-bottom: 0; }
+      .content { padding-bottom: 88px; }
+      .mobile-nav { display: flex; }
+    }
+    @media (max-width: 680px) {
+      .topbar { height: 56px; padding: 0 13px; }
+      .crumb { font-size: 11px; }
+      .topbar-actions { gap: 6px; }
+      .accessibility-controls button { width: 34px; height: 38px; }
+      .developer-app-link { padding: 6px 7px; font-size: 9px; }
+      .content { padding: 20px 14px 88px; }
+      .welcome { align-items: flex-start; flex-direction: column; gap: 10px; }
+      .signal { grid-template-columns: 1fr; }
+      .signal-art { display: none; }
+      .statistics-grid { grid-template-columns: 1fr; gap: 8px; }
+      .statistic { min-height: 78px; padding: 13px; }
+      .statistic strong { font-size: 23px; }
+      .tool-grid { grid-template-columns: 1fr; }
+      .assistant-settings { grid-template-columns: 1fr 1fr; }
+      .assistant-settings .speak-toggle, .hosted-ai-note { grid-column: 1 / -1; }
+      .assistant-thread { min-height: 260px; max-height: 43vh; }
+      .assistant-device-actions button { flex: 1; }
+      .compose-bottom { align-items: flex-start; }
+      .guides { grid-template-columns: repeat(2,minmax(0,1fr)); }
+      .steps { grid-template-columns: 1fr; }
+      .action-row { grid-template-columns: 1fr; }
+      .footer { flex-direction: column; }
+    }
+    @media (max-width: 380px) {
+      .crumb { font-size: 10px; }
+      .topbar { padding: 0 9px; }
+      .developer-app-link { padding: 5px; font-size: 8px; }
+      .assistant-settings { grid-template-columns: 1fr; }
+      .assistant-settings .speak-toggle, .hosted-ai-note { grid-column: auto; }
+      .compose-bottom { flex-direction: column; }
+      .mobile-nav button { font-size: 8px; }
+    }
   </style>
 </head>
 <body>
   <div class="app">
     <aside class="sidebar" aria-label="Main navigation">
-      <a class="brand" href="#home" aria-label="Good Signal home"><span class="brand-mark">g.</span><span class="brand-name">good<span>signal</span></span></a>
-      <div class="side-label">Your safety desk</div>
-      <nav class="nav">
-        <a class="active" href="#home"><span class="nav-icon" aria-hidden="true">⌂</span><span class="nav-label">Overview</span></a>
-        <a href="#check"><span class="nav-icon" aria-hidden="true">⌕</span><span class="nav-label">Check a message</span></a>
-        <a href="#learn"><span class="nav-icon" aria-hidden="true">▤</span><span class="nav-label">Learn &amp; protect</span></a>
-        <a href="#next-steps"><span class="nav-icon" aria-hidden="true">↗</span><span class="nav-label">Get help</span></a>
+      <a class="brand" href="#assistant" aria-label="Cyber Security console"><span class="brand-mark">CS</span><span class="brand-name">CYBER<span> SECURITY</span></span></a>
+      <div class="side-label">SECURE INTERFACE</div>
+      <nav class="nav screen-nav" role="tablist" aria-label="Main navigation">
+        <button class="active" type="button" role="tab" aria-selected="true" aria-controls="screen-home" data-screen="home"><span class="nav-icon" aria-hidden="true">⌂</span><span class="nav-label">Home</span></button>
+        <button type="button" role="tab" aria-selected="false" aria-controls="screen-assistant" data-screen="assistant"><span class="nav-icon" aria-hidden="true">✳</span><span class="nav-label">Assistant</span></button>
+        <button type="button" role="tab" aria-selected="false" aria-controls="screen-tools" data-screen="tools"><span class="nav-icon" aria-hidden="true">▦</span><span class="nav-label">Tools</span></button>
+        <button type="button" role="tab" aria-selected="false" aria-controls="screen-learn" data-screen="learn"><span class="nav-icon" aria-hidden="true">▤</span><span class="nav-label">Learn &amp; protect</span></button>
+        <button type="button" role="tab" aria-selected="false" aria-controls="screen-help" data-screen="help"><span class="nav-icon" aria-hidden="true">↗</span><span class="nav-label">Response plan</span></button>
       </nav>
       <div class="side-spacer"></div>
       <div class="sidebar-note"><strong>A good rule to remember</strong><p>Pause before you tap. A real organization won't mind you checking through its official app or number.</p></div>
@@ -295,28 +653,20 @@
 
     <main id="home">
       <header class="topbar">
-        <div class="crumb">Cyber Security <strong>App</strong></div>
+        <div class="crumb">CYBER SECURITY <strong>CONSOLE</strong></div>
         <div class="topbar-actions">
           <div class="accessibility-controls" role="group" aria-label="Text magnification">
-            <button id="decrease-text" type="button" aria-label="Decrease app magnification" title="Decrease text size">A−</button>
-            <button id="increase-text" type="button" aria-label="Increase app magnification" title="Increase text size">A+</button>
+            <button id="decrease-text" type="button" aria-label="Decrease app magnification" title="Decrease magnification">A−</button>
+            <button id="increase-text" type="button" aria-label="Increase app magnification" title="Increase magnification">A+</button>
           </div>
           <a class="developer-app-link" href="developer.html">Developer app ↗</a>
         </div>
       </header>
 
-      <nav class="mobile-nav" role="tablist" aria-label="User app screens">
-        <button class="active" id="tab-home" type="button" role="tab" aria-selected="true" aria-controls="screen-home" data-screen="home"><span aria-hidden="true">⌂</span><span>Home</span></button>
-        <button id="tab-assistant" type="button" role="tab" aria-selected="false" aria-controls="screen-assistant" data-screen="assistant"><span aria-hidden="true">✳</span><span>Assistant</span></button>
-        <button id="tab-learn" type="button" role="tab" aria-selected="false" aria-controls="screen-learn" data-screen="learn"><span aria-hidden="true">▤</span><span>Learn</span></button>
-        <button id="tab-help" type="button" role="tab" aria-selected="false" aria-controls="screen-help" data-screen="help"><span aria-hidden="true">↗</span><span>Help</span></button>
-        <button id="tab-team" type="button" role="tab" aria-selected="false" aria-controls="screen-team" data-screen="team"><span aria-hidden="true">◎</span><span>Team</span></button>
-      </nav>
-
       <div id="user-app" class="content">
         <section id="screen-home" class="app-screen" data-screen-view="home" role="tabpanel" aria-labelledby="tab-home">
         <section class="welcome" aria-labelledby="welcome-title">
-          <div><p class="eyebrow">CYBER SECURITY APP</p><h1 id="welcome-title">Check before<br>you trust.</h1><p class="welcome-copy">Scams get convincing. Take a breath, check the details, and make your next move with confidence.</p></div>
+          <div><p class="eyebrow">CYBER SECURITY</p><h1 id="welcome-title">Check before<br>you trust.</h1><p class="welcome-copy">Scams get convincing. Take a breath, check the details, and make your next move with confidence.</p></div>
           <div class="date-chip" id="today-date">YOUR SAFETY CHECK-IN</div>
         </section>
 
@@ -325,17 +675,40 @@
             <div class="signal-tag"><i></i> THIS WEEK’S WATCH-OUT</div>
             <h2 id="signal-title">That delivery text may be a detour.</h2>
             <p>Unexpected messages about a missed parcel can lead to lookalike sites asking for a small “redelivery fee” and your card details. Don’t use the link in the text.</p>
-            <a class="text-link" href="#learn">See how to check a delivery notice <span aria-hidden="true">→</span></a>
+            <a class="text-link" href="#learn" data-screen-link="learn">See how to check a delivery notice <span aria-hidden="true">→</span></a>
           </div>
           <div class="signal-art" role="img" aria-label="Abstract green digital network illustration"></div>
+        </section>
+        <section class="statistics" aria-labelledby="statistics-title">
+          <div class="section-head"><div><h2 id="statistics-title">Scams affect real people</h2><p>Reported to the U.S. Federal Trade Commission in 2024.</p></div><span class="mono-label">FTC CONSUMER SENTINEL</span></div>
+          <div class="statistics-grid">
+            <article class="statistic"><strong>2.6M</strong><span>consumer fraud reports</span></article>
+            <article class="statistic"><strong>$12.5B</strong><span>reported lost to fraud</span></article>
+            <article class="statistic"><strong>38%</strong><span>of fraud reports included a loss</span></article>
+          </div>
+          <p class="statistics-note">These are reports, not a count of every victim; fraud is underreported. <a href="https://www.ftc.gov/news-events/news/press-releases/2025/03/new-ftc-data-show-big-jump-reported-losses-fraud-125-billion-2024" target="_blank" rel="noreferrer">See the FTC's 2024 data ↗</a></p>
+        </section>
+        <section class="team-section" aria-labelledby="team-title">
+          <div class="section-head"><div><h2 id="team-title">Creators</h2><p>Project team</p></div><span class="mono-label">CYBER SECURITY APP</span></div>
+          <div class="team-panel">
+            <table class="team-table">
+              <thead><tr><th scope="col">NAME</th><th scope="col">USN</th></tr></thead>
+              <tbody>
+                <tr><td>Raju Muchandi</td><td>2BU25CS107</td></tr>
+                <tr><td>Pooja Wali</td><td>2BU25CS086</td></tr>
+                <tr><td>Prajwal Sirasalmath</td><td>2BU25CS090</td></tr>
+                <tr><td>Poornima Marennavar</td><td>2BU25CS087</td></tr>
+              </tbody>
+            </table>
+          </div>
         </section>
         </section>
 
         <section id="screen-assistant" class="app-screen" data-screen-view="assistant" role="tabpanel" aria-labelledby="tab-assistant" hidden>
           <section aria-labelledby="check-title">
-          <div class="section-head"><div><h2 id="check-title">Ask the security assistant</h2><p>Share a suspicious message or ask what to do next.</p></div><span class="mono-label">ON-DEVICE ASSISTANT</span></div>
+          <div class="section-head"><div><p class="eyebrow">CYBER SECURITY // PERSONAL SECURITY INTERFACE</p><h2 id="check-title">Security command</h2><p>Inspect a message, ask a question, or tell me what happened.</p></div><span class="mono-label">LOCAL-FIRST // VOICE + TEXT</span></div>
           <div class="assistant-shell">
-            <div id="assistant-status" class="assistant-status"><i class="live-dot"></i><span>Cyber Security Assistant · Private pattern check</span></div>
+            <div id="assistant-status" class="assistant-status"><i class="live-dot"></i><span>Cyber Security Assistant · Local checker</span></div>
             <div class="assistant-settings">
               <label for="assistant-language">Assistant language
                 <select id="assistant-language">
@@ -345,18 +718,20 @@
                 </select>
               </label>
               <label for="assistant-voice">Speaking voice
-                <select id="assistant-voice"><option value="">System default</option></select>
+                <select id="assistant-voice"><option value="">Best available voice</option></select>
               </label>
               <label class="speak-toggle" for="speak-replies"><input id="speak-replies" type="checkbox" checked><span>Speak assistant replies aloud</span></label>
+              <label class="speak-toggle" for="hosted-ai-toggle"><input id="hosted-ai-toggle" type="checkbox" disabled><span>Use hosted AI (OpenAI)</span></label>
+              <p id="hosted-ai-note" class="hosted-ai-note" role="status">Offline by default. Hosted AI sends your chat to OpenAI when enabled.</p>
             </div>
             <div class="assistant-device-actions">
               <button id="voice-input-button" type="button" aria-pressed="false"><span aria-hidden="true">🎙</span><span>Speak to assistant</span></button>
               <button id="image-reader-button" type="button"><span aria-hidden="true">▧</span><span>Read an image</span></button>
               <input id="image-input" type="file" accept="image/*" capture="environment" hidden>
-              <p id="device-status" class="device-status" role="status" aria-live="polite">Voice features need browser permission. Image reading runs on this device.</p>
+              <p id="device-status" class="device-status" role="status" aria-live="polite">Microphone input uses your browser’s speech service. Image reading runs on this device.</p>
               <div id="image-preview" class="image-preview" hidden><img id="image-preview-img" alt="Selected image for text reading"><p id="image-status">Preparing image…</p></div>
             </div>
-            <div class="assistant-warning" role="note"><strong>Safety warning</strong><span>Never share passwords, sign-in codes, or full card details. This on-device assistant can miss scams and cannot prove a message is safe.</span></div>
+            <div class="assistant-warning" role="note"><strong>Privacy</strong><span>Offline replies stay on this device. Hosted AI sends this message and recent chat context to OpenAI. Never share passwords, sign-in codes, or full card details; AI replies can be wrong.</span></div>
             <div class="assistant-tools">
               <span class="mono-label">QUICK ACTIONS</span>
               <div class="assistant-actions">
@@ -376,21 +751,71 @@
             <form id="assistant-form" class="assistant-compose">
               <label for="message-input" class="mono-label" style="display:block;margin-bottom:6px">YOUR MESSAGE</label>
               <textarea id="message-input" maxlength="3000" placeholder="Paste a message or ask what to do next…" aria-describedby="privacy-note" required></textarea>
-              <div class="compose-bottom"><span id="privacy-note" class="privacy">Checks stay on this device. Don’t include passwords or codes.</span><button class="button" type="submit"><span aria-hidden="true">➤</span> Send</button></div>
+              <div class="compose-bottom"><span id="privacy-note" class="privacy">Never include passwords, sign-in codes, or full card details.</span><button class="button" type="submit"><span aria-hidden="true">➤</span> Send</button></div>
               <div class="assistant-examples" aria-label="Sample messages"><button type="button" data-example="Urgent: your bank account is locked. Verify your password now at secure-bank-help.example">Bank alert sample</button><button type="button" data-example="Hi, this is your manager. I need you to buy gift cards right away. Send me the codes when you're done.">Gift card request sample</button></div>
             </form>
           </div>
         </section>
         </section>
 
+        <section id="screen-tools" class="app-screen" data-screen-view="tools" role="tabpanel" aria-labelledby="tab-tools" hidden>
+          <div class="section-head"><div><p class="eyebrow">PRACTICAL PRIVACY TOOLS</p><h2 id="tools-title">Security tools</h2><p>Use these checks on this device. Your entries and images are not uploaded.</p></div><span class="mono-label">LOCAL PROCESSING</span></div>
+          <div class="tool-grid">
+            <form id="password-form" class="tool-card">
+              <div class="tool-heading"><span class="tool-icon" aria-hidden="true">●</span><div><h3>Password generator</h3><p>Create a random password on this device.</p></div></div>
+              <label class="field-label" for="password-length">Password length</label>
+              <input id="password-length" class="tool-input" type="number" min="8" max="64" value="20" inputmode="numeric">
+              <fieldset class="password-options"><legend class="field-label">Include characters</legend>
+                <label><input id="password-lowercase" type="checkbox" checked> Lowercase</label>
+                <label><input id="password-uppercase" type="checkbox" checked> Uppercase</label>
+                <label><input id="password-numbers" type="checkbox" checked> Numbers</label>
+                <label><input id="password-symbols" type="checkbox" checked> Symbols</label>
+              </fieldset>
+              <button class="button tool-primary" type="submit">Generate password</button>
+              <label class="field-label" for="generated-password">Generated password</label>
+              <div class="password-output"><input id="generated-password" class="tool-input" type="text" readonly autocomplete="off" spellcheck="false" aria-describedby="password-status"><button id="copy-password" class="icon-button" type="button" aria-label="Copy password" title="Copy password">▢</button></div>
+              <p id="password-status" class="tool-status" role="status" aria-live="polite">A password is generated only when you select Generate.</p>
+            </form>
+
+            <form id="link-form" class="tool-card">
+              <div class="tool-heading"><span class="tool-icon" aria-hidden="true">↗</span><div><h3>Link identifier</h3><p>Inspect an address for common warning signs.</p></div></div>
+              <label class="field-label" for="link-input">Website address</label>
+              <input id="link-input" class="tool-input" type="text" inputmode="url" placeholder="Paste a website address" autocomplete="off" spellcheck="false" required>
+              <p class="tool-hint">This is a local format check, not a live malware or reputation scan.</p>
+              <button class="button tool-primary" type="submit">Inspect link</button>
+              <div id="link-result" class="tool-result" role="status" aria-live="polite" hidden></div>
+            </form>
+
+            <section class="tool-card" aria-labelledby="qr-title">
+              <div class="tool-heading"><span class="tool-icon" aria-hidden="true">▧</span><div><h3 id="qr-title">QR code identifier</h3><p>Read a QR code from an image before opening it.</p></div></div>
+              <input id="qr-image-input" type="file" accept="image/*" capture="environment" hidden>
+              <button id="qr-image-button" class="button tool-primary" type="button">Choose or scan image</button>
+              <p class="tool-hint">The image is processed on your device. Review any decoded link before opening it.</p>
+              <div id="qr-result" class="tool-result" role="status" aria-live="polite">No QR image selected.</div>
+            </section>
+          </div>
+        </section>
+
         <section id="screen-learn" class="app-screen" data-screen-view="learn" role="tabpanel" aria-labelledby="tab-learn" hidden>
           <section aria-labelledby="learn-title">
           <div class="section-head"><div><h2 id="learn-title">Build your everyday defenses</h2><p>Quick reads for the moments that matter.</p></div><span class="mono-label">4 QUICK GUIDES</span></div>
           <div class="guides">
-            <a class="guide" href="https://www.cisa.gov/secure-our-world/use-strong-passwords" target="_blank" rel="noreferrer"><div class="guide-top"><span class="guide-icon" aria-hidden="true">▣</span><span class="guide-arrow" aria-hidden="true">↗</span></div><h3>Lock down your accounts</h3><p>Passphrases, password managers, and multi-factor authentication.</p></a>
-            <a class="guide" href="https://consumer.ftc.gov/articles/how-recognize-and-avoid-phishing-scams" target="_blank" rel="noreferrer"><div class="guide-top"><span class="guide-icon" aria-hidden="true">⌁</span><span class="guide-arrow" aria-hidden="true">↗</span></div><h3>Spot a phishing message</h3><p>Check the sender, the ask, and where a link really goes.</p></a>
-            <a class="guide" href="https://consumer.ftc.gov/articles/what-know-about-romance-scams" target="_blank" rel="noreferrer"><div class="guide-top"><span class="guide-icon" aria-hidden="true">♡</span><span class="guide-arrow" aria-hidden="true">↗</span></div><h3>Recognize relationship scams</h3><p>Know the patterns before money or trust is on the line.</p></a>
-            <a class="guide" href="https://consumer.ftc.gov/articles/how-avoid-scam" target="_blank" rel="noreferrer"><div class="guide-top"><span class="guide-icon" aria-hidden="true">◉</span><span class="guide-arrow" aria-hidden="true">↗</span></div><h3>Pause a payment request</h3><p>Why gift cards, crypto, and wire transfers deserve extra care.</p></a>
+            <details class="guide">
+              <summary class="guide-summary"><div class="guide-top"><span class="guide-icon" aria-hidden="true">▣</span><span class="guide-arrow" aria-hidden="true">+</span></div><h3>Lock down your accounts</h3><p>Passphrases, password managers, and multi-factor authentication.</p></summary>
+              <div class="guide-details"><p>Use a unique passphrase for each account. A password manager can create and remember strong passwords. Turn on multi-factor authentication, keep recovery options current, and never share sign-in codes.</p><a class="guide-source" href="https://www.cisa.gov/secure-our-world/use-strong-passwords" target="_blank" rel="noopener noreferrer">Read the full CISA guide ↗</a></div>
+            </details>
+            <details class="guide">
+              <summary class="guide-summary"><div class="guide-top"><span class="guide-icon" aria-hidden="true">⌁</span><span class="guide-arrow" aria-hidden="true">+</span></div><h3>Spot a phishing message</h3><p>Check the sender, the ask, and where a link really goes.</p></summary>
+              <div class="guide-details"><p>Check the full sender address, unexpected urgency, and the real destination of a link. Don’t open surprising attachments or sign in from a message link. Contact the organization through its official app or a website you type yourself.</p><a class="guide-source" href="https://consumer.ftc.gov/articles/how-recognize-and-avoid-phishing-scams" target="_blank" rel="noopener noreferrer">Read the full FTC guide ↗</a></div>
+            </details>
+            <details class="guide">
+              <summary class="guide-summary"><div class="guide-top"><span class="guide-icon" aria-hidden="true">♡</span><span class="guide-arrow" aria-hidden="true">+</span></div><h3>Recognize relationship scams</h3><p>Know the patterns before money or trust is on the line.</p></summary>
+              <div class="guide-details"><p>Someone you meet online may build trust, then ask for travel, emergency, or investment money. Don’t send money, gift cards, or crypto to someone you haven’t met in person. Talk it over with someone you trust and reverse-search profile photos.</p><a class="guide-source" href="https://consumer.ftc.gov/articles/what-know-about-romance-scams" target="_blank" rel="noopener noreferrer">Read the full FTC guide ↗</a></div>
+            </details>
+            <details class="guide">
+              <summary class="guide-summary"><div class="guide-top"><span class="guide-icon" aria-hidden="true">◉</span><span class="guide-arrow" aria-hidden="true">+</span></div><h3>Pause a payment request</h3><p>Why gift cards, crypto, and wire transfers deserve extra care.</p></summary>
+              <div class="guide-details"><p>Scammers impersonate trusted organizations, create an urgent problem or prize, then demand a hard-to-reverse payment. Pause and verify using a number or app you find independently. Don’t pay through links or contact details in the request.</p><a class="guide-source" href="https://consumer.ftc.gov/articles/how-avoid-scam" target="_blank" rel="noopener noreferrer">Read the full FTC guide ↗</a></div>
+            </details>
           </div>
         </section>
         </section>
@@ -402,30 +827,33 @@
             <div class="step"><span class="step-num">02</span><div><strong>Secure accounts</strong><p>Change affected passwords; call your bank using its official number.</p></div></div>
             <div class="step"><span class="step-num">03</span><div><strong>Report it</strong><p>Save messages and receipts, then report to the right agency.</p></div></div>
           </div></div>
-          <div class="resources-panel"><h2>Official U.S. resources</h2><div class="resource-list">
-            <a href="https://reportfraud.ftc.gov/" target="_blank" rel="noreferrer">Report fraud to the FTC <span>↗</span></a>
-            <a href="https://www.identitytheft.gov/" target="_blank" rel="noreferrer">Identity theft recovery plan <span>↗</span></a>
-            <a href="https://www.ic3.gov/" target="_blank" rel="noreferrer">Report internet crime to the FBI <span>↗</span></a>
-          </div><p class="disclaimer">The message checker is an educational tool, not a security scanner. It can miss scams or flag legitimate messages. Verify requests directly with the organization using contact details you find independently.</p></div>
+          <div class="resources-panel"><h2>Important &amp; emergency numbers</h2><p class="section-head-copy">Belagavi, Karnataka</p><ul class="helpline-list" aria-label="Belagavi emergency and safety helplines">
+            <li><div class="helpline-info"><strong>112</strong><span>Police, fire, or immediate emergency</span></div><a class="helpline-call" href="tel:112" aria-label="Call emergency number 112">Call</a></li>
+            <li><div class="helpline-info"><strong>1930</strong><span>Report cyber financial fraud</span></div><a class="helpline-call" href="tel:1930" aria-label="Call cyber fraud helpline 1930">Call</a></li>
+            <li><div class="helpline-info"><strong>108 / 102</strong><span>Ambulance</span></div><a class="helpline-call" href="tel:108" aria-label="Call ambulance number 108">Call 108</a></li>
+            <li><div class="helpline-info"><strong>1098</strong><span>Child helpline</span></div><a class="helpline-call" href="tel:1098" aria-label="Call child helpline 1098">Call</a></li>
+            <li><div class="helpline-info"><strong>1091</strong><span>Women helpline</span></div><a class="helpline-call" href="tel:1091" aria-label="Call women helpline 1091">Call</a></li>
+            <li><div class="helpline-info"><strong>1090</strong><span>Belagavi crime-stopper helpline</span></div><a class="helpline-call" href="tel:1090" aria-label="Call Belagavi crime-stopper helpline 1090">Call</a></li>
+          </ul><p class="disclaimer">For immediate danger, call 112. For cyber financial fraud, call 1930 promptly and report online.</p></div>
         </section>
+        <section class="resources-panel reporting-panel" aria-labelledby="reporting-title"><h2 id="reporting-title">Official reporting links</h2><div class="resource-list">
+          <a href="https://cybercrime.gov.in/" target="_blank" rel="noopener noreferrer">National Cyber Crime Reporting Portal <span>↗</span></a>
+          <a href="https://belagavi.nic.in/en/helpline/" target="_blank" rel="noopener noreferrer">Belagavi District helplines <span>↗</span></a>
+          <a href="https://112.gov.in/" target="_blank" rel="noopener noreferrer">India Emergency Response Support System <span>↗</span></a>
+        </div><p class="disclaimer">The message checker is an educational tool, not a security scanner. Verify requests through official contact details.</p></section>
         </section>
-        <section id="screen-team" class="app-screen team-section" data-screen-view="team" role="tabpanel" aria-labelledby="tab-team" hidden>
-          <div class="section-head"><div><h2 id="team-title">Creators</h2><p>Project team</p></div></div>
-          <div class="team-glass">
-            <div class="team-list team-list-head" aria-hidden="true"><span>NAME</span><span>USN</span></div>
-            <ul class="team-list">
-              <li><span>Raju Muchandi</span><code>2BU25CS107</code></li>
-              <li><span>Pooja Wali</span><code>2BU25CS086</code></li>
-              <li><span>Prajwal Sirasalmath</span><code>2BU25CS090</code></li>
-              <li><span>Poornima Marennavar</span><code>2BU25CS087</code></li>
-            </ul>
-          </div>
-        </section>
-        <footer class="footer"><span>Cyber Security App · Practical cyber safety</span><span>U.S. resources shown · In an emergency, contact local authorities.</span></footer>
+        <footer class="footer"><span>Cyber Security · Practical cyber safety</span><span>Emergency contacts: Belagavi, Karnataka.</span></footer>
       </div>
 
     </main>
   </div>
+  <nav class="mobile-nav screen-nav" role="tablist" aria-label="User app screens">
+    <button id="tab-home" class="active" type="button" role="tab" aria-selected="true" aria-controls="screen-home" data-screen="home"><span aria-hidden="true">⌂</span><span>Home</span></button>
+    <button id="tab-assistant" type="button" role="tab" aria-selected="false" aria-controls="screen-assistant" data-screen="assistant"><span aria-hidden="true">✳</span><span>Assistant</span></button>
+    <button id="tab-tools" type="button" role="tab" aria-selected="false" aria-controls="screen-tools" data-screen="tools"><span aria-hidden="true">▦</span><span>Tools</span></button>
+    <button id="tab-learn" type="button" role="tab" aria-selected="false" aria-controls="screen-learn" data-screen="learn"><span aria-hidden="true">▤</span><span>Learn</span></button>
+    <button id="tab-help" type="button" role="tab" aria-selected="false" aria-controls="screen-help" data-screen="help"><span aria-hidden="true">↗</span><span>Help</span></button>
+  </nav>
   <script>
     const messageInput = document.querySelector('#message-input');
     const thread = document.querySelector('#assistant-thread');
@@ -433,6 +861,8 @@
     const languageSelect = document.querySelector('#assistant-language');
     const voiceSelect = document.querySelector('#assistant-voice');
     const speakReplies = document.querySelector('#speak-replies');
+    const hostedAiToggle = document.querySelector('#hosted-ai-toggle');
+    const hostedAiNote = document.querySelector('#hosted-ai-note');
     const voiceInputButton = document.querySelector('#voice-input-button');
     const deviceStatus = document.querySelector('#device-status');
     const imageInput = document.querySelector('#image-input');
@@ -443,6 +873,43 @@
     const zoomKey = 'cyber-security-app-text-zoom';
     const readActivity = () => JSON.parse(localStorage.getItem(activityKey) || '[]');
     const zoomLevels = [1, 1.12, 1.25];
+
+    async function loadHostedAiStatus() {
+      try {
+        const response = await fetch('/api/status', { cache: 'no-store' });
+        if (!response.ok) throw new Error('Hosted AI status is unavailable.');
+        const status = await response.json();
+        hostedAiToggle.disabled = !status.available;
+        hostedAiNote.textContent = status.available
+          ? `Offline is the default. Turn this on to send chats to OpenAI (${status.model}).`
+          : 'Hosted AI is not configured. Add an API key to the local server to enable it; offline replies still work.';
+      } catch {
+        hostedAiToggle.disabled = true;
+        hostedAiNote.textContent = 'Start the local app server to enable hosted AI. Offline replies stay on this device.';
+      }
+    }
+
+    async function getHostedReply(message, history) {
+      const response = await fetch('/api/chat', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ message, language: languageSelect.value, history })
+      });
+      const payload = await response.json().catch(() => ({}));
+      if (!response.ok || typeof payload.answer !== 'string' || !payload.answer.trim()) {
+        throw new Error(payload.error || 'Hosted AI is unavailable.');
+      }
+      return payload.answer.trim();
+    }
+
+    function getRecentChat() {
+      return Array.from(thread.querySelectorAll('.chat-row')).slice(-10).map((row) => ({
+        role: row.classList.contains('user') ? 'user' : 'assistant',
+        content: row.querySelector('.chat-bubble > span')?.textContent.trim() || ''
+      })).filter((item) => item.content);
+    }
+
+    loadHostedAiStatus();
     let zoomIndex = Math.max(0, Math.min(zoomLevels.length - 1, Number(localStorage.getItem(zoomKey) || 0)));
     let pendingCommand = 'analyze_message';
     let recognition = null;
@@ -458,14 +925,19 @@
 
     function applyMagnification() {
       const scale = zoomLevels[zoomIndex];
-      const width = Math.min(480, document.documentElement.clientWidth) / scale;
+      const width = 100 / scale;
       const app = document.querySelector('.app');
-      app.style.width = `${width}px`;
+      app.style.width = `${width}%`;
       app.style.setProperty('--app-zoom', String(scale));
-      document.documentElement.classList.toggle('large-text', scale > 1);
+      updateMagnificationSpace();
       document.querySelector('#decrease-text').disabled = zoomIndex === 0;
       document.querySelector('#increase-text').disabled = zoomIndex === zoomLevels.length - 1;
       localStorage.setItem(zoomKey, String(zoomIndex));
+    }
+
+    function updateMagnificationSpace() {
+      const app = document.querySelector('.app');
+      app.style.marginBottom = `${Math.ceil(app.scrollHeight * (zoomLevels[zoomIndex] - 1))}px`;
     }
 
     document.querySelector('#decrease-text').addEventListener('click', () => {
@@ -476,6 +948,7 @@
       zoomIndex = Math.min(zoomLevels.length - 1, zoomIndex + 1);
       applyMagnification();
     });
+    new ResizeObserver(updateMagnificationSpace).observe(document.querySelector('.app'));
     window.addEventListener('resize', applyMagnification);
     applyMagnification();
 
@@ -533,6 +1006,9 @@
       const language = /[\u0900-\u097f]/u.test(message) ? 'hi-IN' : /[\u0c80-\u0cff]/u.test(message) ? 'kn-IN' : languageSelect.value;
       const hindi = language === 'hi-IN';
       const kannada = language === 'kn-IN';
+      const greeting = /^\s*(?:hi|hello|hey|good morning|good afternoon|good evening)\s*[!.?]*\s*$/i.test(message)
+        || /^\s*(?:ನಮಸ್ಕಾರ|ನಮಸ್ತೆ|ಹಲೋ|ಹಾಯ್)\s*[!.?]*\s*$/u.test(message)
+        || /^\s*(?:नमस्ते|नमस्कार|हैलो|हाय)\s*[!.?]*\s*$/u.test(message);
       const incident = /\b(already clicked|clicked.{0,18}link|sent money|paid|shared my password|shared a code)\b/i.test(message) || /लिंक.{0,16}(क्लिक|खोल)|पैसे भेज दिए|कोड साझा किया/u.test(message) || /ಲಿಂಕ್.{0,16}(ಕ್ಲಿಕ್|ತೆರೆದ)|ಹಣ ಕಳುಹಿಸಿದೆ|ಕೋಡ್ ಹಂಚಿಕೊಂಡೆ/u.test(message);
       const phishing = /\b(what is|explain|define)\b.{0,25}\b(phishing|scam)\b/i.test(message) || /फिशिंग|फ़िशिंग|धोखाधड़ी क्या है|ಫಿಶಿಂಗ್|ಮೋಸ ಎಂದರೇನು/u.test(message);
       const secure = (/\b(how (?:can|do) i|how to|help me)\b/i.test(message) && /\b(protect|secure|password|account|email|phone|device)\b/i.test(message)) || /खाता.{0,16}(सुरक्षित|सुरक्षा)|पासवर्ड.{0,16}(बदल|सुरक्षित)|ಖಾತೆ.{0,16}(ಸುರಕ್ಷಿತ|ರಕ್ಷಣೆ)|ಪಾಸ್.?ವರ್ಡ್.{0,16}(ಬದಲ|ರಕ್ಷಣೆ)/u.test(message);
@@ -540,6 +1016,7 @@
       const avoidScams = /\b(avoid|protect myself from|prevent)\b.{0,35}\b(scam|fraud|gift card)\b/i.test(message) || /घोटालों से बच|गिफ्ट कार्ड से बच|ಮೋಸದಿಂದ ತಪ್ಪಿಸಿಕೊ|ಗಿಫ್ಟ್ ಕಾರ್ಡ್.*ತಪ್ಪಿಸ/u.test(message);
       const responses = {
         'en-US': {
+          greeting: 'Hi! What can I help you with today?',
           incident: 'If you already clicked, paid, or shared information, act quickly: stop replying, contact your bank using its official number, change affected passwords, and report the incident. If you shared a sign-in code, secure that account immediately.',
           phishing: 'Phishing is a message designed to trick you into clicking a link, opening an attachment, sending money, or sharing private information. Check the sender carefully, avoid unexpected links, and verify requests through a separate official channel.',
           secure: 'Start with a unique password or passphrase and turn on multi-factor authentication. Update your device and apps, review account recovery details and signed-in devices, and never share one-time sign-in codes.',
@@ -550,6 +1027,7 @@
           warning: 'Safety warning'
         },
         'hi-IN': {
+          greeting: 'नमस्ते! आपको किस चीज़ में मदद चाहिए?',
           incident: 'अगर आपने लिंक खोला, पैसे भेजे या जानकारी साझा की है, तो तुरंत जवाब देना बंद करें। बैंक को उसके आधिकारिक नंबर पर कॉल करें, प्रभावित पासवर्ड बदलें और घटना की रिपोर्ट करें। साझा किए गए साइन-इन कोड वाले खाते को तुरंत सुरक्षित करें।',
           phishing: 'फ़िशिंग ऐसा संदेश है जो आपको लिंक खोलने, फ़ाइल खोलने, पैसे भेजने या निजी जानकारी साझा करने के लिए धोखा देता है। भेजने वाले की जाँच करें और अनुरोध की पुष्टि किसी आधिकारिक माध्यम से करें।',
           secure: 'हर खाते के लिए अलग और मज़बूत पासवर्ड रखें और बहु-कारक प्रमाणीकरण चालू करें। डिवाइस और ऐप अपडेट करें, रिकवरी जानकारी जाँचें और साइन-इन कोड किसी से साझा न करें।',
@@ -560,6 +1038,7 @@
           warning: 'सुरक्षा चेतावनी'
         },
         'kn-IN': {
+          greeting: 'ನಮಸ್ಕಾರ! ನಿಮಗೆ ಏನು ಸಹಾಯ ಬೇಕು?',
           incident: 'ನೀವು ಲಿಂಕ್ ತೆರೆದಿದ್ದರೆ, ಹಣ ಕಳುಹಿಸಿದ್ದರೆ ಅಥವಾ ಮಾಹಿತಿಯನ್ನು ಹಂಚಿಕೊಂಡಿದ್ದರೆ, ತಕ್ಷಣ ಉತ್ತರಿಸುವುದನ್ನು ನಿಲ್ಲಿಸಿ. ಬ್ಯಾಂಕ್‌ನ ಅಧಿಕೃತ ಸಂಖ್ಯೆಗೆ ಕರೆ ಮಾಡಿ, ಪಾಸ್‌ವರ್ಡ್ ಬದಲಿಸಿ ಮತ್ತು ಘಟನೆಯನ್ನು ವರದಿ ಮಾಡಿ. ಹಂಚಿಕೊಂಡ ಸೈನ್-ಇನ್ ಕೋಡ್‌ಗೆ ಸಂಬಂಧಿಸಿದ ಖಾತೆಯನ್ನು ಕೂಡಲೇ ಸುರಕ್ಷಿತಗೊಳಿಸಿ.',
           phishing: 'ಫಿಶಿಂಗ್ ಎಂದರೆ ಲಿಂಕ್ ತೆರೆಯಲು, ಹಣ ಕಳುಹಿಸಲು ಅಥವಾ ಖಾಸಗಿ ಮಾಹಿತಿಯನ್ನು ಹಂಚಿಕೊಳ್ಳಲು ಮೋಸಗೊಳಿಸುವ ಸಂದೇಶ. ಕಳುಹಿಸಿದವರನ್ನು ಪರಿಶೀಲಿಸಿ ಮತ್ತು ಅಧಿಕೃತ ಮಾರ್ಗದ ಮೂಲಕ ವಿನಂತಿಯನ್ನು ದೃಢೀಕರಿಸಿ.',
           secure: 'ಪ್ರತಿ ಖಾತೆಗೆ ವಿಭಿನ್ನ ಬಲವಾದ ಪಾಸ್‌ವರ್ಡ್ ಬಳಸಿ ಮತ್ತು ಬಹು-ಹಂತದ ದೃಢೀಕರಣವನ್ನು ಸಕ್ರಿಯಗೊಳಿಸಿ. ಸಾಧನ ಮತ್ತು ಆ್ಯಪ್‌ಗಳನ್ನು ನವೀಕರಿಸಿ; ಸೈನ್-ಇನ್ ಕೋಡ್‌ಗಳನ್ನು ಯಾರೊಂದಿಗೂ ಹಂಚಿಕೊಳ್ಳಬೇಡಿ.',
@@ -570,6 +1049,7 @@
           warning: 'ಸುರಕ್ಷತಾ ಎಚ್ಚರಿಕೆ'
         }
       }[language];
+      if (greeting) return responses.greeting;
       if (incident) return responses.incident;
       if (phishing) return responses.phishing;
       if (secure) return responses.secure;
@@ -579,16 +1059,41 @@
     }
 
     let availableVoices = [];
+    const preferredVoiceNames = {
+      'en-us': ['samantha', 'ava', 'jenny', 'aria', 'google us english'],
+      'hi-in': ['lekha', 'google hindi'],
+      'kn-in': ['soumya', 'google kannada']
+    };
+    const voiceId = (voice) => voice.voiceURI || `${voice.name}|${voice.lang}`;
 
     function refreshVoices() {
       if (!window.speechSynthesis) return;
       const previous = voiceSelect.value;
+      const previousVoice = availableVoices.find((voice) => voiceId(voice) === previous);
       availableVoices = window.speechSynthesis.getVoices();
-      voiceSelect.replaceChildren(new Option('System default', ''));
-      availableVoices.forEach((voice, index) => {
-        voiceSelect.append(new Option(`${voice.name} (${voice.lang})`, String(index)));
+      const language = languageSelect.value.toLowerCase();
+      const languageVoices = availableVoices.filter((voice) => voice.lang.toLowerCase() === language);
+      const fallbackVoices = languageVoices.length ? languageVoices : availableVoices.filter((voice) => voice.lang.toLowerCase().split('-')[0] === language.split('-')[0]);
+      const selectableVoices = fallbackVoices.filter((voice) => !/bad news|bahh|bells|boing|bubbles|cellos|good news|jester|organ|superstar|trinoids|wobble|zarvox/i.test(voice.name));
+      const preferredNames = preferredVoiceNames[language] || [];
+      const recommendedVoice = [...selectableVoices].sort((first, second) => {
+        const score = (voice) => {
+          const name = voice.name.toLowerCase();
+          if (/natural|neural|enhanced|premium/.test(name)) return 100;
+          const preference = preferredNames.findIndex((preferred) => name.includes(preferred));
+          return preference === -1 ? 0 : 50 - preference;
+        };
+        return score(second) - score(first);
+      })[0];
+      voiceSelect.replaceChildren(new Option('Best available voice', ''));
+      selectableVoices.forEach((voice) => {
+        voiceSelect.append(new Option(`${voice.name} (${voice.lang})`, voiceId(voice)));
       });
-      if (availableVoices.some((voice, index) => String(index) === previous)) voiceSelect.value = previous;
+      if (previousVoice && selectableVoices.some((voice) => voiceId(voice) === voiceId(previousVoice))) {
+        voiceSelect.value = previous;
+      } else if (recommendedVoice) {
+        voiceSelect.value = voiceId(recommendedVoice);
+      }
     }
 
     function speakText(text) {
@@ -600,9 +1105,27 @@
       const status = document.querySelector('#assistant-status');
       status.classList.add('is-speaking');
       const utterance = new SpeechSynthesisUtterance(text);
-      utterance.lang = languageSelect.value;
-      const voiceIndex = Number(voiceSelect.value);
-      if (voiceSelect.value !== '' && availableVoices[voiceIndex]) utterance.voice = availableVoices[voiceIndex];
+      const speechLanguage = /[\u0900-\u097f]/u.test(text) ? 'hi-IN' : /[\u0c80-\u0cff]/u.test(text) ? 'kn-IN' : languageSelect.value;
+      utterance.lang = speechLanguage;
+      utterance.rate = 0.98;
+      utterance.pitch = 1.04;
+      const selectedVoice = availableVoices.find((voice) => voiceId(voice) === voiceSelect.value);
+      const languageVoices = availableVoices.filter((voice) => voice.lang.toLowerCase().split('-')[0] === speechLanguage.split('-')[0]);
+      const preferredNames = preferredVoiceNames[speechLanguage.toLowerCase()] || [];
+      const naturalVoice = [...languageVoices].sort((first, second) => {
+        const score = (voice) => {
+          const name = voice.name.toLowerCase();
+          if (/natural|neural|enhanced|premium/.test(name)) return 100;
+          const preference = preferredNames.findIndex((preferred) => name.includes(preferred));
+          return preference === -1 ? 0 : 50 - preference;
+        };
+        return score(second) - score(first);
+      })[0];
+      if (selectedVoice && selectedVoice.lang.toLowerCase().split('-')[0] === speechLanguage.split('-')[0]) {
+        utterance.voice = selectedVoice;
+      } else if (naturalVoice) {
+        utterance.voice = naturalVoice;
+      }
       utterance.onend = () => status.classList.remove('is-speaking');
       utterance.onerror = () => status.classList.remove('is-speaking');
       window.speechSynthesis.speak(utterance);
@@ -709,6 +1232,14 @@
     });
 
     const SpeechRecognitionApi = window.SpeechRecognition || window.webkitSpeechRecognition;
+    const localSpeechLanguages = new Set();
+    if (SpeechRecognitionApi?.available) {
+      ['en-US', 'hi-IN', 'kn-IN'].forEach((language) => {
+        SpeechRecognitionApi.available({ langs: [language], processLocally: true }).then((availability) => {
+          if (availability === 'available') localSpeechLanguages.add(language);
+        }).catch(() => {});
+      });
+    }
     if (!SpeechRecognitionApi) {
       voiceInputButton.disabled = true;
       deviceStatus.textContent = 'Voice input is unavailable in this browser. You can still type or use image reading.';
@@ -720,19 +1251,27 @@
         }
         recognition = new SpeechRecognitionApi();
         recognition.lang = languageSelect.value;
+        if ('processLocally' in recognition) recognition.processLocally = localSpeechLanguages.has(recognition.lang);
         recognition.continuous = false;
         recognition.interimResults = false;
         recognition.onstart = () => {
           voiceInputButton.setAttribute('aria-pressed', 'true');
           voiceInputButton.querySelector('span:last-child').textContent = 'Stop listening';
-          deviceStatus.textContent = `Listening in ${languageSelect.selectedOptions[0].textContent}. Speak now.`;
+          const mode = recognition.processLocally ? 'on this device' : 'with your browser speech service';
+          deviceStatus.textContent = `Listening ${mode} in ${languageSelect.selectedOptions[0].textContent}. Speak now.`;
         };
         recognition.onresult = (event) => {
           const transcript = Array.from(event.results).map((item) => item[0].transcript).join(' ').trim();
           if (transcript) speakPrompt(transcript, 'voice_input');
         };
         recognition.onerror = (event) => {
-          deviceStatus.textContent = event.error === 'not-allowed' ? 'Microphone permission was denied. Allow microphone access in browser settings.' : `Voice input stopped: ${event.error}. You can type your message instead.`;
+          const messages = {
+            'not-allowed': 'Microphone access was denied. Allow it in browser settings, then try again.',
+            network: 'The browser speech service could not connect. Check your internet connection or type your message instead.',
+            'no-speech': 'No speech was detected. Try again and speak clearly.',
+            'language-not-supported': 'Offline speech recognition for this language is not available in this browser. Try again online or type your message.'
+          };
+          deviceStatus.textContent = messages[event.error] || `Voice input stopped: ${event.error}. You can type your message instead.`;
         };
         recognition.onend = () => {
           recognition = null;
@@ -758,28 +1297,48 @@
       window.speechSynthesis.addEventListener('voiceschanged', refreshVoices);
     }
 
-    function analyzeMessage(message, command = 'analyze_message') {
-      const response = buildResponse(message);
+    async function analyzeMessage(message, command = 'analyze_message') {
+      const localResponse = buildResponse(message);
+      const history = getRecentChat();
       const reportedIncident = /\b(already clicked|clicked.{0,18}link|sent money|paid|shared my password|shared a code)\b/i.test(message);
       const warning = reportedIncident || warningPatterns.some(({ pattern }) => pattern.test(message));
       const id = crypto.randomUUID ? crypto.randomUUID() : `${Date.now()}-${Math.random()}`;
       appendMessage('user', 'You', message);
+      let response = localResponse;
+      let assistantMode = 'local';
+      if (hostedAiToggle.checked) {
+        deviceStatus.textContent = 'Sending this chat to OpenAI for a reply…';
+        try {
+          response = await getHostedReply(message, history);
+          assistantMode = 'hosted';
+          deviceStatus.textContent = 'Hosted AI replied. This message and recent chat context were sent to OpenAI.';
+        } catch (error) {
+          const reason = error instanceof Error ? error.message : 'Hosted AI could not respond.';
+          deviceStatus.textContent = `${reason} Showing a local checker reply instead.`;
+        }
+      }
       appendMessage('assistant', warning ? (languageSelect.value === 'hi-IN' ? 'सुरक्षा चेतावनी' : languageSelect.value === 'kn-IN' ? 'ಸುರಕ್ಷತಾ ಎಚ್ಚರಿಕೆ' : 'Safety warning') : 'Assistant', response, { warning, activityId: id });
       const activity = readActivity();
-      activity.unshift({ id, time: new Date().toISOString(), command, message, response, warning, language: languageSelect.value, feedback: null });
+      activity.unshift({ id, time: new Date().toISOString(), command, message, response, warning, language: languageSelect.value, assistantMode, feedback: null });
       localStorage.setItem(activityKey, JSON.stringify(activity));
       if (speakReplies.checked) speakText(response);
     }
 
-    assistantForm.addEventListener('submit', (event) => {
+    assistantForm.addEventListener('submit', async (event) => {
       event.preventDefault();
       const message = messageInput.value.trim();
       if (!message) return;
       const command = pendingCommand;
       pendingCommand = 'analyze_message';
-      analyzeMessage(message, command);
       messageInput.value = '';
-      messageInput.focus();
+      const sendButton = assistantForm.querySelector('button[type="submit"]');
+      sendButton.disabled = true;
+      try {
+        await analyzeMessage(message, command);
+      } finally {
+        sendButton.disabled = false;
+        messageInput.focus();
+      }
     });
 
     document.querySelectorAll('[data-example]').forEach((button) => {
@@ -790,10 +1349,10 @@
     });
     const welcomeRow = thread.querySelector('.chat-row.assistant');
     if (welcomeRow) addMessageControls(welcomeRow, 'assistant-welcome', welcomeRow.querySelector('.chat-bubble span').textContent);
-    document.querySelectorAll('.mobile-nav [role="tab"]').forEach((tab) => {
+    document.querySelectorAll('.screen-nav [role="tab"]').forEach((tab) => {
       tab.addEventListener('click', () => {
-        document.querySelectorAll('.mobile-nav [role="tab"]').forEach((item) => {
-          const selected = item === tab;
+        document.querySelectorAll('.screen-nav [role="tab"]').forEach((item) => {
+          const selected = item.dataset.screen === tab.dataset.screen;
           item.classList.toggle('active', selected);
           item.setAttribute('aria-selected', String(selected));
         });
@@ -808,7 +1367,191 @@
         window.scrollTo({ top: 0, behavior: 'instant' });
       });
     });
+    document.querySelectorAll('[data-screen-link]').forEach((link) => {
+      link.addEventListener('click', (event) => {
+        event.preventDefault();
+        document.querySelector(`.screen-nav [role="tab"][data-screen="${link.dataset.screenLink}"]`)?.click();
+      });
+    });
     document.querySelector('#today-date').textContent = new Intl.DateTimeFormat(undefined, { weekday: 'short', month: 'short', day: 'numeric' }).format(new Date()).toUpperCase();
+
+    const passwordForm = document.querySelector('#password-form');
+    const passwordLength = document.querySelector('#password-length');
+    const generatedPassword = document.querySelector('#generated-password');
+    const passwordStatus = document.querySelector('#password-status');
+    const characterGroups = [
+      { selector: '#password-lowercase', characters: 'abcdefghijkmnopqrstuvwxyz' },
+      { selector: '#password-uppercase', characters: 'ABCDEFGHJKLMNPQRSTUVWXYZ' },
+      { selector: '#password-numbers', characters: '23456789' },
+      { selector: '#password-symbols', characters: '!@#$%^&*()-_=+[]{}?' }
+    ];
+
+    function secureRandomIndex(limit) {
+      const bytes = new Uint8Array(1);
+      const ceiling = 256 - (256 % limit);
+      do crypto.getRandomValues(bytes); while (bytes[0] >= ceiling);
+      return bytes[0] % limit;
+    }
+
+    passwordForm.addEventListener('submit', (event) => {
+      event.preventDefault();
+      const length = Number(passwordLength.value);
+      const selectedGroups = characterGroups.filter(({ selector }) => document.querySelector(selector).checked);
+      if (!Number.isInteger(length) || length < 8 || length > 64) {
+        passwordStatus.textContent = 'Choose a length between 8 and 64 characters.';
+        passwordLength.focus();
+        return;
+      }
+      if (!selectedGroups.length) {
+        passwordStatus.textContent = 'Select at least one character type.';
+        return;
+      }
+      const alphabet = selectedGroups.map(({ characters }) => characters).join('');
+      const password = selectedGroups.map(({ characters }) => characters[secureRandomIndex(characters.length)]);
+      while (password.length < length) password.push(alphabet[secureRandomIndex(alphabet.length)]);
+      for (let index = password.length - 1; index > 0; index -= 1) {
+        const swapIndex = secureRandomIndex(index + 1);
+        [password[index], password[swapIndex]] = [password[swapIndex], password[index]];
+      }
+      generatedPassword.value = password.join('');
+      passwordStatus.textContent = 'Generated on this device. Save it in a password manager.';
+    });
+
+    document.querySelector('#copy-password').addEventListener('click', async () => {
+      if (!generatedPassword.value) {
+        passwordStatus.textContent = 'Generate a password first.';
+        return;
+      }
+      try {
+        await navigator.clipboard.writeText(generatedPassword.value);
+        passwordStatus.textContent = 'Copied. Save it in a password manager.';
+      } catch {
+        generatedPassword.focus();
+        generatedPassword.select();
+        passwordStatus.textContent = 'Select the password and copy it to your password manager.';
+      }
+    });
+
+    const linkForm = document.querySelector('#link-form');
+    const linkInput = document.querySelector('#link-input');
+    const linkResult = document.querySelector('#link-result');
+
+    function showToolResult(container, title, detail, level = '') {
+      const heading = document.createElement('strong');
+      heading.textContent = title;
+      const description = document.createElement('span');
+      description.textContent = detail;
+      container.replaceChildren(heading, description);
+      container.dataset.level = level;
+      container.hidden = false;
+    }
+
+    linkForm.addEventListener('submit', (event) => {
+      event.preventDefault();
+      const address = linkInput.value.trim();
+      let parsedUrl;
+      try {
+        parsedUrl = new URL(/^[a-z][a-z\d+.-]*:/i.test(address) ? address : `https://${address}`);
+      } catch {
+        showToolResult(linkResult, 'Could not read this address', 'Check the URL and try again.', 'warning');
+        return;
+      }
+      if (!['http:', 'https:'].includes(parsedUrl.protocol) || !parsedUrl.hostname) {
+        showToolResult(linkResult, 'Unsupported address', 'Only web addresses beginning with http:// or https:// can be inspected.', 'warning');
+        return;
+      }
+      const hostname = parsedUrl.hostname.toLowerCase();
+      const shorteners = new Set(['bit.ly', 't.co', 'tinyurl.com', 'is.gd', 'ow.ly', 'buff.ly', 'cutt.ly']);
+      const warnings = [];
+      if (parsedUrl.protocol !== 'https:') warnings.push('This address does not use HTTPS encryption.');
+      if (parsedUrl.username || parsedUrl.password) warnings.push('The address contains sign-in information before the hostname.');
+      if (/^(?:\d{1,3}\.){3}\d{1,3}$/.test(hostname) || hostname.startsWith('[')) warnings.push('The address uses a raw IP address instead of a recognizable domain.');
+      if (hostname.includes('xn--')) warnings.push('The domain uses encoded international characters that can resemble other letters.');
+      if (shorteners.has(hostname)) warnings.push('This is a shortened link, so its destination is hidden.');
+      if (hostname.split('.').length > 4) warnings.push('The domain has an unusually deep subdomain structure.');
+      if (/[?&](?:redirect|return|target|continue|url)=/i.test(parsedUrl.search)) warnings.push('The link includes a redirect parameter.');
+      if (parsedUrl.href.length > 180) warnings.push('This is a long address; check the domain carefully.');
+      const summary = warnings.length
+        ? `Address host: ${hostname}\n${warnings.map((warning) => `• ${warning}`).join('\n')}\nDo not sign in or pay from a link you did not expect. Verify it using the official app or a website you type yourself.`
+        : `Address host: ${hostname}\nNo obvious structural warning signs were detected. This is not a reputation or malware scan and does not prove the site is safe. Verify unexpected requests independently.`;
+      showToolResult(linkResult, warnings.length ? 'Review this link carefully' : 'No obvious warning signs found', summary, warnings.length ? 'warning' : 'safe');
+    });
+
+    const qrImageInput = document.querySelector('#qr-image-input');
+    const qrResult = document.querySelector('#qr-result');
+    let qrDecoderPromise;
+
+    document.querySelector('#qr-image-button').addEventListener('click', () => qrImageInput.click());
+
+    function loadQrDecoder() {
+      if (window.jsQR) return Promise.resolve(window.jsQR);
+      if (!qrDecoderPromise) {
+        qrDecoderPromise = new Promise((resolve, reject) => {
+          const script = document.createElement('script');
+          script.src = 'https://cdn.jsdelivr.net/npm/jsqr@1.4.0/dist/jsQR.js';
+          script.async = true;
+          script.onload = () => window.jsQR ? resolve(window.jsQR) : reject(new Error('QR decoder did not initialize.'));
+          script.onerror = () => reject(new Error('Could not load the on-device QR decoder. Check your connection and try again.'));
+          document.head.append(script);
+        });
+      }
+      return qrDecoderPromise;
+    }
+
+    async function readQrCode(file) {
+      const image = await createImageBitmap(file);
+      try {
+        if ('BarcodeDetector' in window) {
+          try {
+            const detector = new BarcodeDetector({ formats: ['qr_code'] });
+            const codes = await detector.detect(image);
+            if (codes[0]?.rawValue) return codes[0].rawValue;
+          } catch {}
+        }
+        const jsQR = await loadQrDecoder();
+        const scale = Math.min(1, 1600 / Math.max(image.width, image.height));
+        const canvas = document.createElement('canvas');
+        canvas.width = Math.round(image.width * scale);
+        canvas.height = Math.round(image.height * scale);
+        const context = canvas.getContext('2d', { willReadFrequently: true });
+        if (!context) throw new Error('Could not read this image. Try another file.');
+        context.drawImage(image, 0, 0, canvas.width, canvas.height);
+        const pixels = context.getImageData(0, 0, canvas.width, canvas.height);
+        const code = jsQR(pixels.data, pixels.width, pixels.height, { inversionAttempts: 'attemptBoth' });
+        return code?.data || '';
+      } finally {
+        image.close();
+      }
+    }
+
+    qrImageInput.addEventListener('change', async () => {
+      const file = qrImageInput.files?.[0];
+      if (!file) return;
+      if (!file.type.startsWith('image/') || file.size > 12 * 1024 * 1024) {
+        showToolResult(qrResult, 'Choose a smaller image', 'Select an image under 12 MB.', 'warning');
+        qrImageInput.value = '';
+        return;
+      }
+      showToolResult(qrResult, 'Checking image…', 'The image is processed on this device.');
+      try {
+        const decoded = await readQrCode(file);
+        if (!decoded) {
+          showToolResult(qrResult, 'No QR code found', 'Try a sharper image with the full code visible.');
+          return;
+        }
+        let detail = `Decoded content:\n${decoded}`;
+        try {
+          const destination = new URL(decoded);
+          if (['http:', 'https:'].includes(destination.protocol)) detail = `QR contains a web link to ${destination.hostname}. Review the full address before opening it.\n\n${decoded}`;
+        } catch {}
+        showToolResult(qrResult, 'QR code found', detail, /^https?:\/\//i.test(decoded) ? 'warning' : 'safe');
+      } catch (error) {
+        showToolResult(qrResult, 'Could not read the QR code', error instanceof Error ? error.message : 'Try another image.', 'warning');
+      } finally {
+        qrImageInput.value = '';
+      }
+    });
+
   </script>
 </body>
 </html>
