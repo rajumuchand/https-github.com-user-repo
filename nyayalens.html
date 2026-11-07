@@ -1,0 +1,171 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>NyayaLens: Agentic AI for Indian Court Judgments</title>
+<style>
+:root,:root[data-theme="dark"]{--bg:#0a0a0c;--panel:#141417;--line:#26262c;--text:#f5f5f7;--muted:#a1a1aa;--red:#f43f4e;--redsoft:rgba(244,63,78,.12);color-scheme:dark;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--bg:#0a0a0c;--panel:#141417;--line:#26262c;--text:#f5f5f7;--muted:#a1a1aa;--red:#f43f4e;--redsoft:rgba(244,63,78,.12)}}
+html{scroll-behavior:smooth;scroll-padding-top:calc(env(safe-area-inset-top,0px) + 70px)}
+*,*::before,*::after{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--text);font:16px/1.6 -apple-system,BlinkMacSystemFont,"Segoe UI",Inter,Helvetica,Arial,sans-serif;position:relative;overflow-x:hidden}
+body::before{content:"";position:fixed;inset:0 0 auto;height:env(safe-area-inset-top,0px);background:var(--bg);z-index:60}
+a{color:inherit;text-decoration:none}
+.wrap{max-width:1080px;margin:0 auto;padding:0 22px}
+nav{position:sticky;top:env(safe-area-inset-top,0px);z-index:55;background:rgba(10,10,12,.85);backdrop-filter:blur(10px);border-bottom:1px solid var(--line)}
+nav .wrap{display:flex;align-items:center;justify-content:space-between;height:58px;gap:12px}
+.logo{font-weight:800;letter-spacing:-.02em}.logo i{color:var(--red);font-style:normal}
+.links{display:flex;gap:18px;font-size:14px;color:var(--muted);overflow-x:auto}.links a:hover{color:var(--text)}
+.chip{display:inline-block;font:700 11px/1 Arial,sans-serif;letter-spacing:.14em;text-transform:uppercase;color:var(--red);background:var(--redsoft);border:1px solid rgba(244,63,78,.4);border-radius:5px;padding:7px 10px}
+h1{font-size:clamp(44px,9vw,92px);line-height:1;letter-spacing:-.04em;margin:18px 0 14px}h1 i{color:var(--red);font-style:normal}
+h2{font-size:clamp(28px,4.6vw,44px);letter-spacing:-.03em;line-height:1.1;margin:14px 0 10px}
+section{padding:84px 0 20px}
+.lead{color:var(--muted);font-size:18px;max-width:620px}
+.hero{display:grid;grid-template-columns:1.1fr .9fr;gap:34px;align-items:center;padding-top:56px}
+.btns{display:flex;gap:12px;flex-wrap:wrap;margin-top:26px}
+.btn{padding:12px 20px;border-radius:8px;font-weight:700;border:1px solid var(--line);background:var(--panel)}
+.btn.p{background:var(--red);border-color:var(--red);color:#fff}
+.card{background:var(--panel);border:1px solid var(--line);border-radius:10px;padding:20px}
+.grid{display:grid;gap:14px;margin-top:28px}.g2{grid-template-columns:repeat(2,1fr)}.g3{grid-template-columns:repeat(3,1fr)}.g4{grid-template-columns:repeat(4,1fr)}
+.card h3{margin:0 0 6px;font-size:18px;letter-spacing:-.01em}.card p{margin:0;color:var(--muted);font-size:15px}
+.tag{font:700 11px Arial,sans-serif;letter-spacing:.14em;color:var(--red);text-transform:uppercase;margin-bottom:10px;display:block}
+.term{font:13px/1.8 "SFMono-Regular",Consolas,"Courier New",monospace;background:var(--panel);border:1px solid rgba(244,63,78,.45);border-radius:10px;padding:18px 20px;overflow-x:auto}
+.term b{color:var(--red)}.term span{color:var(--muted)}
+.tabs{display:flex;gap:8px;margin:26px 0 14px;flex-wrap:wrap}
+.tabs button{font:inherit;font-weight:700;font-size:14px;color:var(--muted);background:var(--panel);border:1px solid var(--line);border-radius:8px;padding:9px 16px;cursor:pointer}
+.tabs button[aria-selected="true"]{color:#fff;background:var(--red);border-color:var(--red)}
+.demo{display:grid;grid-template-columns:1fr 1fr;gap:14px}
+.pane{min-height:300px}.pane dl{margin:0}.pane dt{font:700 11px Arial,sans-serif;letter-spacing:.14em;color:var(--red);text-transform:uppercase;margin-top:14px}.pane dd{margin:4px 0 0;color:var(--text);font-size:15px}
+.src p{margin:0 0 12px;color:var(--muted);font-size:14px;border-left:2px solid var(--line);padding-left:12px;transition:.25s}
+.src p.hl{color:var(--text);border-color:var(--red);background:var(--redsoft)}
+.cite{font:700 12px Arial,sans-serif;color:var(--red);background:var(--redsoft);border:1px solid rgba(244,63,78,.4);border-radius:5px;padding:2px 7px;cursor:pointer}
+.note{font-size:13px;color:var(--muted);margin-top:12px}
+.chips{display:flex;flex-wrap:wrap;gap:10px;margin-top:16px}.chips .chip{color:var(--text);background:var(--panel);border-color:var(--line)}
+.stack{display:grid;grid-template-columns:130px 1fr;gap:10px 16px}.stack b{font:700 11px Arial,sans-serif;letter-spacing:.14em;color:var(--red);text-transform:uppercase;padding-top:4px}
+.warn{margin-top:28px;border:1px solid rgba(251,191,36,.5);border-radius:10px;padding:14px 18px;font-size:14px}.warn b{color:#fbbf24;letter-spacing:.1em;font-family:Arial,sans-serif;font-size:12px}
+footer{margin-top:70px;border-top:1px solid var(--line);padding:26px 0 40px;color:var(--muted);font-size:14px}
+.layer{position:absolute;inset:0;overflow:hidden;pointer-events:none;z-index:50}
+.cur{position:absolute;left:0;top:0;opacity:0;will-change:transform}
+.cur svg{display:block;filter:drop-shadow(0 2px 3px rgba(0,0,0,.6))}
+.cur em{position:absolute;left:14px;top:20px;font:700 11px/1 Arial,sans-serif;font-style:normal;color:#fff;background:#222226;border:1px solid #fff;border-radius:9px;padding:4px 7px;white-space:nowrap}
+[data-r]{opacity:0;transform:translateY(10px);transition:opacity .5s,transform .5s}[data-r].in{opacity:1;transform:none}
+@media (max-width:820px){.hero,.demo,.g2,.g3,.g4{grid-template-columns:1fr}.stack{grid-template-columns:1fr}}
+@media (prefers-reduced-motion:reduce){html{scroll-behavior:auto}[data-r]{opacity:1;transform:none;transition:none}}
+</style>
+<noscript><style>[data-r]{opacity:1!important;transform:none!important}</style></noscript>
+</head>
+<body>
+<nav><div class="wrap"><a class="logo" href="#top">NyayaLens<i>.</i></a><div class="links"><a href="#problem">Problem</a><a href="#solution">Solution</a><a href="#demo">Demo</a><a href="#pipeline">Pipeline</a><a href="#stack">Stack</a><a href="#impact">Impact</a></div></div></nav>
+<main id="top">
+<div class="wrap">
+<div class="hero">
+<div>
+<span class="chip" data-r>Track 01 · AI/ML · Problem Statement 2</span>
+<h1 data-r>NyayaLens<i>.</i></h1>
+<p class="lead" data-r>Agentic AI for Indian court judgments. Summarize, search and ask questions, with every answer grounded in the source text.</p>
+<div class="btns" data-r><a class="btn p" href="#demo">Try the sample</a><a class="btn" href="#pipeline">See the architecture</a></div>
+</div>
+<div class="term" data-r><span>$</span> <b>nyaya run judgment.pdf</b><br><br><b>[ingest]</b>&nbsp;&nbsp;&nbsp;&nbsp;parsed, cleaned, indexed<br><b>[extract]</b>&nbsp;&nbsp;&nbsp;facts, issues, verdict<br><b>[summary]</b>&nbsp;&nbsp;&nbsp;expert + plain language<br><b>[translate]</b> Hindi, Kannada, Tamil<br><b>[retrieve]</b>&nbsp;&nbsp;similar cases ranked<br><b>[guard]</b>&nbsp;&nbsp;&nbsp;&nbsp;claims grounded in source<br><br><b>&gt; done. every answer cites its source</b></div>
+</div>
+
+<section id="problem"><span class="chip" data-r>01 Problem</span><h2 data-r>Judgments are long. Justice shouldn’t be hard to read.</h2>
+<div class="grid g4">
+<div class="card" data-r><h3>Long, dense judgments</h3><p>Pages of legal language, scattered across portals and formats.</p></div>
+<div class="card" data-r><h3>Keyword search misses context</h3><p>Similar facts and legal issues are hard to find.</p></div>
+<div class="card" data-r><h3>English-only access</h3><p>Citizens and regional-language users are left out.</p></div>
+<div class="card" data-r><h3>Trust gap with AI</h3><p>Summaries must be grounded, not hallucinated.</p></div>
+</div></section>
+
+<section id="solution"><span class="chip" data-r>02 Solution</span><h2 data-r>A multi-agent pipeline you can verify.</h2>
+<p class="lead" data-r>Six specialised agents, coordinated by an orchestrator. Every output links back to its source passage.</p>
+<div class="grid g3">
+<div class="card" data-r><span class="tag">Agent 01</span><h3>Ingest</h3><p>PDF and OCR parsing, cleaning, chunking, embedding, indexing.</p></div>
+<div class="card" data-r><span class="tag">Agent 02</span><h3>Extraction</h3><p>Facts, issues, arguments, reasoning, statutes, precedents, verdict.</p></div>
+<div class="card" data-r><span class="tag">Agent 03</span><h3>Summary</h3><p>Expert and plain-language summaries, translated with IndicTrans2.</p></div>
+<div class="card" data-r><span class="tag">Agent 04</span><h3>Retrieval</h3><p>Semantic search by query or uploaded case, ranked by relevance.</p></div>
+<div class="card" data-r><span class="tag">Agent 05</span><h3>Q&amp;A</h3><p>RAG answers with citations to the exact passages.</p></div>
+<div class="card" data-r><span class="tag">Agent 06</span><h3>Guard</h3><p>Checks every claim against source text and flags unsupported output.</p></div>
+</div></section>
+
+<section id="demo"><span class="chip" data-r>Interactive sample</span><h2 data-r>See how an answer stays traceable.</h2>
+<p class="lead" data-r>An invented case written for this demo. It shows the output format, not a real judgment.</p>
+<div class="tabs" role="tablist" data-r><button role="tab" aria-selected="true" data-t="expert">Expert summary</button><button role="tab" aria-selected="false" data-t="plain">Plain language</button><button role="tab" aria-selected="false" data-t="qa">Ask a question</button></div>
+<div class="demo" data-r>
+<div class="card pane" id="pane"></div>
+<div class="card src" id="src"><span class="tag">Source judgment (sample)</span>
+<p data-p="3">¶3. The appellant issued a cheque for ₹4,00,000 towards a loan. The cheque was returned unpaid for insufficient funds.</p>
+<p data-p="7">¶7. A statutory demand notice was served, and no payment was made within fifteen days of receipt.</p>
+<p data-p="12">¶12. The defence of a time-barred debt was not raised at trial and cannot be taken for the first time on appeal.</p>
+<p data-p="15">¶15. The appeal is dismissed. The conviction under Section 138 of the Negotiable Instruments Act is upheld.</p></div>
+</div>
+<p class="note">Click a citation chip to highlight the exact passage it points to.</p></section>
+
+<section id="pipeline"><span class="chip" data-r>03 Pipeline</span><h2 data-r>From raw PDF to cited answer.</h2>
+<div class="grid g4">
+<div class="card" data-r><span class="tag">Phase 01</span><h3>Ingest &amp; Index</h3><p>Collect SC/HC judgments and ILDC. PyMuPDF + Tesseract OCR. Chunk, embed, store in pgvector.</p></div>
+<div class="card" data-r><span class="tag">Phase 02</span><h3>Understand</h3><p>spaCy NER for statutes and sections. InLegalBERT section tagging. LLM summaries for experts and citizens.</p></div>
+<div class="card" data-r><span class="tag">Phase 03</span><h3>Retrieve &amp; Answer</h3><p>Semantic search over embeddings. Citation-linked RAG Q&amp;A. Optional outcome prediction.</p></div>
+<div class="card" data-r><span class="tag">Phase 04</span><h3>Serve &amp; Scale</h3><p>FastAPI backend, Next.js web app, IndicTrans2 for regional languages, Dockerized.</p></div>
+</div>
+<div class="chips" data-r><span class="chip">ROUGE</span><span class="chip">BERTScore</span><span class="chip">Precision@k</span><span class="chip">Recall@k</span><span class="chip">Hallucination check</span></div></section>
+
+<section id="stack"><span class="chip" data-r>04 Tech stack</span><h2 data-r>Open tools, proven stack.</h2>
+<div class="card stack" data-r style="margin-top:28px">
+<b>Frontend</b><span>Next.js, React</span><b>API</b><span>FastAPI, Docker</span><b>Data</b><span>PostgreSQL + pgvector, FAISS</span><b>Models</b><span>InLegalBERT, sentence-transformers, LLM</span><b>NLP / OCR</b><span>spaCy, PyMuPDF, Tesseract</span><b>Indic + RAG</b><span>IndicTrans2, LangChain / LlamaIndex</span></div></section>
+
+<section id="impact"><span class="chip" data-r>05 Impact</span><h2 data-r>Legal knowledge for everyone.</h2>
+<div class="grid g3">
+<div class="card" data-r><h3>Citizens</h3><p>Understand verdicts in plain language, in their own language.</p></div>
+<div class="card" data-r><h3>Lawyers and students</h3><p>Less reading time. Find precedents by meaning, not keywords.</p></div>
+<div class="card" data-r><h3>Justice system</h3><p>Wider legal awareness through traceable, trustworthy AI.</p></div>
+</div>
+<div class="warn" data-r><b>DISCLAIMER</b>&nbsp; Outputs are informational and not legal advice.</div></section>
+</div>
+</main>
+<footer><div class="wrap">NyayaLens · Hack Vally 2026 · AI/ML Problem Statement 2</div></footer>
+<div class="layer" id="layer" aria-hidden="true"></div>
+<script>
+(function(){
+var NAMES=["Ingest","Extract","Summary","Retrieve","Q&A","Guard","Parser","OCR","Chunker","Embedder","Indexer","Tagger","Ranker","Citer","Verifier","Translator","Router","Planner","Scorer","Linker","Cleaner","Writer"];
+var layer=document.getElementById("layer"),reduce=matchMedia("(prefers-reduced-motion: reduce)").matches;
+var ARROW='<svg width="22" height="34" viewBox="0 0 12 19"><path d="M.6.6v15.2l3.6-3.2 2.7 6 2.3-1-2.6-5.9h5z" fill="#121214" stroke="#fff" stroke-width="1.1" stroke-linejoin="round"/></svg>';
+function mk(n){var e=document.createElement("div");e.className="cur";e.innerHTML=ARROW+"<em>"+n+"</em>";layer.appendChild(e);return e}
+function swarm(items){
+ if(!items.length)return;
+ if(reduce){items.forEach(function(i){i.classList.add("in")});return}
+ var W=innerWidth,sy=scrollY,H=innerHeight,total=Math.max(22,items.length);
+ for(var k=0;k<total;k++){
+  var it=items[k%items.length],r=it.getBoundingClientRect();
+  var tx=Math.max(4,Math.min(W-90,r.left+scrollX+r.width*(k<items.length?.85:.15+Math.random()*.7)));
+  var ty=r.top+sy+r.height*(k<items.length?.8:.15+Math.random()*.7);
+  var left=Math.random()<.5,fx=left?-120:W+60,fy=sy+Math.random()*H;
+  var dur=800+Math.random()*350,delay=(k<items.length?k*150:120+(k-items.length)*90);
+  var c=mk(NAMES[k%NAMES.length]);
+  var a=c.animate([{transform:"translate("+fx+"px,"+fy+"px)",opacity:0},{opacity:1,offset:.12},{transform:"translate("+tx+"px,"+ty+"px)",opacity:1,offset:.78},{transform:"translate("+tx+"px,"+ty+"px)",opacity:1,offset:.9},{transform:"translate("+tx+"px,"+ty+"px)",opacity:0}],{duration:dur+900,delay:delay,easing:"cubic-bezier(.22,.8,.3,1)",fill:"both"});
+  a.onfinish=(function(el){return function(){el.remove()}})(c);
+  if(k<items.length)setTimeout((function(i){return function(){i.classList.add("in")}})(it),delay+dur*.78);
+ }
+}
+var hero=[].slice.call(document.querySelectorAll(".hero [data-r]"));
+var done=new WeakSet();
+var io=new IntersectionObserver(function(es){es.forEach(function(e){
+ if(!e.isIntersecting||done.has(e.target))return;done.add(e.target);
+ swarm([].slice.call(e.target.querySelectorAll("[data-r]")));io.unobserve(e.target)})},{threshold:.18});
+document.querySelectorAll("section").forEach(function(s){io.observe(s)});
+swarm(hero);
+// demo
+var DATA={
+ expert:'<dl><dt>Facts</dt><dd>Cheque for ₹4,00,000 dishonoured for insufficient funds <a class="cite" data-c="3">¶3</a>. Demand notice served; no payment within fifteen days <a class="cite" data-c="7">¶7</a>.</dd><dt>Issue</dt><dd>Can a time-barred-debt defence be raised first on appeal?</dd><dt>Reasoning</dt><dd>The defence was not raised at trial and cannot be introduced on appeal <a class="cite" data-c="12">¶12</a>.</dd><dt>Statute</dt><dd>Section 138, Negotiable Instruments Act.</dd><dt>Verdict</dt><dd>Appeal dismissed; conviction upheld <a class="cite" data-c="15">¶15</a>.</dd></dl>',
+ plain:'<dl><dt>What happened</dt><dd>A man gave someone a cheque for ₹4,00,000 to repay a loan. The bank returned it because his account did not have enough money <a class="cite" data-c="3">¶3</a>.</dd><dt>What the court decided</dt><dd>He was told to pay and did not. The court said he could not bring up a new excuse so late, and his appeal was rejected <a class="cite" data-c="15">¶15</a>.</dd><dt>What it means</dt><dd>The earlier conviction stays in place.</dd></dl>',
+ qa:'<dl><dt>Question</dt><dd>Why was the appeal dismissed?</dd><dt>Answer</dt><dd>The court held that the time-barred-debt defence was never raised at trial, so it could not be argued for the first time on appeal <a class="cite" data-c="12">¶12</a>. The conviction was therefore upheld <a class="cite" data-c="15">¶15</a>.</dd><dt>Guard check</dt><dd>2 of 2 claims matched to source passages.</dd></dl>'};
+var pane=document.getElementById("pane"),tabs=document.querySelectorAll(".tabs button"),ps=document.querySelectorAll("#src p");
+function hl(n){ps.forEach(function(p){p.classList.toggle("hl",p.dataset.p===String(n))})}
+function show(t){pane.innerHTML=DATA[t];tabs.forEach(function(b){b.setAttribute("aria-selected",b.dataset.t===t)});hl(0)}
+tabs.forEach(function(b){b.addEventListener("click",function(){show(b.dataset.t)})});
+pane.addEventListener("click",function(e){var c=e.target.closest(".cite");if(c)hl(c.dataset.c)});
+show("expert");
+})();
+</script>
+</body>
+</html>

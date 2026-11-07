@@ -29,6 +29,7 @@ jobs:
           mkdir site
           cp index.html site/index.html
           cp atlas.html site/atlas.html
+          cp nyayalens.html site/nyayalens.html
           touch site/.nojekyll
 
       - name: Configure Pages
