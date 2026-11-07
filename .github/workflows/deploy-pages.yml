@@ -1,4 +1,4 @@
-name: Deploy ARGOS ATLAS
+name: Deploy Cyber Security Console
 
 on:
   push:
@@ -27,9 +27,8 @@ jobs:
       - name: Prepare static site
         run: |
           mkdir site
-          cp atlas.html site/index.html
+          cp index.html site/index.html
           cp atlas.html site/atlas.html
-          cp index.html site/security-console.html
           touch site/.nojekyll
 
       - name: Configure Pages
