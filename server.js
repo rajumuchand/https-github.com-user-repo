@@ -6,9 +6,8 @@ import { fileURLToPath } from 'node:url';
 const root = fileURLToPath(new URL('.', import.meta.url));
 const model = process.env.OPENAI_MODEL || 'gpt-6-astra';
 const files = new Map([
-  ['/', 'atlas.html'],
+  ['/', 'index.html'],
   ['/index.html', 'index.html'],
-  ['/atlas.html', 'atlas.html'],
   ['/developer.html', 'developer.html']
 ]);
 const languages = new Map([
